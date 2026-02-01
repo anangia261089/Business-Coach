@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scenario Planning - Xero</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'xero-blue': '#1C7ED6',
+                        'xero-dark': '#1E2A3B',
+                        'xero-nav': '#1A2638'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .chat-bubble { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .slider-input { -webkit-appearance: none; background: transparent; width: 100%; }
+        .slider-input::-webkit-slider-runnable-track { height: 4px; background: #E5E7EB; border-radius: 2px; }
+        .slider-input::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: #1C7ED6; border-radius: 50%; cursor: pointer; margin-top: -6px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .prompt-chip { transition: all 0.15s; }
+        .prompt-chip:hover { background: #EBF5FF; border-color: #1C7ED6; }
+        .info-icon-wrap { display: inline-flex; align-items: center; cursor: help; }
+        #home-view, #scenario-view { display: none; flex-direction: column; min-height: 100vh; }
+        #home-view.active { display: flex; }
+        #scenario-view.active { display: flex; }
+        .legend-item { border-left: 3px solid; padding-left: 12px; margin-bottom: 16px; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<div id="info-tooltip" class="fixed z-[9999] hidden" style="width: 280px; background: #1E2A3B; color: white; border-radius: 8px; padding: 14px; font-size: 11px; line-height: 1.5; box-shadow: 0 8px 30px rgba(0,0,0,0.4);"></div>
+
+<!-- HOME VIEW -->
+<div id="home-view" class="active">
+    <header class="bg-xero-nav flex-shrink-0">
+        <div class="flex items-center justify-between px-4 h-12">
+            <div class="flex items-center">
+                <div class="text-white font-bold text-xl tracking-tight mr-3">xero</div>
+                <div class="flex items-center text-gray-400 text-sm border-l border-gray-600 pl-3">
+                    <span>SB Design Studio</span>
+                </div>
+            </div>
+            <nav class="flex items-center space-x-1 text-sm">
+                <a href="#" class="px-3 py-2 text-gray-300">Home</a>
+                <a href="#" class="px-3 py-2 text-gray-300">Sales</a>
+                <a href="#" class="px-3 py-2 text-white bg-white/10 rounded">Reporting</a>
+                <a href="#" class="px-3 py-2 text-gray-300">Payroll</a>
+                <a href="#" class="px-3 py-2 text-gray-300">Accounting</a>
+            </nav>
+            <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-medium">AD</div>
+        </div>
+    </header>
+
+    <div class="bg-white border-b px-6 py-3">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs text-gray-500">Reporting ›</p>
+                <h1 class="text-lg font-semibold text-gray-900">Scenario planning</h1>
+            </div>
+            <button onclick="openModal()" class="bg-xero-blue text-white px-4 py-2 rounded text-sm font-medium hover:bg-blue-700">New scenario</button>
+        </div>
+    </div>
+
+    <main class="flex-1 px-6 py-6 overflow-auto">
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+            <div class="flex">
+                <div class="flex-1 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-3">Spend your time making decisions instead of crunching numbers</h2>
+                    <p class="text-gray-600 mb-6 max-w-lg text-sm">Skip the manual setup. JAX instantly drafts a scenario based on your last 12 months of data.</p>
+                    <button onclick="openModal()" class="bg-xero-blue text-white px-5 py-2.5 rounded text-sm font-medium hover:bg-blue-700">Create new scenario</button>
+                </div>
+                <div class="w-72 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-yellow-400 rounded-full mx-auto mb-3 flex items-center justify-center shadow-lg"><span class="text-2xl">💰</span></div>
+                        <div class="text-white font-medium text-sm">Process pay</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="saved-section" class="mb-8" style="display: none;">
+            <h3 class="text-sm font-semibold text-gray-900 mb-4">Saved scenarios</h3>
+            <div id="saved-grid" class="grid grid-cols-3 gap-4"></div>
+        </section>
+
+        <section>
+            <h3 class="text-sm font-semibold text-gray-900 mb-4">Scenario templates</h3>
+            <div class="grid grid-cols-3 gap-4">
+                <div onclick="selectTemplate('barista')" class="bg-white rounded-lg border p-4 cursor-pointer hover:shadow-md">
+                    <div class="text-sm font-medium text-gray-900 mb-2">Hire a new employee</div>
+                    <p class="text-xs text-gray-500">See if you can afford to bring on staff</p>
+                </div>
+                <div onclick="selectTemplate('supplier')" class="bg-white rounded-lg border p-4 cursor-pointer hover:shadow-md">
+                    <div class="text-sm font-medium text-gray-900 mb-2">Supplier cost increase</div>
+                    <p class="text-xs text-gray-500">Model the impact of rising costs</p>
+                </div>
+                <div onclick="selectTemplate('barista')" class="bg-white rounded-lg border p-4 cursor-pointer hover:shadow-md">
+                    <div class="text-sm font-medium text-gray-900 mb-2">Open new location</div>
+                    <p class="text-xs text-gray-500">Evaluate expansion opportunity</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-2xl w-full max-w-md mx-4">
+        <div class="flex items-center justify-between p-4 border-b">
+            <h3 class="font-semibold text-gray-900">New scenario plan</h3>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">✕</button>
+        </div>
+        <div class="p-6">
+            <div class="text-center mb-6">
+                <h4 class="text-lg font-semibold text-gray-900 mb-2">What are you planning for?</h4>
+                <p class="text-sm text-gray-500">Describe your goal and let JAX create scenarios</p>
+            </div>
+            <div class="mb-6">
+                <input type="text" id="scenario-input" placeholder="e.g. Can I afford to hire another barista"
+                    class="w-full px-4 py-3 border rounded-lg text-sm focus:ring-2 focus:ring-xero-blue outline-none"
+                    onkeydown="if(event.key==='Enter') handleInput()">
+            </div>
+            <p class="text-sm text-gray-500 mb-3">Or pick one to start...</p>
+            <div class="space-y-1">
+                <button onclick="selectPreset('Can I afford to hire part-time employee')" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Can I afford to hire part-time employee</button>
+                <button onclick="selectPreset('What if supplier costs rise 10%')" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded">What if supplier costs rise 10%</button>
+                <button onclick="selectPreset('What if I increase prices by 5%')" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded">What if I increase prices by 5%</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SCENARIO VIEW -->
+<div id="scenario-view">
+    <header class="bg-white border-b px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <button onclick="goHome()" class="text-gray-500 hover:text-gray-700 p-1">✕</button>
+            <h1 id="scenario-title" class="text-base font-semibold text-gray-900">Scenario</h1>
+            <span class="text-sm text-gray-400">Saved</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button onclick="copyLink()" class="px-3 py-1.5 text-sm text-gray-600 border rounded hover:bg-gray-50">Copy link</button>
+            <button onclick="togglePanel()" class="px-3 py-1.5 text-sm text-white bg-xero-blue rounded hover:bg-blue-700">Chat and refine</button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden" style="height: calc(100vh - 57px);">
+        <!-- Left Sidebar -->
+        <aside class="w-72 bg-white border-r p-5 overflow-y-auto">
+            <div class="mb-6">
+                <span class="text-xs font-semibold text-xero-blue uppercase">Key insight</span>
+                <h2 id="insight-title" class="text-sm font-semibold text-gray-900 mt-2 mb-2"></h2>
+                <p id="insight-text" class="text-xs text-gray-600 mb-4"></p>
+                <button onclick="usePrompt('Explain insight')" class="prompt-chip px-3 py-1.5 text-xs font-medium text-xero-blue border border-xero-blue/40 rounded-full">Explain insight</button>
+            </div>
+            <div id="legend-sidebar"></div>
+        </aside>
+
+        <!-- Chart Area -->
+        <main class="flex-1 p-6 overflow-auto bg-gray-100">
+            <div class="flex items-center justify-between mb-4">
+                <select id="time-range" class="px-3 py-1.5 text-sm border rounded bg-white" onchange="updateChart()">
+                    <option value="6">Next 6 months</option>
+                    <option value="12" selected>Next 12 months</option>
+                    <option value="24">Next 24 months</option>
+                </select>
+                <div class="text-sm font-medium text-gray-700">Profit and Loss</div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div style="height: 400px;"><canvas id="main-chart"></canvas></div>
+                <div class="flex items-center justify-center space-x-6 mt-4 pt-4 border-t text-xs text-gray-500">
+                    <span>← Actuals</span>
+                    <span>Projected →</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Panel -->
+        <aside id="right-panel" class="w-96 bg-white border-l flex-col hidden">
+            <div class="flex border-b">
+                <button id="tab-chat" onclick="switchTab('chat')" class="flex-1 px-4 py-3 text-sm font-medium text-xero-blue border-b-2 border-xero-blue">Chat with JAX</button>
+                <button id="tab-refine" onclick="switchTab('refine')" class="flex-1 px-4 py-3 text-sm font-medium text-gray-500 border-b-2 border-transparent">Refine</button>
+                <button onclick="closePanel()" class="px-3 text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+
+            <div id="chat-panel" class="flex-1 flex flex-col overflow-hidden">
+                <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
+                <div class="p-4 border-t">
+                    <div class="relative">
+                        <input type="text" id="chat-input" placeholder="Describe your changes..."
+                            class="w-full px-4 py-3 pr-12 border rounded-lg text-sm focus:ring-2 focus:ring-xero-blue outline-none"
+                            onkeydown="if(event.key==='Enter') sendChat()">
+                        <button onclick="sendChat()" class="absolute right-3 top-3 text-xero-blue hover:text-blue-700">↑</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="refine-panel" class="flex-1 overflow-y-auto p-4 hidden">
+                <div class="mb-4">
+                    <label class="text-xs text-gray-500 mb-1 block">Source data</label>
+                    <select class="w-full px-3 py-2 text-sm border rounded"><option>Last 12 months</option></select>
+                </div>
+                <div id="refine-controls"></div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script>
+const BASE = { monthlyRevenue: 13750, profitMargin: 0.25, monthlyProfit: 3438, annualProfit: 41250, growthRate: 0.15, cogsPercent: 0.40 };
+
+function calculateScenarioProfit(scenarioId, monthsOut, sliderValues) {
+    const monthlyBase = BASE.monthlyProfit;
+    if (scenarioId === 'current') {
+        const growthRate = (sliderValues.baseGrowth !== undefined ? sliderValues.baseGrowth : 15) / 100;
+        return monthlyBase * Math.pow(1 + growthRate / 12, monthsOut);
+    }
+    if (scenarioId === 'costOnly') {
+        const salary = sliderValues.costSalary !== undefined ? sliderValues.costSalary : 31200;
+        const growthRate = (sliderValues.costGrowth !== undefined ? sliderValues.costGrowth : 15) / 100;
+        return monthlyBase * Math.pow(1 + growthRate / 12, monthsOut) - salary / 12;
+    }
+    if (scenarioId === 'withGrowth') {
+        const salary = sliderValues.salary !== undefined ? sliderValues.salary : 31200;
+        const growthRate = (sliderValues.growth !== undefined ? sliderValues.growth : 21) / 100;
+        const growingProfit = monthlyBase * Math.pow(1 + growthRate / 12, monthsOut);
+        if (monthsOut === 0) return (growingProfit * 0.9) - salary / 12;
+        return growingProfit - salary / 12;
+    }
+    if (scenarioId === 'absorb') {
+        const costIncrease = (sliderValues.costIncrease !== undefined ? sliderValues.costIncrease : 10) / 100;
+        const growthRate = (sliderValues.baseGrowth !== undefined ? sliderValues.baseGrowth : 15) / 100;
+        return monthlyBase * Math.pow(1 + growthRate / 12, monthsOut) - (BASE.monthlyRevenue * BASE.cogsPercent * costIncrease);
+    }
+    if (scenarioId === 'pass') {
+        const priceIncrease = (sliderValues.priceIncrease !== undefined ? sliderValues.priceIncrease : 4) / 100;
+        const salesDrop = (sliderValues.salesDrop !== undefined ? sliderValues.salesDrop : 2) / 100;
+        const growthRate = (sliderValues.baseGrowth !== undefined ? sliderValues.baseGrowth : 15) / 100;
+        return monthlyBase * (1 + priceIncrease) * (1 - salesDrop) * Math.pow(1 + growthRate / 12, monthsOut);
+    }
+    return monthlyBase;
+}
+
+function calculateAnnualProfit(scenarioId, sliderValues) {
+    let total = 0;
+    for (let m = 1; m <= 12; m++) total += calculateScenarioProfit(scenarioId, m, sliderValues);
+    return Math.round(total);
+}
+
+const scenarios = {
+    barista: {
+        id: 'barista',
+        title: 'Can I afford to hire another barista?',
+        insight: { title: "Recent performance suggests you're in a strong position to hire", text: "With 6% additional revenue growth, the new hire pays for themselves." },
+        lines: [
+            { id: 'current', name: 'Current trajectory', color: '#94A3B8', dash: false, desc: 'No changes - continue current growth' },
+            { id: 'costOnly', name: 'Hire (cost only)', color: '#1E293B', dash: true, desc: 'Salary cost, no revenue boost' },
+            { id: 'withGrowth', name: 'Hire (revenue increase)', color: '#1C7ED6', dash: false, desc: 'Salary + revenue boost' }
+        ],
+        controls: {
+            current: [{ id: 'baseGrowth', label: 'Revenue growth', type: 'percent', value: 15, min: -10, max: 30 }],
+            costOnly: [{ id: 'costSalary', label: 'Annual salary', type: 'currency', value: 31200, min: 15000, max: 60000 }, { id: 'costGrowth', label: 'Revenue growth', type: 'percent', value: 15, min: -10, max: 30 }],
+            withGrowth: [{ id: 'salary', label: 'Annual salary', type: 'currency', value: 31200, min: 15000, max: 60000 }, { id: 'growth', label: 'Revenue growth', type: 'percent', value: 21, min: 0, max: 40 }]
+        }
+    },
+    supplier: {
+        id: 'supplier',
+        title: 'What if supplier costs rise?',
+        insight: { title: "You have options to protect margins", text: "Passing 50% of the cost to customers minimizes impact." },
+        lines: [
+            { id: 'current', name: 'Current trajectory', color: '#94A3B8', dash: false, desc: 'No cost changes' },
+            { id: 'absorb', name: 'Absorb cost increase', color: '#1E293B', dash: true, desc: 'Keep prices, lower margin' },
+            { id: 'pass', name: 'Pass to customers', color: '#1C7ED6', dash: false, desc: 'Raise prices to maintain margin' }
+        ],
+        controls: {
+            current: [{ id: 'baseGrowth', label: 'Revenue growth', type: 'percent', value: 15, min: -10, max: 30 }],
+            absorb: [{ id: 'costIncrease', label: 'Supplier cost increase', type: 'percent', value: 10, min: 0, max: 30 }],
+            pass: [{ id: 'priceIncrease', label: 'Your price increase', type: 'percent', value: 4, min: 0, max: 15 }, { id: 'salesDrop', label: 'Expected sales drop', type: 'percent', value: 2, min: 0, max: 15 }]
+        }
+    }
+};
+
+let state = { current: null, values: {}, messages: [], saved: [], panelOpen: false, tab: 'chat', chart: null };
+
+function renderChart() {
+    const s = state.current;
+    const ctx = document.getElementById('main-chart');
+    if (state.chart) state.chart.destroy();
+    const timeRange = parseInt(document.getElementById('time-range').value);
+    const todayIdx = 4;
+    const months = [];
+    const startDate = new Date(2025, 7);
+    for (let i = 0; i < todayIdx + timeRange; i++) {
+        const d = new Date(startDate); d.setMonth(d.getMonth() + i);
+        months.push(i === todayIdx ? 'Today' : d.toLocaleDateString('en-US', { month: 'short' }));
+    }
+    const datasets = s.lines.map((line, idx) => {
+        const data = [];
+        for (let i = 0; i < todayIdx; i++) data.push(Math.round(BASE.monthlyProfit + i * 80 + Math.sin(i * 1.2) * 150));
+        for (let i = 0; i < timeRange; i++) data.push(Math.round(calculateScenarioProfit(line.id, i, state.values)));
+        return {
+            label: line.name, data, borderColor: line.color,
+            backgroundColor: idx === 0 ? 'rgba(148, 163, 184, 0.08)' : 'transparent',
+            borderWidth: line.id === 'withGrowth' || line.id === 'pass' ? 2.5 : 2,
+            borderDash: line.dash ? [6, 4] : [], fill: idx === 0, tension: 0.3, pointRadius: 0, pointHoverRadius: 6
+        };
+    });
+    state.chart = new Chart(ctx, {
+        type: 'line', data: { labels: months, datasets },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
+            plugins: { legend: { display: false }, tooltip: { backgroundColor: 'white', titleColor: '#1E293B', bodyColor: '#64748B', borderColor: '#E5E7EB', borderWidth: 1, padding: 12, callbacks: { label: ctx => `${ctx.dataset.label}: ${formatCurrency(ctx.parsed.y)}/month` } } },
+            scales: { x: { grid: { display: false }, ticks: { color: '#94A3B8', font: { size: 11 } } }, y: { grid: { color: '#F1F5F9' }, ticks: { color: '#94A3B8', font: { size: 11 }, callback: v => '$' + (v/1000).toFixed(1) + 'k' }, min: 0 } }
+        }
+    });
+}
+
+function updateChart() { if (state.current) { renderChart(); renderSidebar(); renderRefine(); } }
+
+function renderSidebar() {
+    const s = state.current;
+    document.getElementById('insight-title').textContent = s.insight.title;
+    if (s.id === 'barista') {
+        const salary = state.values.salary || 31200, growth = state.values.growth || 21, baseGrowth = state.values.baseGrowth || 15;
+        document.getElementById('insight-text').textContent = `At ${formatCurrency(salary)} salary with ${growth}% growth (${growth - baseGrowth}% above baseline), the hire adds profit.`;
+    } else { document.getElementById('insight-text').textContent = s.insight.text; }
+    document.getElementById('legend-sidebar').innerHTML = s.lines.map(line => `
+        <div class="legend-item" style="border-left-color: ${line.color}">
+            <div class="flex items-center space-x-2 mb-1"><span class="text-sm font-medium text-gray-900">${line.name}</span><span class="w-6 h-0.5" style="background: ${line.dash ? `repeating-linear-gradient(90deg, ${line.color} 0 4px, transparent 4px 8px)` : line.color}"></span></div>
+            <p class="text-xs text-gray-500">${line.desc}</p>
+            <p class="text-xs font-semibold text-gray-700 mt-1">${formatCurrency(calculateAnnualProfit(line.id, state.values))} annual profit</p>
+        </div>
+    `).join('');
+}
+
+function renderRefine() {
+    const s = state.current;
+    document.getElementById('refine-controls').innerHTML = s.lines.map(line => {
+        const controls = s.controls[line.id] || [];
+        return `
+            <div class="border-b pb-4 mb-4">
+                <div class="flex items-center space-x-2 mb-2"><span class="w-4 h-0.5" style="background: ${line.dash ? `repeating-linear-gradient(90deg, ${line.color} 0 4px, transparent 4px 8px)` : line.color}"></span><span class="text-sm font-medium">${line.name}</span></div>
+                <p class="text-xs text-gray-500 mb-3">${formatCurrency(calculateAnnualProfit(line.id, state.values))} annual profit</p>
+                ${controls.map(c => {
+                    const currentVal = state.values[c.id] !== undefined ? state.values[c.id] : c.value;
+                    return `
+                        <div class="mb-4">
+                            <div class="flex items-center space-x-1.5 mb-1.5">
+                                <label class="text-xs text-gray-600">${c.label}</label>
+                                <span class="info-icon-wrap" onmouseenter="showTooltip(event, '${line.id}', '${c.id}')" onmouseleave="hideTooltip()">
+                                    <svg class="w-3.5 h-3.5 text-gray-400 hover:text-xero-blue cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                                </span>
+                            </div>
+                            ${c.type === 'currency' ? `<div class="flex items-center"><span class="text-sm text-gray-500 mr-1">$</span><input type="text" value="${currentVal.toLocaleString()}" class="flex-1 px-3 py-2 border rounded text-sm" onchange="updateValue('${c.id}', this.value)"></div>` : `<div class="flex items-center space-x-3"><input type="range" class="slider-input flex-1" min="${c.min}" max="${c.max}" value="${currentVal}" oninput="updateValue('${c.id}', this.value)"><span class="text-sm font-medium w-12 text-right">${currentVal}%</span></div>`}
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }).join('');
+}
+
+function updateValue(id, val) { state.values[id] = parseFloat(String(val).replace(/[,$]/g, '')); updateChart(); }
+
+function showTooltip(event, lineId, controlId) {
+    const tooltip = document.getElementById('info-tooltip');
+    const rect = event.target.closest('.info-icon-wrap').getBoundingClientRect();
+    const s = state.current;
+    const control = (s.controls[lineId] || []).find(c => c.id === controlId);
+    if (!control) return;
+    const currentVal = state.values[control.id] !== undefined ? state.values[control.id] : control.value;
+    const annualProfit = calculateAnnualProfit(lineId, state.values);
+    let formula, calculation, impact;
+    if (control.id === 'salary' || control.id === 'costSalary') {
+        formula = 'Hourly Rate × 40 hrs × 52 weeks'; calculation = `$${Math.round(currentVal / (40 * 52))}/hr × 40 × 52 = ${formatCurrency(currentVal)}`; impact = `Monthly cost: ${formatCurrency(currentVal/12)}`;
+    } else if (control.id.includes('growth') || control.id === 'growth') {
+        formula = 'Annual Rate ÷ 12 = Monthly'; calculation = `${currentVal}% annual = ${(currentVal/12).toFixed(2)}% monthly`; impact = `Higher growth = more profit over time`;
+    } else if (control.id === 'costIncrease') {
+        const extra = BASE.monthlyRevenue * BASE.cogsPercent * (currentVal / 100);
+        formula = 'COGS × Increase %'; calculation = `${formatCurrency(BASE.monthlyRevenue * BASE.cogsPercent)} × ${currentVal}%`; impact = `Extra cost: ${formatCurrency(extra)}/month`;
+    } else if (control.id === 'priceIncrease') {
+        formula = 'Revenue × Price Increase'; calculation = `${formatCurrency(BASE.monthlyRevenue)} × ${currentVal}%`; impact = `Revenue boost: ${formatCurrency(BASE.monthlyRevenue * currentVal / 100)}/month`;
+    } else if (control.id === 'salesDrop') {
+        formula = 'Revenue × Sales Drop'; calculation = `${formatCurrency(BASE.monthlyRevenue)} × ${currentVal}%`; impact = `Revenue loss: ${formatCurrency(BASE.monthlyRevenue * currentVal / 100)}/month`;
+    } else { formula = 'Standard calculation'; calculation = control.type === 'currency' ? formatCurrency(currentVal) : currentVal + '%'; impact = 'Adjust to see impact'; }
+    tooltip.innerHTML = `<div style="font-weight:600;margin-bottom:10px;color:#60A5FA;">${control.label}</div><div style="color:#9CA3AF;font-size:10px;margin-bottom:4px;">HOW IT'S CALCULATED</div><div style="background:rgba(255,255,255,0.1);border-radius:4px;padding:8px;margin-bottom:12px;">${formula}</div><div style="color:#9CA3AF;font-size:10px;margin-bottom:4px;">CURRENT VALUE</div><div style="background:rgba(255,255,255,0.1);border-radius:4px;padding:8px;margin-bottom:12px;">${calculation}</div><div style="color:#9CA3AF;font-size:10px;margin-bottom:4px;">IMPACT</div><div style="background:rgba(96,165,250,0.2);border-radius:4px;padding:8px;color:#93C5FD;">${impact}</div><div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;color:#9CA3AF;">Annual profit: <span style="color:#4ADE80;font-weight:600;">${formatCurrency(annualProfit)}</span></div>`;
+    let left = rect.left - 290, top = rect.top - 50;
+    if (left < 10) left = rect.right + 10;
+    if (top < 10) top = 10;
+    tooltip.style.left = left + 'px'; tooltip.style.top = top + 'px'; tooltip.classList.remove('hidden');
+}
+
+function hideTooltip() { document.getElementById('info-tooltip').classList.add('hidden'); }
+
+function renderChat() {
+    const container = document.getElementById('chat-messages');
+    const s = state.current;
+    if (state.messages.length === 0) {
+        container.innerHTML = `<div class="text-sm text-gray-600 mb-4">Ask me anything about these scenarios. I can adjust the numbers for you.</div><div class="flex flex-wrap gap-2"><button onclick="usePrompt('Explain the scenarios')" class="prompt-chip px-3 py-1.5 text-xs font-medium text-xero-blue border border-xero-blue/40 rounded-full">Explain scenarios</button><button onclick="usePrompt('What salary can I afford?')" class="prompt-chip px-3 py-1.5 text-xs font-medium text-xero-blue border border-xero-blue/40 rounded-full">What can I afford?</button><button onclick="usePrompt('Show break-even point')" class="prompt-chip px-3 py-1.5 text-xs font-medium text-xero-blue border border-xero-blue/40 rounded-full">Break-even point</button></div>`;
+        return;
+    }
+    container.innerHTML = state.messages.map(m => `<div class="chat-bubble ${m.role === 'user' ? 'flex justify-end' : ''}">${m.role === 'user' ? `<div class="bg-xero-blue text-white rounded-lg px-4 py-2 text-sm max-w-[85%]">${m.text}</div>` : `<div class="bg-gray-50 rounded-lg px-4 py-3 text-sm text-gray-700">${m.text}</div>`}</div>`).join('');
+    container.scrollTop = container.scrollHeight;
+}
+
+function sendChat() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+    state.messages.push({ role: 'user', text });
+    input.value = '';
+    renderChat();
+    setTimeout(() => { state.messages.push({ role: 'assistant', text: generateResponse(text) }); renderChat(); }, 300);
+}
+
+function usePrompt(prompt) { if (!state.panelOpen) togglePanel(); switchTab('chat'); document.getElementById('chat-input').value = prompt; sendChat(); }
+
+function generateResponse(text) {
+    const lower = text.toLowerCase();
+    const salary = state.values.salary || 31200, growth = state.values.growth || 21, baseGrowth = state.values.baseGrowth || 15;
+    const currentProfit = calculateAnnualProfit('current', state.values), withGrowthProfit = calculateAnnualProfit('withGrowth', state.values), costOnlyProfit = calculateAnnualProfit('costOnly', state.values);
+    const numberMatch = lower.match(/\$?([\d,]+)/), percentMatch = lower.match(/(\d+)\s*%/);
+
+    if (numberMatch && (lower.includes('salary') || lower.includes('pay') || lower.includes('wage'))) {
+        const newSalary = parseInt(numberMatch[1].replace(/,/g, ''));
+        if (newSalary >= 10000 && newSalary <= 80000) {
+            state.values.salary = newSalary; state.values.costSalary = newSalary; updateChart();
+            return `Done! Salary updated to <strong>${formatCurrency(newSalary)}</strong>.<br><br>📊 Monthly cost: ${formatCurrency(newSalary/12)}<br>📈 Projected annual profit: ${formatCurrency(calculateAnnualProfit('withGrowth', state.values))}<br><br>Chart updated!`;
+        }
+    }
+    if (percentMatch && lower.includes('growth')) {
+        const newGrowth = parseInt(percentMatch[1]);
+        if (newGrowth >= 0 && newGrowth <= 50) {
+            state.values.growth = newGrowth; updateChart();
+            return `Updated! Growth is now <strong>${newGrowth}%</strong>.<br><br>📈 Projected annual profit: ${formatCurrency(calculateAnnualProfit('withGrowth', state.values))}<br><br>Chart updated!`;
+        }
+    }
+    if (lower.includes('how long') || lower.includes('when') || lower.includes('profitable')) {
+        const monthsToProfit = Math.ceil((salary / 12) / (BASE.monthlyProfit * (growth - baseGrowth) / 100 / 12));
+        return `📅 <strong>Timeline:</strong><br><br>• Training: First 4 weeks<br>• Ramp-up: Months 1-2<br>• Break-even: ~Month ${Math.min(monthsToProfit, 12)}<br><br>💰 <strong>By Month 12:</strong><br>With hire: ${formatCurrency(withGrowthProfit)}<br>Without: ${formatCurrency(currentProfit)}<br>Net benefit: <strong>${formatCurrency(withGrowthProfit - currentProfit)}</strong>`;
+    }
+    if (lower.includes('explain') || lower.includes('scenario')) {
+        return `📊 <strong>Current trajectory</strong> (${formatCurrency(currentProfit)}/yr)<br>No changes - ${baseGrowth}% growth continues.<br><br>📉 <strong>Hire (cost only)</strong> (${formatCurrency(costOnlyProfit)}/yr)<br>Pay ${formatCurrency(salary)} salary, no extra revenue.<br><br>📈 <strong>Hire (revenue increase)</strong> (${formatCurrency(withGrowthProfit)}/yr)<br>Salary + ${growth}% growth. Net benefit: ${formatCurrency(withGrowthProfit - currentProfit)}/yr`;
+    }
+    if (lower.includes('break') || lower.includes('even')) {
+        const breakEvenGrowth = Math.round((salary / BASE.annualProfit) * 100);
+        return `To break even on ${formatCurrency(salary)} salary:<br><br>📊 Growth needed: <strong>${breakEvenGrowth}% extra</strong><br>That's ${baseGrowth + breakEvenGrowth}% total<br><br>Currently modeling ${growth}%, which is ${growth >= baseGrowth + breakEvenGrowth ? '✅ above' : '⚠️ below'} break-even.`;
+    }
+    if (lower.includes('afford') || lower.includes('budget')) {
+        return `Based on ${formatCurrency(BASE.annualProfit)}/yr profit:<br><br>🟢 Conservative: Up to ${formatCurrency(BASE.annualProfit * 0.25)}/yr<br>🟡 Moderate: Up to ${formatCurrency(BASE.annualProfit * 0.35)}/yr<br>🔴 Aggressive: Up to ${formatCurrency(BASE.annualProfit * 0.4)}/yr<br><br>Current: ${formatCurrency(salary)}/yr (${Math.round(salary/BASE.annualProfit*100)}% of profit)`;
+    }
+    if (lower.includes('part') && lower.includes('time')) {
+        state.values.salary = 15600; state.values.costSalary = 15600; state.values.growth = 18; updateChart();
+        return `Modeling <strong>part-time</strong> (20 hrs/week):<br><br>• Salary: ${formatCurrency(15600)}/yr<br>• Growth: 18%<br>• Profit: ${formatCurrency(calculateAnnualProfit('withGrowth', state.values))}/yr<br><br>Lower risk than full-time. Chart updated!`;
+    }
+    return `📊 <strong>Current scenario:</strong><br>• Salary: ${formatCurrency(salary)}/yr<br>• Growth: ${growth}%<br>• Profit: ${formatCurrency(withGrowthProfit)}/yr<br><br>Try: "Set salary to $25,000" or "Use 18% growth"`;
+}
+
+function openModal() { document.getElementById('modal').classList.remove('hidden'); document.getElementById('modal').classList.add('flex'); }
+function closeModal() { document.getElementById('modal').classList.add('hidden'); document.getElementById('modal').classList.remove('flex'); }
+function handleInput() { const val = document.getElementById('scenario-input').value.trim(); if (val) loadScenario(detectType(val), val); }
+function selectPreset(preset) { loadScenario(detectType(preset), preset); }
+function selectTemplate(id) { const s = scenarios[id]; if (s) loadScenario(id, s.title); }
+function detectType(text) { const t = text.toLowerCase(); if (t.includes('supplier') || (t.includes('cost') && t.includes('rise'))) return 'supplier'; return 'barista'; }
+
+function loadScenario(type, title) {
+    state.current = scenarios[type] || scenarios.barista; state.values = {}; state.messages = [];
+    document.getElementById('scenario-title').textContent = title;
+    document.getElementById('home-view').classList.remove('active'); document.getElementById('home-view').style.display = 'none';
+    document.getElementById('scenario-view').classList.add('active'); document.getElementById('scenario-view').style.display = 'flex';
+    closeModal(); renderSidebar(); renderChart(); renderRefine(); renderChat();
+    if (!state.saved.find(s => s.title === title)) state.saved.push({ id: Date.now(), title, type });
+}
+
+function goHome() {
+    document.getElementById('scenario-view').classList.remove('active'); document.getElementById('scenario-view').style.display = 'none';
+    document.getElementById('home-view').classList.add('active'); document.getElementById('home-view').style.display = 'flex';
+    closePanel(); renderSaved();
+}
+
+function renderSaved() {
+    const section = document.getElementById('saved-section'), grid = document.getElementById('saved-grid');
+    if (state.saved.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+    grid.innerHTML = state.saved.map(s => `<div onclick="loadScenario('${s.type}', '${s.title.replace(/'/g, "\\'")}')" class="bg-white rounded-lg border p-4 cursor-pointer hover:shadow-md"><span class="text-sm font-medium text-gray-900">${s.title}</span><p class="text-xs text-gray-500 mt-1">Created today</p></div>`).join('');
+}
+
+function togglePanel() { state.panelOpen = !state.panelOpen; document.getElementById('right-panel').classList.toggle('hidden', !state.panelOpen); document.getElementById('right-panel').classList.toggle('flex', state.panelOpen); }
+function closePanel() { state.panelOpen = false; document.getElementById('right-panel').classList.add('hidden'); document.getElementById('right-panel').classList.remove('flex'); }
+function switchTab(tab) {
+    state.tab = tab;
+    document.getElementById('tab-chat').className = `flex-1 px-4 py-3 text-sm font-medium ${tab === 'chat' ? 'text-xero-blue border-b-2 border-xero-blue' : 'text-gray-500 border-b-2 border-transparent'}`;
+    document.getElementById('tab-refine').className = `flex-1 px-4 py-3 text-sm font-medium ${tab === 'refine' ? 'text-xero-blue border-b-2 border-xero-blue' : 'text-gray-500 border-b-2 border-transparent'}`;
+    document.getElementById('chat-panel').classList.toggle('hidden', tab !== 'chat'); document.getElementById('chat-panel').classList.toggle('flex', tab === 'chat');
+    document.getElementById('refine-panel').classList.toggle('hidden', tab !== 'refine');
+}
+function copyLink() { navigator.clipboard.writeText(window.location.href); alert('Link copied!'); }
+function formatCurrency(n) { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n); }
+document.addEventListener('DOMContentLoaded', renderSaved);
+</script>
+</body>
+</html>
