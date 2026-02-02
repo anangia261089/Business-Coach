@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scenario Planning - Xero</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.0.0/dist/chartjs-plugin-annotation.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'xero-blue': '#1C7ED6',
+                        'xero-dark': '#1E2A3B',
+                        'xero-nav': '#1A2638'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .chat-bubble { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .slider-input { -webkit-appearance: none; background: transparent; width: 100%; }
+        .slider-input::-webkit-slider-runnable-track { height: 4px; background: #E5E7EB; border-radius: 2px; }
+        .slider-input::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: #1C7ED6; border-radius: 50%; cursor: pointer; margin-top: -6px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+        .prompt-chip { transition: all 0.15s; cursor: pointer; }
+        .prompt-chip:hover { background: #EBF5FF; border-color: #1C7ED6; }
+        .info-icon-wrap { display: inline-flex; align-items: center; cursor: help; }
+        #home-view, #scenario-view { display: none; flex-direction: column; min-height: 100vh; }
+        #home-view.active { display: flex; }
+        #scenario-view.active { display: flex; }
+        .legend-item { border-left: 3px solid; padding-left: 12px; margin-bottom: 16px; }
+        .jax-avatar { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #1C7ED6, #3B82F6); display: flex; align-items: center; justify-content: center; }
+        .dropdown-menu { display: none; position: absolute; right: 0; top: 100%; margin-top: 4px; background: white; border: 1px solid #E5E7EB; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); min-width: 180px; z-index: 100; }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item { padding: 10px 14px; font-size: 13px; color: #374151; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .dropdown-item:hover { background: #F3F4F6; }
+        .dropdown-item:first-child { border-radius: 8px 8px 0 0; }
+        .dropdown-item:last-child { border-radius: 0 0 8px 8px; }
+        .sidebar-collapsed .insight-content { display: none; }
+        .sidebar-collapsed .insight-toggle { transform: rotate(180deg); }
+        .typing-indicator { display: flex; gap: 4px; padding: 8px 12px; }
+        .typing-indicator span { width: 6px; height: 6px; background: #94A3B8; border-radius: 50%; animation: typing 1.4s infinite; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-4px); } }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- Global tooltip container -->
+<div id="info-tooltip" class="fixed z-[9999] hidden" style="width: 280px; background: #1E2A3B; color: white; border-radius: 8px; padding: 14px; font-size: 11px; line-height: 1.5; box-shadow: 0 8px 30px rgba(0,0,0,0.4);"></div>
+
+<!-- ==================== HOME VIEW ==================== -->
+<div id="home-view" class="active">
+    <header class="bg-xero-nav flex-shrink-0">
+        <div class="flex items-center justify-between px-4 h-12">
+            <div class="flex items-center">
+                <div class="text-white font-bold text-xl tracking-tight mr-3">xero</div>
+                <div class="flex items-center text-gray-400 text-sm border-l border-gray-600 pl-3">
+                    <span>SB Design Studio</span>
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+            </div>
+            <nav class="flex items-center space-x-1 text-sm">
+                <a href="#" class="px-3 py-2 text-gray-300 hover:text-white">Home</a>
+                <a href="#" class="px-3 py-2 text-gray-300 hover:text-white">Sales</a>
+                <a href="#" class="px-3 py-2 text-gray-300 hover:text-white">Purchases</a>
+                <a href="#" class="px-3 py-2 text-white bg-white/10 rounded">Reporting</a>
+                <a href="#" class="px-3 py-2 text-gray-300 hover:text-white">Payroll</a>
+                <a href="#" class="px-3 py-2 text-gray-300 hover:text-white">Accounting</a>
+                <a href="#" class="px-3 py-2 text-gray-300 hover:text-white">Tax</a>
+                <a href="#" class="px-3 py-2 text-gray-300 hover:text-white">Contacts</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-medium">AD</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="bg-white border-b px-6 py-3 flex-shrink-0">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-xs text-gray-500">Reporting ›</p>
+                <h1 class="text-lg font-semibold text-gray-900">Scenario planning</h1>
+            </div>
+            <button onclick="openModal()" class="flex items-center space-x-1 bg-xero-blue text-white px-4 py-2 rounded text-sm font-medium hover:bg-blue-700">
+                <span>New scenario</span>
+            </button>
+        </div>
+    </div>
+
+    <main class="flex-1 px-6 py-6 overflow-auto">
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+            <div class="flex">
+                <div class="flex-1 p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-3">Spend your time making decisions instead of crunching numbers</h2>
+                    <p class="text-gray-600 mb-6 max-w-lg text-sm leading-relaxed">Skip the manual setup to get a future view of your business. JAX instantly drafts a scenario based on your last 12 months of data.</p>
+                    <button onclick="openModal()" class="bg-xero-blue text-white px-5 py-2.5 rounded text-sm font-medium hover:bg-blue-700">Create new scenario</button>
+                </div>
+                <div class="w-72 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-yellow-400 rounded-full mx-auto mb-3 flex items-center justify-center shadow-lg"><span class="text-2xl">💰</span></div>
+                        <div class="text-white font-medium text-sm">Process pay</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="saved-section" class="mb-8" style="display: none;">
+            <h3 class="text-sm font-semibold text-gray-900 mb-4">Saved scenarios</h3>
+            <div id="saved-grid" class="grid grid-cols-3 gap-4"></div>
+        </section>
+
+        <section>
+            <h3 class="text-sm font-semibold text-gray-900 mb-4">Scenario templates</h3>
+            <div class="grid grid-cols-3 gap-4">
+                <div onclick="selectTemplate('barista')" class="bg-white rounded-lg border p-4 cursor-pointer hover:shadow-md transition">
+                    <div class="text-sm font-medium text-gray-900 mb-2">Hire a new employee</div>
+                    <p class="text-xs text-gray-500">See if you can afford to bring on staff</p>
+                </div>
+                <div onclick="selectTemplate('supplier')" class="bg-white rounded-lg border p-4 cursor-pointer hover:shadow-md transition">
+                    <div class="text-sm font-medium text-gray-900 mb-2">Supplier cost increase</div>
+                    <p class="text-xs text-gray-500">Model the impact of rising costs</p>
+                </div>
+                <div onclick="selectTemplate('barista')" class="bg-white rounded-lg border p-4 cursor-pointer hover:shadow-md transition">
+                    <div class="text-sm font-medium text-gray-900 mb-2">Open new location</div>
+                    <p class="text-xs text-gray-500">Evaluate expansion opportunity</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- ==================== MODAL ==================== -->
+<div id="modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-2xl w-full max-w-md mx-4">
+        <div class="flex items-center justify-between p-4 border-b">
+            <h3 class="font-semibold text-gray-900">New scenario plan</h3>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div class="p-6">
+            <div class="text-center mb-6">
+                <h4 class="text-lg font-semibold text-gray-900 mb-2">What are you planning for?</h4>
+                <p class="text-sm text-gray-500">Describe your goal and let JAX create scenarios to compare</p>
+            </div>
+            <div class="mb-6">
+                <div class="relative">
+                    <input type="text" id="scenario-input" placeholder="e.g. Can I afford to hire another barista"
+                        class="w-full pl-4 pr-10 py-3 border rounded-lg text-sm focus:ring-2 focus:ring-xero-blue outline-none"
+                        onkeydown="if(event.key==='Enter') handleInput()">
+                </div>
+            </div>
+            <p class="text-sm text-gray-500 mb-3">Or pick one to start...</p>
+            <div class="space-y-1">
+                <button onclick="selectPreset('Can I afford to hire part-time employee')" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded">Can I afford to hire part-time employee</button>
+                <button onclick="selectPreset('What if supplier costs rise 10%')" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded">What if supplier costs rise 10%</button>
+                <button onclick="selectPreset('What if I increase prices by 5%')" class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded">What if I increase prices by 5%</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== SCENARIO VIEW ==================== -->
+<div id="scenario-view">
+    <header class="bg-white border-b px-4 py-3 flex items-center justify-between flex-shrink-0">
+        <div class="flex items-center space-x-3">
+            <button onclick="goHome()" class="text-gray-500 hover:text-gray-700 p-1" title="Back">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <h1 id="scenario-title" class="text-base font-semibold text-gray-900">Scenario</h1>
+            <span class="text-sm text-gray-400">Saved</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <!-- Export Dropdown -->
+            <div class="relative">
+                <button onclick="toggleExportDropdown()" class="flex items-center space-x-1.5 px-3 py-1.5 text-sm text-gray-600 border rounded hover:bg-gray-50">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    <span>Export</span>
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div id="export-dropdown" class="dropdown-menu">
+                    <div class="dropdown-item" onclick="copyLink()">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                        Copy link
+                    </div>
+                    <div class="dropdown-item" onclick="exportPDF()">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        Export as PDF
+                    </div>
+                    <div class="dropdown-item" onclick="exportCSV()">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        Export as CSV
+                    </div>
+                    <div class="dropdown-item" onclick="shareWithTeam()">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        Share with team
+                    </div>
+                    <div class="dropdown-item" onclick="saveToReports()">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+                        Save to reports
+                    </div>
+                </div>
+            </div>
+            <button onclick="togglePanel()" class="flex items-center space-x-1.5 px-3 py-1.5 text-sm text-white bg-xero-blue rounded hover:bg-blue-700">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                <span>Chat with JAX</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden" style="height: calc(100vh - 57px);">
+        <!-- Left Sidebar -->
+        <aside id="left-sidebar" class="w-72 bg-white border-r p-5 overflow-y-auto flex-shrink-0">
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-semibold text-xero-blue uppercase tracking-wide">Key insight</span>
+                    <button onclick="toggleInsight()" class="insight-toggle text-gray-400 hover:text-gray-600 transition-transform">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                    </button>
+                </div>
+                <div class="insight-content">
+                    <h2 id="insight-title" class="text-sm font-semibold text-gray-900 leading-snug mt-2 mb-2"></h2>
+                    <p id="insight-text" class="text-xs text-gray-600 mb-4"></p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="usePrompt('Explain this insight in detail')" class="prompt-chip px-3 py-1.5 text-xs font-medium text-xero-blue border border-xero-blue/40 rounded-full">Explain insight</button>
+                    </div>
+                </div>
+            </div>
+            <div id="legend-sidebar"></div>
+        </aside>
+
+        <!-- Chart Area -->
+        <main class="flex-1 p-6 overflow-auto bg-gray-100">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-4">
+                    <select id="time-range" class="px-3 py-1.5 text-sm border rounded bg-white cursor-pointer" onchange="updateChart()">
+                        <option value="6">Next 6 months</option>
+                        <option value="12" selected>Next 12 months</option>
+                        <option value="24">Next 24 months</option>
+                    </select>
+                    <div class="text-xs text-gray-500 bg-gray-200 px-2 py-1 rounded">
+                        As of <span id="today-date" class="font-medium"></span>
+                    </div>
+                </div>
+                <div class="text-sm font-medium text-gray-700">Monthly Profit Projection</div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div style="height: 400px;">
+                    <canvas id="main-chart"></canvas>
+                </div>
+                <div class="flex items-center justify-center space-x-8 mt-4 pt-4 border-t text-xs">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-0.5 bg-gray-300"></div>
+                        <span class="text-gray-500">Actuals (historical)</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-4 h-4 border-l-2 border-dashed border-red-400"></div>
+                        <span class="text-gray-500">Today</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-0.5 bg-xero-blue"></div>
+                        <span class="text-gray-500">Projected (forecast)</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Panel -->
+        <aside id="right-panel" class="w-[420px] bg-white border-l flex-col hidden flex-shrink-0">
+            <div class="flex border-b flex-shrink-0">
+                <button id="tab-chat" onclick="switchTab('chat')" class="flex-1 px-4 py-3 text-sm font-medium text-xero-blue border-b-2 border-xero-blue">Chat with JAX</button>
+                <button id="tab-refine" onclick="switchTab('refine')" class="flex-1 px-4 py-3 text-sm font-medium text-gray-500 border-b-2 border-transparent">Refine</button>
+                <button onclick="closePanel()" class="px-3 text-gray-400 hover:text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div id="chat-panel" class="flex-1 flex flex-col overflow-hidden">
+                <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
+                <div class="p-4 border-t flex-shrink-0">
+                    <div class="relative">
+                        <input type="text" id="chat-input" placeholder="Ask JAX anything about these scenarios..."
+                            class="w-full px-4 py-3 pr-12 border rounded-lg text-sm focus:ring-2 focus:ring-xero-blue outline-none"
+                            onkeydown="if(event.key==='Enter') sendChat()">
+                        <button onclick="sendChat()" class="absolute right-3 top-3 text-xero-blue hover:text-blue-700">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 0l-7 7m7-7l7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="refine-panel" class="flex-1 overflow-y-auto p-4 hidden">
+                <div class="mb-4">
+                    <label class="text-xs text-gray-500 mb-1 block">Source data</label>
+                    <select class="w-full px-3 py-2 text-sm border rounded">
+                        <option>Last 12 months</option>
+                    </select>
+                </div>
+                <div id="refine-controls"></div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script>
+// ==================== CONFIGURATION ====================
+const TODAY = new Date();
+const TODAY_STR = TODAY.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+// ==================== FINANCIAL MODEL ====================
+const BASE = {
+    monthlyRevenue: 13750,
+    profitMargin: 0.25,
+    monthlyProfit: 3438,
+    annualProfit: 41250,
+    growthRate: 0.15,
+    cogsPercent: 0.40
+};
+
+// Generate realistic historical data with seasonal variation
+function generateHistoricalData(months) {
+    const data = [];
+    const baseProfit = BASE.monthlyProfit;
+
+    // Seasonal multipliers (business tends to be better in certain months)
+    const seasonality = [0.85, 0.9, 1.0, 1.05, 1.1, 1.15, 1.1, 1.05, 1.0, 0.95, 1.2, 1.3]; // Jan-Dec pattern
+
+    for (let i = 0; i < months; i++) {
+        const monthIndex = (TODAY.getMonth() - months + i + 12) % 12;
+        const seasonal = seasonality[monthIndex];
+
+        // Add some random variation (+/- 12%)
+        const randomVariation = 0.88 + Math.random() * 0.24;
+
+        // Slight upward trend over time
+        const trendMultiplier = 1 + (i * 0.008);
+
+        const profit = Math.round(baseProfit * seasonal * randomVariation * trendMultiplier);
+        data.push(profit);
+    }
+
+    return data;
+}
+
+// Store historical data so it's consistent
+let historicalData = null;
+
+function getHistoricalData() {
+    if (!historicalData) {
+        historicalData = generateHistoricalData(4);
+    }
+    return historicalData;
+}
+
+// Calculate projected profit for a scenario
+function calculateScenarioProfit(scenarioId, monthsOut, sliderValues) {
+    const historical = getHistoricalData();
+    const startingProfit = historical[historical.length - 1]; // Start from last actual month
+
+    if (scenarioId === 'current') {
+        const growthRate = (sliderValues.baseGrowth !== undefined ? sliderValues.baseGrowth : 15) / 100;
+        const monthlyGrowth = growthRate / 12;
+        // Add slight variation to forecasts too
+        const variation = 1 + (Math.sin(monthsOut * 0.8) * 0.03);
+        return startingProfit * Math.pow(1 + monthlyGrowth, monthsOut) * variation;
+    }
+
+    if (scenarioId === 'costOnly') {
+        const salary = sliderValues.costSalary !== undefined ? sliderValues.costSalary : 31200;
+        const growthRate = (sliderValues.costGrowth !== undefined ? sliderValues.costGrowth : 15) / 100;
+        const trainingWeeks = sliderValues.trainingWeeks !== undefined ? sliderValues.trainingWeeks : 4;
+        const hiringBonus = sliderValues.hiringBonus !== undefined ? sliderValues.hiringBonus : 0;
+        const monthlyGrowth = growthRate / 12;
+        const monthlySalaryCost = salary / 12;
+
+        const variation = 1 + (Math.sin(monthsOut * 0.8) * 0.03);
+        let growingBaseProfit = startingProfit * Math.pow(1 + monthlyGrowth, monthsOut) * variation;
+
+        // Hiring bonus in month 0
+        if (monthsOut === 0 && hiringBonus > 0) {
+            growingBaseProfit -= hiringBonus;
+        }
+
+        // Training period productivity loss
+        const trainingMonths = trainingWeeks / 4;
+        if (monthsOut < trainingMonths) {
+            const productivityLoss = 0.3 * (1 - monthsOut / trainingMonths);
+            growingBaseProfit *= (1 - productivityLoss);
+        }
+
+        return growingBaseProfit - monthlySalaryCost;
+    }
+
+    if (scenarioId === 'withGrowth') {
+        const salary = sliderValues.salary !== undefined ? sliderValues.salary : 31200;
+        const growthRate = (sliderValues.growth !== undefined ? sliderValues.growth : 21) / 100;
+        const trainingWeeks = sliderValues.trainingWeeks !== undefined ? sliderValues.trainingWeeks : 4;
+        const hiringBonus = sliderValues.hiringBonus !== undefined ? sliderValues.hiringBonus : 0;
+        const isPartTime = sliderValues.partTime || false;
+
+        const actualSalary = isPartTime ? salary * 0.5 : salary;
+        const growthMultiplier = isPartTime ? 0.6 : 1; // Part-time gets 60% of growth benefit
+        const effectiveGrowth = 0.15 + (growthRate - 0.15) * growthMultiplier;
+
+        const monthlyGrowth = effectiveGrowth / 12;
+        const monthlySalaryCost = actualSalary / 12;
+
+        const variation = 1 + (Math.sin(monthsOut * 0.8) * 0.03);
+        let growingProfit = startingProfit * Math.pow(1 + monthlyGrowth, monthsOut) * variation;
+
+        // Hiring bonus in month 0
+        if (monthsOut === 0 && hiringBonus > 0) {
+            growingProfit -= hiringBonus;
+        }
+
+        // Training period
+        const trainingMonths = trainingWeeks / 4;
+        if (monthsOut < trainingMonths) {
+            const productivityLoss = 0.25 * (1 - monthsOut / trainingMonths);
+            growingProfit *= (1 - productivityLoss);
+        }
+
+        return growingProfit - monthlySalaryCost;
+    }
+
+    // Supplier scenarios
+    if (scenarioId === 'absorb') {
+        const costIncrease = (sliderValues.costIncrease !== undefined ? sliderValues.costIncrease : 10) / 100;
+        const growthRate = (sliderValues.baseGrowth !== undefined ? sliderValues.baseGrowth : 15) / 100;
+        const monthlyGrowth = growthRate / 12;
+        const monthlyCOGS = BASE.monthlyRevenue * BASE.cogsPercent;
+        const extraMonthlyCost = monthlyCOGS * costIncrease;
+        const variation = 1 + (Math.sin(monthsOut * 0.8) * 0.03);
+        const growingProfit = startingProfit * Math.pow(1 + monthlyGrowth, monthsOut) * variation;
+        return growingProfit - extraMonthlyCost;
+    }
+
+    if (scenarioId === 'pass') {
+        const priceIncrease = (sliderValues.priceIncrease !== undefined ? sliderValues.priceIncrease : 4) / 100;
+        const salesDrop = (sliderValues.salesDrop !== undefined ? sliderValues.salesDrop : 2) / 100;
+        const growthRate = (sliderValues.baseGrowth !== undefined ? sliderValues.baseGrowth : 15) / 100;
+        const monthlyGrowth = growthRate / 12;
+        const netMarginEffect = (1 + priceIncrease) * (1 - salesDrop);
+        const adjustedBaseProfit = startingProfit * netMarginEffect;
+        const variation = 1 + (Math.sin(monthsOut * 0.8) * 0.03);
+        return adjustedBaseProfit * Math.pow(1 + monthlyGrowth, monthsOut) * variation;
+    }
+
+    return startingProfit;
+}
+
+function calculateAnnualProfit(scenarioId, sliderValues) {
+    let total = 0;
+    for (let m = 1; m <= 12; m++) {
+        total += calculateScenarioProfit(scenarioId, m, sliderValues);
+    }
+    return Math.round(total);
+}
+
+// ==================== SCENARIOS ====================
+const scenarios = {
+    barista: {
+        id: 'barista',
+        title: 'Can I afford to hire another barista?',
+        insight: {
+            title: "Recent performance suggests you're in a strong position to hire",
+            text: "With 6% additional revenue growth, the new hire pays for themselves."
+        },
+        lines: [
+            { id: 'current', name: 'Current trajectory', color: '#94A3B8', dash: false, desc: 'No changes - continue current growth trend' },
+            { id: 'costOnly', name: 'Hire (cost only)', color: '#1E293B', dash: true, desc: 'Add salary cost but assume no revenue boost' },
+            { id: 'withGrowth', name: 'Hire (with growth)', color: '#1C7ED6', dash: false, desc: 'Salary cost + revenue boost from extra capacity' }
+        ],
+        controls: {
+            current: [
+                { id: 'baseGrowth', label: 'Revenue growth', type: 'percent', value: 15, min: 0, max: 40 }
+            ],
+            costOnly: [
+                { id: 'costSalary', label: 'Annual salary', type: 'currency', value: 31200, min: 15000, max: 60000 },
+                { id: 'costGrowth', label: 'Revenue growth', type: 'percent', value: 15, min: 0, max: 40 }
+            ],
+            withGrowth: [
+                { id: 'salary', label: 'Annual salary', type: 'currency', value: 31200, min: 15000, max: 60000 },
+                { id: 'growth', label: 'Revenue growth', type: 'percent', value: 21, min: 0, max: 40 },
+                { id: 'trainingWeeks', label: 'Training period', type: 'weeks', value: 4, min: 1, max: 12 },
+                { id: 'hiringBonus', label: 'Hiring bonus', type: 'currency', value: 0, min: 0, max: 5000 }
+            ]
+        }
+    },
+    supplier: {
+        id: 'supplier',
+        title: 'What if supplier costs rise?',
+        insight: {
+            title: "You have options to protect margins if costs increase",
+            text: "Passing 50% of the cost increase to customers minimizes impact."
+        },
+        lines: [
+            { id: 'current', name: 'Current trajectory', color: '#94A3B8', dash: false, desc: 'No supplier cost changes' },
+            { id: 'absorb', name: 'Absorb cost increase', color: '#1E293B', dash: true, desc: 'Keep prices same, accept lower margin' },
+            { id: 'pass', name: 'Pass to customers', color: '#1C7ED6', dash: false, desc: 'Raise prices to maintain margin' }
+        ],
+        controls: {
+            current: [
+                { id: 'baseGrowth', label: 'Revenue growth', type: 'percent', value: 15, min: 0, max: 40 }
+            ],
+            absorb: [
+                { id: 'costIncrease', label: 'Supplier cost increase', type: 'percent', value: 10, min: 0, max: 40 }
+            ],
+            pass: [
+                { id: 'priceIncrease', label: 'Your price increase', type: 'percent', value: 4, min: 0, max: 40 },
+                { id: 'salesDrop', label: 'Expected sales drop', type: 'percent', value: 2, min: 0, max: 40 }
+            ]
+        }
+    }
+};
+
+let state = {
+    current: null,
+    values: {},
+    messages: [],
+    saved: [],
+    panelOpen: false,
+    tab: 'chat',
+    chart: null,
+    isTyping: false
+};
+
+// ==================== CHART ====================
+function renderChart() {
+    const s = state.current;
+    const ctx = document.getElementById('main-chart');
+    if (state.chart) state.chart.destroy();
+
+    const timeRange = parseInt(document.getElementById('time-range').value);
+    const historical = getHistoricalData();
+    const historyLength = historical.length;
+    const todayIdx = historyLength;
+
+    // Generate month labels
+    const months = [];
+    const startDate = new Date(TODAY);
+    startDate.setMonth(startDate.getMonth() - historyLength);
+
+    for (let i = 0; i < historyLength + timeRange; i++) {
+        const d = new Date(startDate);
+        d.setMonth(d.getMonth() + i);
+        if (i === todayIdx) {
+            months.push('Today');
+        } else {
+            months.push(d.toLocaleDateString('en-US', { month: 'short' }));
+        }
+    }
+
+    // Generate datasets
+    const datasets = s.lines.map((line, idx) => {
+        const data = [];
+
+        // Historical data (same for all lines)
+        for (let i = 0; i < historyLength; i++) {
+            data.push(historical[i]);
+        }
+
+        // Today's value (transition point - same as last historical)
+        data.push(historical[historyLength - 1]);
+
+        // Projected data
+        for (let i = 1; i < timeRange; i++) {
+            const profit = calculateScenarioProfit(line.id, i, state.values);
+            data.push(Math.round(profit));
+        }
+
+        return {
+            label: line.name,
+            data: data,
+            borderColor: line.color,
+            backgroundColor: 'transparent',
+            borderWidth: line.id === 'withGrowth' || line.id === 'pass' ? 3 : 2,
+            borderDash: line.dash ? [6, 4] : [],
+            fill: false,
+            tension: 0.3,
+            pointRadius: (context) => context.dataIndex === todayIdx ? 6 : 0,
+            pointBackgroundColor: line.color,
+            pointBorderColor: 'white',
+            pointBorderWidth: 2,
+            pointHoverRadius: 6,
+            segment: {
+                borderColor: (context) => {
+                    // Make historical portion gray for all lines
+                    if (context.p0DataIndex < todayIdx) {
+                        return '#CBD5E1';
+                    }
+                    return line.color;
+                },
+                borderDash: (context) => {
+                    if (context.p0DataIndex < todayIdx) {
+                        return [];
+                    }
+                    return line.dash ? [6, 4] : [];
+                }
+            }
+        };
+    });
+
+    state.chart = new Chart(ctx, {
+        type: 'line',
+        data: { labels: months, datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'white',
+                    titleColor: '#1E293B',
+                    bodyColor: '#64748B',
+                    borderColor: '#E5E7EB',
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        title: (items) => {
+                            const idx = items[0].dataIndex;
+                            if (idx < todayIdx) return `${months[idx]} (Actual)`;
+                            if (idx === todayIdx) return 'Today';
+                            return `${months[idx]} (Projected)`;
+                        },
+                        label: ctx => `${ctx.dataset.label}: ${formatCurrency(ctx.parsed.y)}/month`
+                    }
+                },
+                annotation: {
+                    annotations: {
+                        todayLine: {
+                            type: 'line',
+                            xMin: todayIdx,
+                            xMax: todayIdx,
+                            borderColor: '#EF4444',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            label: {
+                                display: true,
+                                content: 'TODAY',
+                                position: 'start',
+                                backgroundColor: '#EF4444',
+                                color: 'white',
+                                font: { size: 10, weight: 'bold' },
+                                padding: 4
+                            }
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: {
+                        color: '#94A3B8',
+                        font: { size: 11 },
+                        callback: function(value, index) {
+                            return months[index];
+                        }
+                    }
+                },
+                y: {
+                    grid: { color: '#F1F5F9' },
+                    ticks: {
+                        color: '#94A3B8',
+                        font: { size: 11 },
+                        callback: v => '$' + (v/1000).toFixed(1) + 'k'
+                    },
+                    min: 0
+                }
+            }
+        }
+    });
+}
+
+function updateChart() {
+    if (state.current) {
+        renderChart();
+        renderSidebar();
+        renderRefine();
+    }
+}
+
+// ==================== SIDEBAR ====================
+function renderSidebar() {
+    const s = state.current;
+    document.getElementById('insight-title').textContent = s.insight.title;
+    document.getElementById('today-date').textContent = TODAY_STR;
+
+    // Dynamic insight text
+    if (s.id === 'barista') {
+        const salary = state.values.salary || 31200;
+        const growth = state.values.growth || 21;
+        const baseGrowth = state.values.baseGrowth || 15;
+        const extraGrowth = growth - baseGrowth;
+        const breakEvenGrowth = Math.round((salary / (BASE.annualProfit * 0.5)) * 100);
+        const withGrowthProfit = calculateAnnualProfit('withGrowth', state.values);
+        const currentProfit = calculateAnnualProfit('current', state.values);
+        const netBenefit = withGrowthProfit - currentProfit;
+
+        document.getElementById('insight-text').textContent =
+            `At ${formatCurrency(salary)} salary with ${growth}% growth (${extraGrowth}% above baseline), the hire ${netBenefit > 0 ? 'adds' : 'reduces'} profit by ${formatCurrency(Math.abs(netBenefit))}/year. Break-even requires ${breakEvenGrowth}% extra growth.`;
+    } else {
+        document.getElementById('insight-text').textContent = s.insight.text;
+    }
+
+    // Legend
+    document.getElementById('legend-sidebar').innerHTML = s.lines.map(line => {
+        const annualProfit = calculateAnnualProfit(line.id, state.values);
+        return `
+            <div class="legend-item" style="border-left-color: ${line.color}">
+                <div class="flex items-center space-x-2 mb-1">
+                    <span class="text-sm font-medium text-gray-900">${line.name}</span>
+                    <span class="w-6 h-0.5" style="background: ${line.dash ? `repeating-linear-gradient(90deg, ${line.color} 0 4px, transparent 4px 8px)` : line.color}"></span>
+                </div>
+                <p class="text-xs text-gray-500">${line.desc}</p>
+                <p class="text-xs font-semibold text-gray-700 mt-1">${formatCurrency(annualProfit)} annual profit</p>
+            </div>
+        `;
+    }).join('');
+}
+
+function toggleInsight() {
+    document.getElementById('left-sidebar').classList.toggle('sidebar-collapsed');
+}
+
+// ==================== REFINE PANEL ====================
+function renderRefine() {
+    const s = state.current;
+    const container = document.getElementById('refine-controls');
+
+    container.innerHTML = s.lines.map(line => {
+        const controls = s.controls[line.id] || [];
+        const annualProfit = calculateAnnualProfit(line.id, state.values);
+
+        return `
+            <div class="border-b pb-4 mb-4">
+                <div class="flex items-center space-x-2 mb-2">
+                    <span class="w-4 h-0.5" style="background: ${line.dash ? `repeating-linear-gradient(90deg, ${line.color} 0 4px, transparent 4px 8px)` : line.color}"></span>
+                    <span class="text-sm font-medium">${line.name}</span>
+                </div>
+                <p class="text-xs text-gray-500 mb-3">${formatCurrency(annualProfit)} annual profit</p>
+
+                ${controls.map(c => {
+                    const currentVal = state.values[c.id] !== undefined ? state.values[c.id] : c.value;
+                    return `
+                        <div class="mb-4">
+                            <div class="flex items-center space-x-1.5 mb-1.5">
+                                <label class="text-xs text-gray-600">${c.label}</label>
+                                <span class="info-icon-wrap" onmouseenter="showTooltip(event, '${line.id}', '${c.id}')" onmouseleave="hideTooltip()">
+                                    <svg class="w-3.5 h-3.5 text-gray-400 hover:text-xero-blue cursor-help" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            ${c.type === 'currency' ? `
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-500 mr-1">$</span>
+                                    <input type="text" value="${currentVal.toLocaleString()}" class="flex-1 px-3 py-2 border rounded text-sm"
+                                        onchange="updateValue('${c.id}', this.value)">
+                                </div>
+                            ` : c.type === 'weeks' ? `
+                                <div class="flex items-center space-x-3">
+                                    <input type="range" class="slider-input flex-1" min="${c.min}" max="${c.max}" value="${currentVal}"
+                                        oninput="updateValue('${c.id}', this.value)">
+                                    <span class="text-sm font-medium w-16 text-right">${currentVal} weeks</span>
+                                </div>
+                            ` : `
+                                <div class="flex items-center space-x-3">
+                                    <input type="range" class="slider-input flex-1" min="${c.min}" max="${c.max}" value="${currentVal}"
+                                        oninput="updateValue('${c.id}', this.value)">
+                                    <span class="text-sm font-medium w-12 text-right">${currentVal}%</span>
+                                </div>
+                            `}
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }).join('');
+}
+
+function updateValue(id, val) {
+    state.values[id] = parseFloat(String(val).replace(/[,$]/g, ''));
+    updateChart();
+}
+
+// ==================== TOOLTIP ====================
+function showTooltip(event, lineId, controlId) {
+    const tooltip = document.getElementById('info-tooltip');
+    const icon = event.target.closest('.info-icon-wrap');
+    const rect = icon.getBoundingClientRect();
+
+    const s = state.current;
+    const controls = s.controls[lineId] || [];
+    const control = controls.find(c => c.id === controlId);
+    if (!control) return;
+
+    const currentVal = state.values[control.id] !== undefined ? state.values[control.id] : control.value;
+    const annualProfit = calculateAnnualProfit(lineId, state.values);
+
+    let formula, calculation, impact;
+
+    if (control.id === 'salary' || control.id === 'costSalary') {
+        const hourlyRate = Math.round(currentVal / (40 * 52));
+        formula = 'Annual Salary = Hourly Rate × 40 hrs/week × 52 weeks';
+        calculation = `$${hourlyRate}/hr × 40 × 52 = ${formatCurrency(currentVal)}`;
+        impact = `Monthly cost: ${formatCurrency(currentVal/12)}<br>Reduces monthly profit by this amount`;
+    } else if (control.id.includes('growth') || control.id === 'growth' || control.id === 'baseGrowth') {
+        const monthlyGrowth = (currentVal / 100 / 12 * 100).toFixed(2);
+        formula = 'Monthly Growth = Annual Rate ÷ 12';
+        calculation = `${currentVal}% annual = ${monthlyGrowth}% monthly compound`;
+        const projectedProfit = Math.round(BASE.monthlyProfit * Math.pow(1 + currentVal/100/12, 12));
+        impact = `At ${currentVal}% growth, monthly profit in 12 months: ${formatCurrency(projectedProfit)}`;
+    } else if (control.id === 'trainingWeeks') {
+        formula = 'Training reduces initial productivity';
+        calculation = `${currentVal} weeks = ${(currentVal/4).toFixed(1)} months of ramp-up`;
+        impact = `During training, expect ~25% lower productivity which gradually improves`;
+    } else if (control.id === 'hiringBonus') {
+        formula = 'One-time cost in first month';
+        calculation = `${formatCurrency(currentVal)} upfront payment`;
+        impact = `This reduces Month 1 profit only, then has no ongoing impact`;
+    } else {
+        formula = 'Standard calculation';
+        calculation = `Current value: ${control.type === 'currency' ? formatCurrency(currentVal) : currentVal + '%'}`;
+        impact = 'Adjust to see impact on projections';
+    }
+
+    tooltip.innerHTML = `
+        <div style="font-weight: 600; margin-bottom: 10px; font-size: 13px; color: #60A5FA;">${control.label}</div>
+        <div style="color: #9CA3AF; font-size: 10px; text-transform: uppercase; margin-bottom: 4px;">How it's calculated</div>
+        <div style="background: rgba(255,255,255,0.1); border-radius: 4px; padding: 8px; margin-bottom: 12px; font-size: 11px;">${formula}</div>
+        <div style="color: #9CA3AF; font-size: 10px; text-transform: uppercase; margin-bottom: 4px;">Current value</div>
+        <div style="background: rgba(255,255,255,0.1); border-radius: 4px; padding: 8px; margin-bottom: 12px; font-size: 11px;">${calculation}</div>
+        <div style="color: #9CA3AF; font-size: 10px; text-transform: uppercase; margin-bottom: 4px;">Impact</div>
+        <div style="background: rgba(96, 165, 250, 0.2); border-radius: 4px; padding: 8px; font-size: 11px; color: #93C5FD;">${impact}</div>
+        <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 10px; color: #9CA3AF;">
+            Projected annual profit: <span style="color: #4ADE80; font-weight: 600;">${formatCurrency(annualProfit)}</span>
+        </div>
+    `;
+
+    let left = rect.left - 290;
+    let top = rect.top - 50;
+    if (left < 10) left = rect.right + 10;
+    if (top < 10) top = 10;
+    if (top + 300 > window.innerHeight) top = window.innerHeight - 310;
+
+    tooltip.style.left = left + 'px';
+    tooltip.style.top = top + 'px';
+    tooltip.classList.remove('hidden');
+}
+
+function hideTooltip() {
+    document.getElementById('info-tooltip').classList.add('hidden');
+}
+
+// ==================== ENHANCED CHAT SYSTEM ====================
+function renderChat() {
+    const container = document.getElementById('chat-messages');
+
+    if (state.messages.length === 0) {
+        container.innerHTML = `
+            <div class="flex items-start space-x-3 mb-4">
+                <div class="jax-avatar flex-shrink-0">
+                    <span class="text-white text-xs font-bold">J</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm text-gray-700 mb-3">Hi! I'm JAX, your financial planning assistant. I can help you explore these scenarios and adjust the numbers. Try asking me anything!</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="usePrompt('Explain all three scenarios')" class="prompt-chip px-3 py-1.5 text-xs font-medium text-xero-blue border border-xero-blue/40 rounded-full">Explain scenarios</button>
+                        <button onclick="usePrompt('What salary can I afford?')" class="prompt-chip px-3 py-1.5 text-xs font-medium text-xero-blue border border-xero-blue/40 rounded-full">What can I afford?</button>
+                        <button onclick="usePrompt('When does the hire become profitable?')" class="prompt-chip px-3 py-1.5 text-xs font-medium text-xero-blue border border-xero-blue/40 rounded-full">Break-even point</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = state.messages.map(m => `
+        <div class="chat-bubble ${m.role === 'user' ? 'flex justify-end' : 'flex items-start space-x-3'}">
+            ${m.role === 'user' ? `
+                <div class="bg-xero-blue text-white rounded-lg px-4 py-2 text-sm max-w-[85%]">${m.text}</div>
+            ` : `
+                <div class="jax-avatar flex-shrink-0">
+                    <span class="text-white text-xs font-bold">J</span>
+                </div>
+                <div class="flex-1">
+                    <div class="bg-gray-50 rounded-lg px-4 py-3 text-sm text-gray-700">${m.text}</div>
+                    ${m.suggestions ? `
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            ${m.suggestions.map(s => `
+                                <button onclick="usePrompt('${s.replace(/'/g, "\\'")}')" class="prompt-chip px-3 py-1.5 text-xs font-medium text-xero-blue border border-xero-blue/40 rounded-full">${s}</button>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `}
+        </div>
+    `).join('');
+
+    if (state.isTyping) {
+        container.innerHTML += `
+            <div class="chat-bubble flex items-start space-x-3">
+                <div class="jax-avatar flex-shrink-0">
+                    <span class="text-white text-xs font-bold">J</span>
+                </div>
+                <div class="bg-gray-50 rounded-lg">
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    container.scrollTop = container.scrollHeight;
+}
+
+function sendChat() {
+    const input = document.getElementById('chat-input');
+    const text = input.value.trim();
+    if (!text || state.isTyping) return;
+
+    state.messages.push({ role: 'user', text });
+    input.value = '';
+    state.isTyping = true;
+    renderChat();
+
+    setTimeout(() => {
+        state.isTyping = false;
+        const response = generateResponse(text);
+        state.messages.push(response);
+        renderChat();
+    }, 800 + Math.random() * 400);
+}
+
+function usePrompt(prompt) {
+    if (!state.panelOpen) togglePanel();
+    switchTab('chat');
+    document.getElementById('chat-input').value = prompt;
+    sendChat();
+}
+
+// Parse flexible number inputs
+function parseNumber(text) {
+    const lower = text.toLowerCase();
+
+    // Handle "30k", "30K"
+    const kMatch = lower.match(/(\d+(?:\.\d+)?)\s*k/);
+    if (kMatch) return parseFloat(kMatch[1]) * 1000;
+
+    // Handle "$30,000" or "30000" or "$30000"
+    const numMatch = text.match(/\$?([\d,]+(?:\.\d+)?)/);
+    if (numMatch) return parseFloat(numMatch[1].replace(/,/g, ''));
+
+    // Handle word numbers
+    const wordNumbers = {
+        'twenty': 20000, 'twenty-five': 25000, 'thirty': 30000,
+        'thirty-five': 35000, 'forty': 40000, 'forty-five': 45000,
+        'fifty': 50000, 'sixty': 60000
+    };
+    for (const [word, val] of Object.entries(wordNumbers)) {
+        if (lower.includes(word)) return val;
+    }
+
+    return null;
+}
+
+// Parse percentage
+function parsePercent(text) {
+    const match = text.match(/(\d+(?:\.\d+)?)\s*%?/);
+    if (match) {
+        const val = parseFloat(match[1]);
+        if (val <= 100) return val;
+    }
+    return null;
+}
+
+// Detect which scenario user is referring to
+function detectScenarioTarget(text) {
+    const lower = text.toLowerCase();
+
+    if (lower.includes('blue') || lower.includes('growth scenario') || lower.includes('with growth') || lower.includes('revenue increase')) {
+        return 'withGrowth';
+    }
+    if (lower.includes('black') || lower.includes('dashed') || lower.includes('cost only') || lower.includes('worst case')) {
+        return 'costOnly';
+    }
+    if (lower.includes('gray') || lower.includes('grey') || lower.includes('current') || lower.includes('baseline') || lower.includes('no hire')) {
+        return 'current';
+    }
+    if (lower.includes('scenario 1') || lower.includes('first')) return 'current';
+    if (lower.includes('scenario 2') || lower.includes('second')) return 'costOnly';
+    if (lower.includes('scenario 3') || lower.includes('third') || lower.includes('best')) return 'withGrowth';
+
+    // Default: update both hire scenarios
+    return 'both';
+}
+
+function generateResponse(text) {
+    const lower = text.toLowerCase();
+    const s = state.current;
+
+    // Get current values
+    const salary = state.values.salary || 31200;
+    const growth = state.values.growth || 21;
+    const baseGrowth = state.values.baseGrowth || 15;
+    const trainingWeeks = state.values.trainingWeeks || 4;
+    const hiringBonus = state.values.hiringBonus || 0;
+
+    const currentProfit = calculateAnnualProfit('current', state.values);
+    const costOnlyProfit = calculateAnnualProfit('costOnly', state.values);
+    const withGrowthProfit = calculateAnnualProfit('withGrowth', state.values);
+
+    // ===== SALARY CHANGES =====
+    const salaryNum = parseNumber(text);
+    if (salaryNum && salaryNum >= 10000 && salaryNum <= 100000 &&
+        (lower.includes('salary') || lower.includes('pay') || lower.includes('wage') || lower.includes('cost') ||
+         lower.includes('set') || lower.includes('change') || lower.includes('make it') || lower.includes('what if') || lower.includes('try'))) {
+
+        const target = detectScenarioTarget(text);
+        const oldSalary = salary;
+
+        if (target === 'withGrowth') {
+            state.values.salary = salaryNum;
+        } else if (target === 'costOnly') {
+            state.values.costSalary = salaryNum;
+        } else {
+            state.values.salary = salaryNum;
+            state.values.costSalary = salaryNum;
+        }
+
+        updateChart();
+
+        const newWithGrowth = calculateAnnualProfit('withGrowth', state.values);
+        const newCostOnly = calculateAnnualProfit('costOnly', state.values);
+        const monthlyCost = Math.round(salaryNum / 12);
+        const breakEvenGrowth = Math.round((salaryNum / (BASE.annualProfit * 0.5)) * 100);
+        const netVsCurrent = newWithGrowth - currentProfit;
+
+        const scenariosUpdated = target === 'both' ? 'both hiring scenarios' :
+            target === 'withGrowth' ? 'the "Hire (with growth)" scenario' : 'the "Hire (cost only)" scenario';
+
+        return {
+            role: 'assistant',
+            text: `<strong>Done! I've updated the salary.</strong><br><br>
+
+<strong>📊 Changes Made:</strong><br>
+• Salary: ${formatCurrency(oldSalary)} → <strong>${formatCurrency(salaryNum)}</strong><br>
+• Monthly cost: ${formatCurrency(monthlyCost)}/month<br>
+• Updated: ${scenariosUpdated}<br><br>
+
+<strong>💰 Impact Analysis:</strong><br>
+• With growth scenario: ${formatCurrency(newWithGrowth)}/year<br>
+• Cost-only scenario: ${formatCurrency(newCostOnly)}/year<br>
+• vs. not hiring: <strong>${netVsCurrent >= 0 ? '+' : ''}${formatCurrency(netVsCurrent)}</strong>/year<br>
+• Break-even growth needed: ${breakEvenGrowth}%<br><br>
+
+The chart has been updated. ${netVsCurrent > 0 ? 'At the current growth rate, this hire would add to your profits! 🎉' : 'You\'d need higher growth to make this hire profitable.'}`,
+            suggestions: [
+                `What if growth is only ${baseGrowth}%?`,
+                'Show me part-time options',
+                'When do I break even?'
+            ]
+        };
+    }
+
+    // ===== GROWTH RATE CHANGES =====
+    const percentNum = parsePercent(text);
+    if (percentNum !== null && percentNum >= 0 && percentNum <= 50 &&
+        (lower.includes('growth') || lower.includes('increase') || lower.includes('revenue') || lower.includes('rate'))) {
+
+        const target = detectScenarioTarget(text);
+        const oldGrowth = growth;
+
+        if (target === 'current' || target === 'costOnly') {
+            state.values.baseGrowth = percentNum;
+            state.values.costGrowth = percentNum;
+        } else if (target === 'withGrowth') {
+            state.values.growth = percentNum;
+        } else {
+            state.values.growth = percentNum;
+        }
+
+        updateChart();
+
+        const newWithGrowth = calculateAnnualProfit('withGrowth', state.values);
+        const extraGrowth = percentNum - baseGrowth;
+        const netVsCurrent = newWithGrowth - currentProfit;
+
+        return {
+            role: 'assistant',
+            text: `<strong>Updated! Revenue growth is now ${percentNum}%.</strong><br><br>
+
+<strong>📊 Changes Made:</strong><br>
+• Growth rate: ${oldGrowth}% → <strong>${percentNum}%</strong><br>
+• Extra growth above baseline: ${extraGrowth > 0 ? '+' : ''}${extraGrowth}%<br>
+• Monthly compound rate: ${(percentNum/12).toFixed(2)}%<br><br>
+
+<strong>💰 Impact Analysis:</strong><br>
+• Projected annual profit: ${formatCurrency(newWithGrowth)}<br>
+• vs. current trajectory: <strong>${netVsCurrent >= 0 ? '+' : ''}${formatCurrency(netVsCurrent)}</strong><br>
+• This growth rate is ${percentNum >= baseGrowth + 6 ? 'above' : percentNum >= baseGrowth ? 'near' : 'below'} break-even<br><br>
+
+${netVsCurrent > 0 ? 'Great news! At this growth rate, the hire pays for itself and adds profit.' : 'At this growth rate, you\'d need to find ways to boost revenue or reduce the salary.'}`,
+            suggestions: [
+                `Try ${percentNum + 5}% growth`,
+                'What salary works at this growth?',
+                'Compare full-time vs part-time'
+            ]
+        };
+    }
+
+    // ===== TRAINING PERIOD =====
+    if (lower.includes('training') || lower.includes('ramp') || lower.includes('onboard')) {
+        const weeksMatch = text.match(/(\d+)\s*(week|wk)/i);
+        if (weeksMatch) {
+            const weeks = parseInt(weeksMatch[1]);
+            if (weeks >= 1 && weeks <= 16) {
+                const oldWeeks = trainingWeeks;
+                state.values.trainingWeeks = weeks;
+                updateChart();
+
+                return {
+                    role: 'assistant',
+                    text: `<strong>Training period updated to ${weeks} weeks.</strong><br><br>
+
+<strong>📊 What This Means:</strong><br>
+• Training duration: ${oldWeeks} weeks → <strong>${weeks} weeks</strong><br>
+• Ramp-up period: ~${(weeks/4).toFixed(1)} months<br>
+• Initial productivity: ~75% during training<br><br>
+
+<strong>💰 Impact:</strong><br>
+• Longer training = slower initial returns<br>
+• But better training often means higher long-term productivity<br>
+• Annual profit: ${formatCurrency(calculateAnnualProfit('withGrowth', state.values))}<br><br>
+
+The chart now shows the adjusted ramp-up period.`,
+                    suggestions: [
+                        'Add a hiring bonus',
+                        'What if training is shorter?',
+                        'Show me the break-even timeline'
+                    ]
+                };
+            }
+        }
+
+        // General training question
+        return {
+            role: 'assistant',
+            text: `<strong>About the training period:</strong><br><br>
+
+Currently set to <strong>${trainingWeeks} weeks</strong>. During this time, the new hire is learning and building skills, so productivity is lower (~75%).<br><br>
+
+<strong>How it affects the numbers:</strong><br>
+• Shorter training (2-3 weeks): Faster to full productivity, but may have skill gaps<br>
+• Standard training (4-6 weeks): Balanced approach<br>
+• Extended training (8+ weeks): Higher initial cost, but potentially better long-term performance<br><br>
+
+Try saying "set training to 6 weeks" to adjust.`,
+            suggestions: [
+                'Set training to 2 weeks',
+                'Set training to 8 weeks',
+                'Add a hiring bonus'
+            ]
+        };
+    }
+
+    // ===== HIRING BONUS =====
+    if (lower.includes('bonus') || lower.includes('sign') || lower.includes('upfront')) {
+        const bonusNum = parseNumber(text);
+        if (bonusNum !== null && bonusNum >= 0 && bonusNum <= 10000) {
+            const oldBonus = hiringBonus;
+            state.values.hiringBonus = bonusNum;
+            updateChart();
+
+            return {
+                role: 'assistant',
+                text: `<strong>Hiring bonus ${bonusNum > 0 ? 'added' : 'removed'}!</strong><br><br>
+
+<strong>📊 Changes Made:</strong><br>
+• Signing bonus: ${formatCurrency(oldBonus)} → <strong>${formatCurrency(bonusNum)}</strong><br>
+• This is a one-time cost in Month 1<br><br>
+
+<strong>💰 Impact:</strong><br>
+• Month 1 profit reduced by ${formatCurrency(bonusNum)}<br>
+• No impact on subsequent months<br>
+• Annual profit: ${formatCurrency(calculateAnnualProfit('withGrowth', state.values))}<br><br>
+
+${bonusNum > 0 ? 'A signing bonus can help attract better candidates but increases your initial investment.' : 'Bonus removed from the projection.'}`,
+                suggestions: [
+                    'What total cost in year 1?',
+                    'Compare with no bonus',
+                    'When do I break even now?'
+                ]
+            };
+        }
+    }
+
+    // ===== PART-TIME =====
+    if (lower.includes('part') && (lower.includes('time') || lower.includes('-time'))) {
+        const wasPartTime = state.values.partTime || false;
+        state.values.partTime = !wasPartTime;
+
+        if (state.values.partTime) {
+            // Switching to part-time
+            updateChart();
+            const newProfit = calculateAnnualProfit('withGrowth', state.values);
+            const partTimeSalary = salary * 0.5;
+
+            return {
+                role: 'assistant',
+                text: `<strong>Switched to part-time model!</strong><br><br>
+
+<strong>📊 Part-Time Assumptions:</strong><br>
+• Hours: 20 hrs/week (vs 40 full-time)<br>
+• Salary: ${formatCurrency(partTimeSalary)}/year (50% of full-time)<br>
+• Growth contribution: 60% of full-time impact<br><br>
+
+<strong>💰 Impact Analysis:</strong><br>
+• Annual profit: ${formatCurrency(newProfit)}<br>
+• vs. not hiring: ${newProfit > currentProfit ? '+' : ''}${formatCurrency(newProfit - currentProfit)}<br>
+• vs. full-time hire: Different risk/reward profile<br><br>
+
+Part-time is lower risk since salary cost is halved, but growth potential is also reduced. Good for testing the waters!`,
+                suggestions: [
+                    'Switch back to full-time',
+                    'What salary for part-time?',
+                    'Compare part-time vs full-time'
+                ]
+            };
+        } else {
+            // Switching back to full-time
+            updateChart();
+            const newProfit = calculateAnnualProfit('withGrowth', state.values);
+
+            return {
+                role: 'assistant',
+                text: `<strong>Switched back to full-time!</strong><br><br>
+
+<strong>📊 Full-Time Model:</strong><br>
+• Hours: 40 hrs/week<br>
+• Salary: ${formatCurrency(salary)}/year<br>
+• Full growth potential: ${growth}%<br><br>
+
+<strong>💰 Updated Projection:</strong><br>
+• Annual profit: ${formatCurrency(newProfit)}<br>
+• vs. not hiring: ${newProfit > currentProfit ? '+' : ''}${formatCurrency(newProfit - currentProfit)}`,
+                suggestions: [
+                    'Try part-time again',
+                    'Adjust the salary',
+                    'What growth do I need?'
+                ]
+            };
+        }
+    }
+
+    // ===== EXPLAIN INSIGHT =====
+    if (lower.includes('explain') && lower.includes('insight')) {
+        const netBenefit = withGrowthProfit - currentProfit;
+        const breakEvenGrowth = Math.round((salary / (BASE.annualProfit * 0.5)) * 100);
+        const monthlyProfit = Math.round(BASE.monthlyProfit);
+
+        return {
+            role: 'assistant',
+            text: `<strong>Let me break down the key insight in detail:</strong><br><br>
+
+<strong>📊 Your Current Financial Position:</strong><br>
+Based on your last 12 months, your business generates approximately ${formatCurrency(monthlyProfit)}/month in profit, with ${baseGrowth}% annual growth. This is a solid foundation.<br><br>
+
+<strong>💡 Why the Insight Says You're "In a Strong Position":</strong><br>
+1. <strong>Profit margin</strong>: At 25%, you have room to absorb new costs<br>
+2. <strong>Growth trend</strong>: ${baseGrowth}% growth shows healthy demand<br>
+3. <strong>Break-even is achievable</strong>: You only need ${breakEvenGrowth}% extra growth to cover the hire<br><br>
+
+<strong>📈 The Math Behind "6% Additional Growth":</strong><br>
+• Current annual profit: ${formatCurrency(currentProfit)}<br>
+• With hire at ${formatCurrency(salary)} + ${growth}% growth: ${formatCurrency(withGrowthProfit)}<br>
+• Net benefit: <strong>${netBenefit >= 0 ? '+' : ''}${formatCurrency(netBenefit)}</strong>/year<br><br>
+
+<strong>⚠️ Key Assumptions:</strong><br>
+• The new hire enables higher capacity/better service<br>
+• This extra capacity converts to ${growth - baseGrowth}% additional growth<br>
+• Training takes ~${trainingWeeks} weeks<br><br>
+
+The insight is ${netBenefit > 0 ? 'positive because at current assumptions, hiring adds profit' : 'cautious because you\'d need to hit growth targets to break even'}.`,
+            suggestions: [
+                'What if growth is lower?',
+                'Show me the worst case',
+                'How confident should I be?'
+            ]
+        };
+    }
+
+    // ===== EXPLAIN SCENARIOS =====
+    if (lower.includes('explain') || (lower.includes('what') && lower.includes('scenario'))) {
+        return {
+            role: 'assistant',
+            text: `<strong>Here's what each scenario line represents:</strong><br><br>
+
+<strong>📉 Gray Line: Current Trajectory</strong><br>
+• Projected profit: ${formatCurrency(currentProfit)}/year<br>
+• Assumes: No hire, ${baseGrowth}% growth continues<br>
+• This is your baseline for comparison<br><br>
+
+<strong>📉 Black Dashed: Hire (Cost Only)</strong><br>
+• Projected profit: ${formatCurrency(costOnlyProfit)}/year<br>
+• Assumes: You pay ${formatCurrency(salary)} salary but get NO extra revenue<br>
+• This is the <strong>worst case</strong> - useful for stress testing<br>
+• vs. baseline: ${formatCurrency(costOnlyProfit - currentProfit)}/year<br><br>
+
+<strong>📈 Blue Line: Hire (With Growth)</strong><br>
+• Projected profit: ${formatCurrency(withGrowthProfit)}/year<br>
+• Assumes: Salary cost BUT ${growth}% growth (${growth - baseGrowth}% above baseline)<br>
+• This is the <strong>expected case</strong> if the hire drives revenue<br>
+• vs. baseline: <strong>${withGrowthProfit > currentProfit ? '+' : ''}${formatCurrency(withGrowthProfit - currentProfit)}</strong>/year<br><br>
+
+<strong>🎯 The Gap Matters:</strong><br>
+The spread between blue and gray is your potential upside: ${formatCurrency(withGrowthProfit - currentProfit)}. The spread between black and gray is your downside risk: ${formatCurrency(costOnlyProfit - currentProfit)}.`,
+            suggestions: [
+                'What growth makes this worth it?',
+                'Explain the worst case more',
+                'How do I reduce the risk?'
+            ]
+        };
+    }
+
+    // ===== BREAK-EVEN / WHEN PROFITABLE =====
+    if (lower.includes('break') || lower.includes('even') || lower.includes('when') && (lower.includes('profit') || lower.includes('worth'))) {
+        const monthlySalary = salary / 12;
+        const monthlyGrowthRate = growth / 100 / 12;
+
+        // Find break-even month
+        let breakEvenMonth = 0;
+        let cumulativeBenefit = 0;
+        for (let m = 1; m <= 24; m++) {
+            const withHire = calculateScenarioProfit('withGrowth', m, state.values);
+            const withoutHire = calculateScenarioProfit('current', m, state.values);
+            cumulativeBenefit += (withHire - withoutHire);
+            if (cumulativeBenefit > 0 && breakEvenMonth === 0) {
+                breakEvenMonth = m;
+            }
+        }
+
+        const breakEvenGrowth = Math.round((salary / (BASE.annualProfit * 0.5)) * 100);
+
+        return {
+            role: 'assistant',
+            text: `<strong>Break-Even Analysis</strong><br><br>
+
+<strong>📅 Timeline to Profitability:</strong><br>
+• Training period: Weeks 1-${trainingWeeks} (reduced productivity)<br>
+• Ramp-up: Months 1-2 (building to full speed)<br>
+• Break-even point: <strong>~Month ${breakEvenMonth || '3-4'}</strong><br><br>
+
+<strong>📊 Growth Required to Break Even:</strong><br>
+• Minimum extra growth needed: <strong>${breakEvenGrowth}%</strong> above baseline<br>
+• You're modeling: ${growth}% (${growth - baseGrowth}% above baseline)<br>
+• Status: ${growth >= baseGrowth + breakEvenGrowth ? '✅ Above break-even' : '⚠️ Below break-even'}<br><br>
+
+<strong>💰 Cumulative Impact by Month 12:</strong><br>
+• Total salary paid: ${formatCurrency(salary)}<br>
+• Extra profit generated: ~${formatCurrency(Math.max(0, withGrowthProfit - currentProfit + salary))}<br>
+• Net position: <strong>${withGrowthProfit > currentProfit ? '+' : ''}${formatCurrency(withGrowthProfit - currentProfit)}</strong><br><br>
+
+${breakEvenMonth <= 4 ? 'Looking good! Quick path to profitability.' : breakEvenMonth <= 8 ? 'Reasonable timeline - expect returns in the second half of year 1.' : 'This is a longer-term investment. Make sure you have runway.'}`,
+            suggestions: [
+                `What if growth is ${baseGrowth + breakEvenGrowth + 2}%?`,
+                'Show me the worst case timeline',
+                'How can I speed up break-even?'
+            ]
+        };
+    }
+
+    // ===== AFFORD / BUDGET =====
+    if (lower.includes('afford') || lower.includes('budget') || lower.includes('how much') || lower.includes('max')) {
+        const conservative = Math.round(BASE.annualProfit * 0.25);
+        const moderate = Math.round(BASE.annualProfit * 0.35);
+        const aggressive = Math.round(BASE.annualProfit * 0.45);
+
+        return {
+            role: 'assistant',
+            text: `<strong>What Can You Afford?</strong><br><br>
+
+Based on your ${formatCurrency(BASE.annualProfit)}/year profit, here are salary ranges:<br><br>
+
+<strong>🟢 Conservative: Up to ${formatCurrency(conservative)}/year</strong><br>
+• Low risk - plenty of buffer for slow months<br>
+• Break-even growth needed: ~${Math.round(conservative / BASE.annualProfit * 100)}%<br>
+• Recommended if: Uncertain about growth potential<br><br>
+
+<strong>🟡 Moderate: Up to ${formatCurrency(moderate)}/year</strong><br>
+• Balanced approach<br>
+• Break-even growth needed: ~${Math.round(moderate / BASE.annualProfit * 100)}%<br>
+• Recommended if: Confident in 5-8% extra growth<br><br>
+
+<strong>🔴 Aggressive: Up to ${formatCurrency(aggressive)}/year</strong><br>
+• Higher risk/reward<br>
+• Break-even growth needed: ~${Math.round(aggressive / BASE.annualProfit * 100)}%<br>
+• Recommended if: Strong growth indicators, can handle short-term dip<br><br>
+
+<strong>Current model:</strong> ${formatCurrency(salary)}/year (${Math.round(salary/BASE.annualProfit*100)}% of profit) - ${salary <= conservative ? '🟢 Conservative' : salary <= moderate ? '🟡 Moderate' : '🔴 Aggressive'}`,
+            suggestions: [
+                `Try ${formatCurrency(conservative)} salary`,
+                `Try ${formatCurrency(moderate)} salary`,
+                'What about part-time?'
+            ]
+        };
+    }
+
+    // ===== COMPARE SCENARIOS =====
+    if (lower.includes('compare') || lower.includes('difference') || lower.includes('vs')) {
+        const diff = withGrowthProfit - costOnlyProfit;
+        const growthDiff = withGrowthProfit - currentProfit;
+
+        return {
+            role: 'assistant',
+            text: `<strong>Scenario Comparison</strong><br><br>
+
+<table style="width:100%; font-size: 12px; border-collapse: collapse;">
+<tr style="border-bottom: 1px solid #E5E7EB;">
+<td style="padding: 8px 4px;"><strong>Scenario</strong></td>
+<td style="padding: 8px 4px; text-align: right;"><strong>Annual Profit</strong></td>
+<td style="padding: 8px 4px; text-align: right;"><strong>vs. Baseline</strong></td>
+</tr>
+<tr style="border-bottom: 1px solid #E5E7EB;">
+<td style="padding: 8px 4px;">Current (no hire)</td>
+<td style="padding: 8px 4px; text-align: right;">${formatCurrency(currentProfit)}</td>
+<td style="padding: 8px 4px; text-align: right;">—</td>
+</tr>
+<tr style="border-bottom: 1px solid #E5E7EB;">
+<td style="padding: 8px 4px;">Hire (cost only)</td>
+<td style="padding: 8px 4px; text-align: right;">${formatCurrency(costOnlyProfit)}</td>
+<td style="padding: 8px 4px; text-align: right; color: #EF4444;">${formatCurrency(costOnlyProfit - currentProfit)}</td>
+</tr>
+<tr>
+<td style="padding: 8px 4px;">Hire (with growth)</td>
+<td style="padding: 8px 4px; text-align: right;">${formatCurrency(withGrowthProfit)}</td>
+<td style="padding: 8px 4px; text-align: right; color: ${growthDiff >= 0 ? '#10B981' : '#EF4444'};">${growthDiff >= 0 ? '+' : ''}${formatCurrency(growthDiff)}</td>
+</tr>
+</table><br>
+
+<strong>🎯 Key Takeaway:</strong><br>
+The difference between "with growth" and "cost only" is <strong>${formatCurrency(diff)}</strong>. This is the value of the growth you expect the hire to generate.`,
+            suggestions: [
+                'What drives this difference?',
+                'Make scenarios more conservative',
+                'What if I hire two people?'
+            ]
+        };
+    }
+
+    // ===== HELP / CAPABILITIES =====
+    if (lower.includes('help') || lower.includes('can you') || lower.includes('what can')) {
+        return {
+            role: 'assistant',
+            text: `<strong>I can help you explore these scenarios!</strong><br><br>
+
+<strong>🔧 Adjust Numbers:</strong><br>
+• "Set salary to 30k" or "Try $45,000"<br>
+• "Use 18% growth rate"<br>
+• "Add a 4 week training period"<br>
+• "Include a $2,000 hiring bonus"<br>
+• "Switch to part-time"<br><br>
+
+<strong>📊 Get Analysis:</strong><br>
+• "Explain the scenarios"<br>
+• "When do I break even?"<br>
+• "What can I afford?"<br>
+• "Compare all options"<br><br>
+
+<strong>🎯 Target Specific Scenarios:</strong><br>
+• "Update just the blue line to 25% growth"<br>
+• "Change the cost-only salary to $28,000"<br><br>
+
+Just ask naturally - I'll understand!`,
+            suggestions: [
+                'Set salary to 35k',
+                'When do I break even?',
+                'Compare all scenarios'
+            ]
+        };
+    }
+
+    // ===== DEFAULT - SMART FALLBACK =====
+    // Try to make sense of the input
+    const anyNumber = parseNumber(text);
+    if (anyNumber) {
+        if (anyNumber > 100 && anyNumber < 100000) {
+            // Probably a salary
+            state.values.salary = anyNumber;
+            state.values.costSalary = anyNumber;
+            updateChart();
+
+            const newProfit = calculateAnnualProfit('withGrowth', state.values);
+            return {
+                role: 'assistant',
+                text: `<strong>I've set the salary to ${formatCurrency(anyNumber)}.</strong><br><br>
+
+<strong>💰 Updated Projection:</strong><br>
+• Annual profit (with growth): ${formatCurrency(newProfit)}<br>
+• vs. not hiring: ${newProfit > currentProfit ? '+' : ''}${formatCurrency(newProfit - currentProfit)}<br><br>
+
+Is this what you meant? Let me know if you'd like to adjust something else!`,
+                suggestions: [
+                    'Yes, now adjust growth',
+                    'No, I meant something else',
+                    'Explain the impact'
+                ]
+            };
+        }
+    }
+
+    // Generic helpful response
+    return {
+        role: 'assistant',
+        text: `<strong>I'm not quite sure what you're asking.</strong><br><br>
+
+Here's a quick summary of your current scenario:<br>
+• Salary: ${formatCurrency(salary)}/year<br>
+• Growth rate: ${growth}%<br>
+• Projected profit: ${formatCurrency(withGrowthProfit)}/year<br>
+• vs. not hiring: ${withGrowthProfit > currentProfit ? '+' : ''}${formatCurrency(withGrowthProfit - currentProfit)}/year<br><br>
+
+Try asking something like:<br>
+• "Set salary to 30k"<br>
+• "What if growth is 25%?"<br>
+• "When do I break even?"<br>
+• "Explain the scenarios"`,
+        suggestions: [
+            'What can you help with?',
+            'Set salary to 30k',
+            'Explain the scenarios'
+        ]
+    };
+}
+
+// ==================== NAVIGATION ====================
+function openModal() {
+    document.getElementById('modal').classList.remove('hidden');
+    document.getElementById('modal').classList.add('flex');
+}
+
+function closeModal() {
+    document.getElementById('modal').classList.add('hidden');
+    document.getElementById('modal').classList.remove('flex');
+}
+
+function handleInput() {
+    const val = document.getElementById('scenario-input').value.trim();
+    if (val) loadScenario(detectType(val), val);
+}
+
+function selectPreset(preset) {
+    loadScenario(detectType(preset), preset);
+}
+
+function selectTemplate(id) {
+    const s = scenarios[id];
+    if (s) loadScenario(id, s.title);
+}
+
+function detectType(text) {
+    const t = text.toLowerCase();
+    if (t.includes('supplier') || (t.includes('cost') && t.includes('rise'))) return 'supplier';
+    return 'barista';
+}
+
+function loadScenario(type, title) {
+    state.current = scenarios[type] || scenarios.barista;
+    state.values = {};
+    state.messages = [];
+    historicalData = null; // Reset historical data for fresh generation
+
+    document.getElementById('scenario-title').textContent = title;
+    document.getElementById('home-view').classList.remove('active');
+    document.getElementById('home-view').style.display = 'none';
+    document.getElementById('scenario-view').classList.add('active');
+    document.getElementById('scenario-view').style.display = 'flex';
+
+    closeModal();
+    renderSidebar();
+    renderChart();
+    renderRefine();
+    renderChat();
+
+    if (!state.saved.find(s => s.title === title)) {
+        state.saved.push({ id: Date.now(), title, type });
+    }
+}
+
+function goHome() {
+    document.getElementById('scenario-view').classList.remove('active');
+    document.getElementById('scenario-view').style.display = 'none';
+    document.getElementById('home-view').classList.add('active');
+    document.getElementById('home-view').style.display = 'flex';
+    closePanel();
+    renderSaved();
+}
+
+function renderSaved() {
+    const section = document.getElementById('saved-section');
+    const grid = document.getElementById('saved-grid');
+    if (state.saved.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+    grid.innerHTML = state.saved.map(s => `
+        <div onclick="loadScenario('${s.type}', '${s.title.replace(/'/g, "\\'")}')" class="bg-white rounded-lg border p-4 cursor-pointer hover:shadow-md">
+            <span class="text-sm font-medium text-gray-900">${s.title}</span>
+            <p class="text-xs text-gray-500 mt-1">Created today</p>
+        </div>
+    `).join('');
+}
+
+function togglePanel() {
+    state.panelOpen = !state.panelOpen;
+    document.getElementById('right-panel').classList.toggle('hidden', !state.panelOpen);
+    document.getElementById('right-panel').classList.toggle('flex', state.panelOpen);
+
+    // Collapse insight panel when chat opens
+    if (state.panelOpen) {
+        document.getElementById('left-sidebar').classList.add('sidebar-collapsed');
+    }
+}
+
+function closePanel() {
+    state.panelOpen = false;
+    document.getElementById('right-panel').classList.add('hidden');
+    document.getElementById('right-panel').classList.remove('flex');
+    document.getElementById('left-sidebar').classList.remove('sidebar-collapsed');
+}
+
+function switchTab(tab) {
+    state.tab = tab;
+    document.getElementById('tab-chat').className = `flex-1 px-4 py-3 text-sm font-medium ${tab === 'chat' ? 'text-xero-blue border-b-2 border-xero-blue' : 'text-gray-500 border-b-2 border-transparent'}`;
+    document.getElementById('tab-refine').className = `flex-1 px-4 py-3 text-sm font-medium ${tab === 'refine' ? 'text-xero-blue border-b-2 border-xero-blue' : 'text-gray-500 border-b-2 border-transparent'}`;
+    document.getElementById('chat-panel').classList.toggle('hidden', tab !== 'chat');
+    document.getElementById('chat-panel').classList.toggle('flex', tab === 'chat');
+    document.getElementById('refine-panel').classList.toggle('hidden', tab !== 'refine');
+}
+
+// ==================== EXPORT FUNCTIONS ====================
+function toggleExportDropdown() {
+    document.getElementById('export-dropdown').classList.toggle('show');
+}
+
+function copyLink() {
+    navigator.clipboard.writeText(window.location.href);
+    alert('Link copied to clipboard!');
+    document.getElementById('export-dropdown').classList.remove('show');
+}
+
+function exportPDF() {
+    alert('Exporting as PDF... (This would generate a PDF report in production)');
+    document.getElementById('export-dropdown').classList.remove('show');
+}
+
+function exportCSV() {
+    alert('Exporting as CSV... (This would download scenario data as CSV in production)');
+    document.getElementById('export-dropdown').classList.remove('show');
+}
+
+function shareWithTeam() {
+    alert('Share with team... (This would open a sharing dialog in production)');
+    document.getElementById('export-dropdown').classList.remove('show');
+}
+
+function saveToReports() {
+    alert('Saved to Reports! (This would save to your Xero reports in production)');
+    document.getElementById('export-dropdown').classList.remove('show');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.relative')) {
+        document.getElementById('export-dropdown')?.classList.remove('show');
+    }
+});
+
+function formatCurrency(n) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('today-date').textContent = TODAY_STR;
+    renderSaved();
+});
+</script>
+</body>
+</html>
