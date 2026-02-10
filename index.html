@@ -246,14 +246,20 @@
     <main class="flex-1 px-6 py-6 overflow-auto">
         <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8 flex">
             <div class="flex-1 p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-3">Make better business decisions</h2>
-                <p class="text-gray-600 mb-6 max-w-lg text-sm">Model hiring costs, equipment investments, and expansion plans to see their impact on your bottom line.</p>
+                <h2 class="text-2xl font-bold text-gray-900 mb-3">Confidently plan for the future</h2>
+                <p class="text-gray-600 mb-6 max-w-lg text-sm">Skip the manual setup and start planning. Model and refine scenarios to help you make informed decisions.</p>
                 <button onclick="openSetupModal()" class="bg-xero-blue text-white px-5 py-2.5 rounded text-sm font-medium hover:bg-blue-700">Create new scenario</button>
             </div>
-            <div class="w-64 bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
-                <div class="text-center text-white">
-                    <svg class="w-16 h-16 mx-auto mb-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                    <div class="font-semibold text-sm">Scenario Planning</div>
+            <div class="w-72 bg-sky-400 flex items-center justify-center p-4 relative overflow-hidden">
+                <div class="absolute top-3 left-3 bg-teal-500 text-white text-xs font-bold px-2 py-1 rounded">xero</div>
+                <div class="text-white">
+                    <div class="text-xl font-bold leading-tight">Process<br>pay</div>
+                </div>
+                <div class="absolute right-0 top-1/2 transform -translate-y-1/2 w-24 h-24 bg-amber-400 rounded-full flex items-center justify-center">
+                    <svg class="w-12 h-12 text-white opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-red-700 font-bold text-xl transform rotate-[-35deg] tracking-wide" style="text-shadow: 1px 1px 0 rgba(255,255,255,0.5);">PLACEHOLDER</span>
                 </div>
             </div>
         </div>
@@ -519,7 +525,7 @@
             </div>
             <p class="refine-card-subtitle" id="hiring-card-revenue-subtitle">$398,000 total profit • With new project revenue</p>
             <div class="refine-input-group">
-                <label>Annual wages (inc. super)</label>
+                <label>Base annual salary</label>
                 <div class="refine-input-field">
                     <span>$</span>
                     <input type="text" id="hiring-salary-input" value="55,000" onchange="updateHiringSalary(this.value)">
@@ -702,62 +708,62 @@ const LOCKED_FINANCIALS = Object.freeze({
     location: 'Melbourne, VIC',
     employees: 8,
 
-    // ACTUAL MONTHLY DATA FROM P&L (Mar 25 - Feb 26)
+    // ACTUAL MONTHLY DATA FROM P&L (Mar 25 - Feb 26) - Updated from Ironbark_Detailed_Melbourne_PL
     monthlyData: {
         labels: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'],
-        revenue: [180000, 162000, 198000, 225000, 153000, 180000, 189000, 207000, 198000, 126000, 108000, 189000],
-        netProfit: [-1725, -7275, 3825, 12150, -10050, -1725, 1050, 6600, 3825, -26180, -23925, 1050],
-        grossProfit: [20075, 14165, 25985, 34850, 11210, 20075, 23030, 28940, 25985, -5460, -3565, 23030]
+        revenue: [183600, 207000, 198000, 243000, 176400, 189000, 198000, 216000, 225000, 147600, 117000, 189000],
+        netProfit: [17970, 18682, 18331, 26302, 17236, 14175, 19885, 18862, 20195, 15032, 5426, 14907],
+        grossProfit: [46778, 48751, 47161, 52486, 45106, 47406, 43532, 52757, 47155, 37441, 31025, 47164]
     },
 
     // Revenue Breakdown (Average Monthly) - Locked to P&L
     revenue: {
-        total: 176250,                    // Average: $176k/month
-        residential: 105750,              // 60% - Code 200
-        renovations: 52875,               // 30% - Code 201
-        variations: 17625,                // 10% - Code 210
+        total: 190800,                    // Average: $190.8k/month
+        residential: 114480,              // 60% - Code 200
+        renovations: 57240,               // 30% - Code 201
+        variations: 19080,                // 10% - Code 210
         _validate: function() { return true; }
     },
 
     // Cost of Sales (Average Monthly) - Locked to P&L
     directCosts: {
-        total: 156390,                    // Average COGS
-        subcontractors: 79350,            // Code 300
-        materials: 32870,                 // Code 310
-        equipmentHire: 4365,              // Code 320
-        sitePrelims: 2863,                // Code 330
-        directLabour: 35583,              // Code 340
-        superDirect: 4109,                // Code 350
+        total: 145392,                    // Average COGS
+        subcontractors: 78682,            // Code 300
+        materials: 34756,                 // Code 310
+        equipmentHire: 5847,              // Code 320
+        sitePrelims: 4391,                // Code 330
+        directLabour: 21444,              // Code 340
+        superDirect: 2424,                // Code 350
         _validate: function() { return true; }
     },
 
     // Gross Profit (Average)
-    grossProfit: 18193,                   // Average gross profit
-    grossMarginPercent: 10.3,             // Much tighter than before!
+    grossProfit: 45564,                   // Average gross profit
+    grossMarginPercent: 23.9,             // Healthy margin
 
     // Operating Expenses (Average Monthly) - Locked to P&L
     operatingExpenses: {
-        total: 21730,                     // Average OPEX
-        advertising: 1200,                // Code 400
+        total: 27998,                     // Average OPEX
+        advertising: 1582,                // Code 400
         bankFees: 250,                    // Code 410
-        software: 1500,                   // Code 420
-        insurance: 3800,                  // Code 430
-        workersComp: 3515,                // Code 435
-        motorVehicle: 4500,               // Code 440
-        professionalFees: 1200,           // Code 450
-        rentUtilities: 5000,              // Code 460
-        training: 400,                    // Code 470
-        phone: 350,                       // Code 480
+        software: 1850,                   // Code 420
+        insurance: 4400,                  // Code 430
+        workersComp: 4579,                // Code 435
+        motorVehicle: 5729,               // Code 440
+        professionalFees: 1400,           // Code 450
+        rentUtilities: 6800,              // Code 460
+        training: 600,                    // Code 470
+        phone: 450,                       // Code 480
         _validate: function() { return true; }
     },
 
-    // Net Profit - From actual P&L (SHOWS LOSSES!)
-    netProfit: -3615,                     // Average is NEGATIVE (loss-making)
-    netMarginPercent: -2.1,               // Negative margin - business needs help!
+    // Net Profit - From actual P&L (PROFITABLE!)
+    netProfit: 17250,                     // Average is POSITIVE
+    netMarginPercent: 9.0,                // Healthy margin
 
     // Annual Figures
-    annualRevenue: 2160000,               // $2.16M
-    annualProfit: 300000,                 // $300k
+    annualRevenue: 2289600,               // $2.29M
+    annualProfit: 207003,                 // $207k
 
     // Industry Benchmarks (ABS/MBA)
     benchmarks: {
@@ -1236,7 +1242,10 @@ function renderChart() {
             interaction: { intersect: false, mode: 'index' },
             plugins: {
                 legend: { display: true, position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
-                tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${Math.round(ctx.parsed.y).toLocaleString()}` } }
+                tooltip: {
+                    filter: (item) => item.dataset.label !== 'Break-even ($0)',
+                    callbacks: { label: ctx => `${ctx.dataset.label}: $${Math.round(ctx.parsed.y).toLocaleString()}` }
+                }
             },
             scales: {
                 y: {
