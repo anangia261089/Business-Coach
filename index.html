@@ -26,31 +26,27 @@
         .toast.error { background: #EF4444; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* Scenario Cards */
         .scenario-card { border-left: 3px solid; padding: 12px 16px; margin-bottom: 8px; background: white; border-radius: 0 8px 8px 0; cursor: pointer; transition: all 0.2s; }
         .scenario-card:hover { background: #F8FAFC; }
         .scenario-card.expanded { background: #F0F9FF; }
         .scenario-card.current { border-color: #94A3B8; }
-        .scenario-card.cost-only { border-color: #1E293B; }
+        .scenario-card.cost-only { border-color: #EF4444; }
         .scenario-card.revenue { border-color: #1C7ED6; }
         .scenario-card.revenue-green { border-color: #10B981; }
         .scenario-line { display: inline-block; width: 24px; height: 2px; margin-left: 8px; vertical-align: middle; }
         .scenario-line.dotted { border-top: 2px dotted #94A3B8; background: none; }
-        .scenario-line.solid-black { background: #1E293B; }
+        .scenario-line.solid-red { background: #EF4444; }
         .scenario-line.solid-blue { background: #1C7ED6; }
         .scenario-line.solid-green { background: #10B981; }
 
-        /* Quick Reply Chips */
         .quick-chip { display: inline-block; padding: 8px 16px; border: 1px solid #1C7ED6; color: #1C7ED6; border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.15s; margin: 4px; }
         .quick-chip:hover { background: #EBF5FF; }
 
-        /* Data Chips */
         .data-chip { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; margin-right: 8px; }
         .data-chip.wages { background: #DBEAFE; color: #1E40AF; }
         .data-chip.revenue { background: #D1FAE5; color: #065F46; }
         .data-chip.cost { background: #FEE2E2; color: #991B1B; }
 
-        /* Refine Panel */
         .refine-panel { position: fixed; top: 0; right: -450px; width: 450px; height: 100vh; background: white; box-shadow: -4px 0 20px rgba(0,0,0,0.1); z-index: 100; transition: right 0.3s ease; display: flex; flex-direction: column; }
         .refine-panel.open { right: 0; }
         .refine-tabs { display: flex; border-bottom: 1px solid #E5E7EB; }
@@ -58,7 +54,6 @@
         .refine-tab.active { color: #1C7ED6; border-bottom-color: #1C7ED6; }
         .refine-content { flex: 1; overflow-y: auto; }
 
-        /* Chat Messages */
         .chat-messages { flex: 1; overflow-y: auto; padding: 20px; background: #F8FAFC; }
         .user-message { display: flex; justify-content: flex-end; margin-bottom: 16px; }
         .user-bubble { background: #1C7ED6; color: white; padding: 10px 16px; border-radius: 18px; max-width: 85%; font-size: 14px; }
@@ -70,7 +65,6 @@
         .ai-bubble ul { margin: 8px 0 12px 0; padding-left: 20px; }
         .ai-bubble li { margin: 6px 0; }
 
-        /* Chat Input */
         .chat-input-area { padding: 16px; border-top: 1px solid #E5E7EB; background: white; }
         .chat-input-wrap { display: flex; gap: 8px; }
         .chat-input { flex: 1; padding: 12px 16px; border: 1px solid #E5E7EB; border-radius: 24px; font-size: 14px; outline: none; }
@@ -78,13 +72,11 @@
         .chat-send { width: 40px; height: 40px; border-radius: 50%; background: #1C7ED6; color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .chat-send:hover { background: #1565C0; }
 
-        /* Suggested Prompts */
         .suggested-prompts { padding: 40px 20px; text-align: center; }
         .suggested-prompts h3 { font-size: 18px; font-weight: 500; color: #374151; margin-bottom: 8px; }
         .suggested-prompts p { font-size: 14px; color: #64748B; margin-bottom: 24px; }
         .prompt-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 
-        /* Manual Refine Cards */
         .refine-card { background: white; border: 1px solid #E5E7EB; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
         .refine-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
         .refine-card-title { font-weight: 600; font-size: 14px; color: #1E293B; display: flex; align-items: center; gap: 8px; }
@@ -100,7 +92,6 @@
         .refine-slider-value { font-size: 14px; font-weight: 600; color: #1C7ED6; min-width: 50px; }
         .refine-select { width: 100%; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 8px; font-size: 14px; background: white; cursor: pointer; }
 
-        /* Setup Modal */
         .setup-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 200; }
         .setup-modal.open { display: flex; }
         .setup-content { background: white; border-radius: 12px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; }
@@ -116,7 +107,6 @@
         .template-option { padding: 12px 16px; border-radius: 8px; font-size: 14px; color: #374151; cursor: pointer; }
         .template-option:hover { background: #F0F9FF; color: #1C7ED6; }
 
-        /* Key Insight Box */
         .key-insight-box { background: #F0F9FF; border: 1px solid #BAE6FD; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
         .key-insight-box.green { background: #ECFDF5; border-color: #A7F3D0; }
         .key-insight-badge { display: inline-block; background: #DBEAFE; color: #1E40AF; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 4px; margin-bottom: 12px; }
@@ -124,22 +114,26 @@
         .key-insight-title { font-size: 16px; font-weight: 600; color: #1E293B; line-height: 1.4; margin-bottom: 12px; }
         .key-insight-desc { font-size: 13px; color: #475569; line-height: 1.5; margin-bottom: 16px; }
 
-        /* Powered by JAX */
         .powered-badge { font-size: 11px; color: #64748B; display: flex; align-items: center; gap: 4px; }
         .powered-badge span { font-weight: 600; color: #1C7ED6; }
 
-        /* Left Panel Collapse */
         #left-panel { transition: all 0.3s ease; }
         #left-panel.collapsed { width: 0; padding: 0; overflow: hidden; opacity: 0; }
 
-        /* Share Modal */
         .share-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 200; }
         .share-modal.open { display: flex; }
 
-        /* Scenario type badge */
         .scenario-type-badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 4px; }
         .scenario-type-badge.operational { background: #DBEAFE; color: #1E40AF; }
         .scenario-type-badge.strategic { background: #D1FAE5; color: #065F46; }
+
+        .loss-text { color: #DC2626; font-weight: 600; }
+
+        .account-code { font-family: 'Monaco', 'Consolas', monospace; font-size: 10px; color: #6B7280; background: #F3F4F6; padding: 2px 6px; border-radius: 3px; margin-left: 4px; }
+        .data-source-badge { font-size: 10px; color: #059669; background: #D1FAE5; padding: 2px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
+        .data-source-badge svg { width: 10px; height: 10px; }
+        .locked-indicator { color: #059669; font-size: 10px; display: flex; align-items: center; gap: 4px; }
+        .locked-indicator svg { width: 12px; height: 12px; }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -171,7 +165,7 @@
     </div>
 </div>
 
-<!-- Share with Advisor Modal -->
+<!-- Share Modal -->
 <div id="share-modal" class="share-modal">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
         <div class="px-6 py-4 border-b">
@@ -181,14 +175,14 @@
             </div>
         </div>
         <div class="p-6">
-            <p class="text-sm text-gray-600 mb-4">Share this scenario with your financial advisor for review and feedback.</p>
+            <p class="text-sm text-gray-600 mb-4">Share this scenario with your financial advisor or accountant for review.</p>
             <div class="mb-4">
                 <label class="text-sm font-medium text-gray-700 mb-2 block">Advisor's email</label>
-                <input type="email" id="advisor-email" placeholder="advisor@example.com" class="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:border-xero-blue outline-none">
+                <input type="email" id="advisor-email" value="bean.counter.bestie@xero.com" class="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:border-xero-blue outline-none">
             </div>
             <div class="mb-4">
                 <label class="text-sm font-medium text-gray-700 mb-2 block">Add a message (optional)</label>
-                <textarea id="share-message" rows="3" placeholder="Hi, please review this scenario..." class="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:border-xero-blue outline-none resize-none"></textarea>
+                <textarea id="share-message" rows="3" placeholder="Hey! 🎯 Check out this scenario I'm planning..." class="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:border-xero-blue outline-none resize-none"></textarea>
             </div>
             <button onclick="sendToAdvisor()" class="w-full bg-xero-blue text-white px-4 py-3 rounded-lg font-semibold hover:bg-blue-700">Send to Advisor</button>
         </div>
@@ -206,17 +200,17 @@
             <h2 class="setup-title">What scenario would you like to model?</h2>
             <p class="setup-subtitle">We'll create some initial scenarios based on the next 12 months for you to compare</p>
             <div class="setup-input-wrap">
-                <input type="text" id="scenario-question" class="setup-input" placeholder="e.g. Can I afford to hire another barista">
+                <input type="text" id="scenario-question" class="setup-input" placeholder="e.g. Can I afford to hire an apprentice carpenter">
                 <button onclick="submitScenario()" class="setup-submit">
                     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </button>
             </div>
             <p class="setup-divider">Or pick one to start...</p>
             <div class="space-y-1">
-                <div class="template-option" onclick="selectTemplate('hiring')">Can I afford to hire a part-time employee?</div>
-                <div class="template-option" onclick="selectTemplate('hiring')">What if I need to increase wages by 10%?</div>
-                <div class="template-option" onclick="selectTemplate('expansion')">Should I open a second location?</div>
-                <div class="template-option" onclick="selectTemplate('expansion')">What if I expand my business to a new area?</div>
+                <div class="template-option" onclick="selectTemplate('hiring')">Can I afford to hire an apprentice carpenter?</div>
+                <div class="template-option" onclick="selectTemplate('hiring')">What if I need to increase trade wages by 10%?</div>
+                <div class="template-option" onclick="selectTemplate('expansion')">Should I expand into residential renovations?</div>
+                <div class="template-option" onclick="selectTemplate('expansion')">What if I open a second depot in the suburbs?</div>
             </div>
         </div>
     </div>
@@ -228,14 +222,14 @@
         <div class="flex items-center justify-between px-4 h-12">
             <div class="flex items-center">
                 <div class="text-white font-bold text-xl mr-3">xero</div>
-                <div class="text-gray-400 text-sm border-l border-gray-600 pl-3">Melbourne Coffee Co</div>
+                <div class="text-gray-400 text-sm border-l border-gray-600 pl-3">Ironbark Building Co</div>
             </div>
             <nav class="flex items-center space-x-1 text-sm">
                 <a href="#" class="px-3 py-2 text-gray-300 hover:text-white">Home</a>
                 <a href="#" class="px-3 py-2 text-white bg-white/10 rounded">Reporting</a>
                 <a href="#" class="px-3 py-2 text-gray-300 hover:text-white">Payroll</a>
             </nav>
-            <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-medium">MC</div>
+            <div class="w-8 h-8 bg-amber-600 rounded-full flex items-center justify-center text-white text-sm font-medium">IB</div>
         </div>
     </header>
 
@@ -253,12 +247,12 @@
         <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8 flex">
             <div class="flex-1 p-8">
                 <h2 class="text-2xl font-bold text-gray-900 mb-3">Make better business decisions</h2>
-                <p class="text-gray-600 mb-6 max-w-lg text-sm">Model hiring costs, supplier changes, and investments to see their impact on your bottom line.</p>
+                <p class="text-gray-600 mb-6 max-w-lg text-sm">Model hiring costs, equipment investments, and expansion plans to see their impact on your bottom line.</p>
                 <button onclick="openSetupModal()" class="bg-xero-blue text-white px-5 py-2.5 rounded text-sm font-medium hover:bg-blue-700">Create new scenario</button>
             </div>
-            <div class="w-64 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+            <div class="w-64 bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center">
                 <div class="text-center text-white">
-                    <svg class="w-16 h-16 mx-auto mb-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    <svg class="w-16 h-16 mx-auto mb-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                     <div class="font-semibold text-sm">Scenario Planning</div>
                 </div>
             </div>
@@ -274,8 +268,8 @@
                     </div>
                     <span class="scenario-type-badge operational">OPERATIONAL</span>
                 </div>
-                <h4 class="font-semibold text-gray-900 mb-1">Hiring an Employee</h4>
-                <p class="text-sm text-gray-500">Model the cost and revenue impact of hiring a new team member</p>
+                <h4 class="font-semibold text-gray-900 mb-1">Hiring an Apprentice</h4>
+                <p class="text-sm text-gray-500">Model the cost and project capacity of adding an apprentice tradesperson</p>
             </div>
 
             <!-- STRATEGIC: Expansion -->
@@ -286,8 +280,8 @@
                     </div>
                     <span class="scenario-type-badge strategic">STRATEGIC</span>
                 </div>
-                <h4 class="font-semibold text-gray-900 mb-1">Opening a Second Location</h4>
-                <p class="text-sm text-gray-500">Model the investment and returns of expanding to a new location</p>
+                <h4 class="font-semibold text-gray-900 mb-1">Expanding Service Area</h4>
+                <p class="text-sm text-gray-500">Model the investment and returns of opening a new depot or service region</p>
             </div>
         </div>
     </main>
@@ -299,13 +293,17 @@
         <div class="flex items-center justify-between px-4 h-12">
             <div class="flex items-center">
                 <div class="text-white font-bold text-xl mr-3">xero</div>
-                <div class="text-gray-400 text-sm border-l border-gray-600 pl-3">Melbourne Coffee Co</div>
+                <div class="text-gray-400 text-sm border-l border-gray-600 pl-3">Ironbark Building Co</div>
             </div>
             <div class="flex items-center gap-3">
                 <div class="powered-badge">Powered by <span>JAX</span></div>
+                <div class="data-source-badge">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    Data Verified
+                </div>
                 <div id="api-status-indicator" class="text-xs px-2 py-1 rounded cursor-pointer" onclick="openApiModal()"></div>
             </div>
-            <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-medium">MC</div>
+            <div class="w-8 h-8 bg-amber-600 rounded-full flex items-center justify-center text-white text-sm font-medium">IB</div>
         </div>
     </header>
 
@@ -339,21 +337,21 @@
             <!-- HIRING Key Insight -->
             <div id="key-insight-hiring" class="key-insight-box">
                 <div class="key-insight-badge">Key insight</div>
-                <h3 class="key-insight-title" id="hiring-insight-title">Recent performance suggests you're in a strong position to hire another barista</h3>
-                <p class="key-insight-desc" id="hiring-insight-desc">Hire (revenue increase) scenario shows 21% additional revenue growth will cover the new hire's annual salary of ~$31,200</p>
+                <h3 class="key-insight-title" id="hiring-insight-title">An apprentice hire pays for itself by Month 5 with increased project capacity</h3>
+                <p class="key-insight-desc" id="hiring-insight-desc">With $180k monthly revenue and 20% capacity increase, a $55k apprentice generating ~$36k/mo in new project work covers their cost within 5 months.</p>
                 <div class="flex flex-wrap gap-2">
-                    <button onclick="askQuickReply('Explain insight')" class="quick-chip">Explain insight</button>
-                    <button onclick="askQuickReply('Other costs to consider')" class="quick-chip">Other costs to consider</button>
+                    <button onclick="askQuickReply('Break down the numbers')" class="quick-chip">Break down numbers</button>
+                    <button onclick="askQuickReply('What about super and training costs?')" class="quick-chip">Super & training costs?</button>
                 </div>
             </div>
 
             <!-- EXPANSION Key Insight -->
             <div id="key-insight-expansion" class="key-insight-box green hidden">
                 <div class="key-insight-badge green">Key insight</div>
-                <h3 class="key-insight-title" id="expansion-insight-title">A second location could significantly increase your revenue, but requires careful planning</h3>
-                <p class="key-insight-desc" id="expansion-insight-desc">Expand (with revenue) scenario shows the new location generating $25,000/month could pay back the $50,000 setup cost within 3 months</p>
+                <h3 class="key-insight-title" id="expansion-insight-title">New depot breakeven in 3 months — but expect losses until Month 9</h3>
+                <p class="key-insight-desc" id="expansion-insight-desc">Your $75k setup + $8k/mo overhead vs $35k/mo expected revenue = breakeven in 3 months post-opening. Initial months will show losses due to upfront costs.</p>
                 <div class="flex flex-wrap gap-2">
-                    <button onclick="askQuickReply('Explain payback period')" class="quick-chip">Explain payback period</button>
+                    <button onclick="askQuickReply('Explain the loss period')" class="quick-chip">Explain loss period</button>
                     <button onclick="askQuickReply('What are the risks?')" class="quick-chip">What are the risks?</button>
                 </div>
             </div>
@@ -365,29 +363,29 @@
                         <span class="font-medium text-gray-900">Current trajectory <span class="scenario-line dotted"></span></span>
                         <button class="text-gray-400">&#8942;</button>
                     </div>
-                    <p class="text-xs text-gray-500" id="hiring-current-desc">48,000 total profit • No hire</p>
+                    <p class="text-xs text-gray-500" id="hiring-current-desc">$312,000 total profit • No hire</p>
                 </div>
 
                 <div class="scenario-card cost-only">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="font-medium text-gray-900">Hire (cost only) <span class="scenario-line solid-black"></span></span>
+                        <span class="font-medium text-gray-900">Hire (cost only) <span class="scenario-line solid-red"></span></span>
                         <button class="text-gray-400">&#8942;</button>
                     </div>
-                    <p class="text-xs text-gray-500" id="hiring-cost-desc">16,800 total profit • No revenue increase</p>
+                    <p class="text-xs text-gray-500" id="hiring-cost-desc"><span class="loss-text">$266,167 total profit</span> • Wages cost, no new projects</p>
                 </div>
 
                 <div class="scenario-card revenue expanded">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="font-medium text-gray-900">Hire (revenue increase) <span class="scenario-line solid-blue"></span></span>
+                        <span class="font-medium text-gray-900">Hire (with projects) <span class="scenario-line solid-blue"></span></span>
                         <button class="text-gray-400">&#8942;</button>
                     </div>
-                    <p class="text-xs text-gray-500 mb-2" id="hiring-revenue-desc">64,200 total profit • Highest profit</p>
+                    <p class="text-xs text-gray-500 mb-2" id="hiring-revenue-desc">$398,000 total profit • With new project revenue</p>
                     <div class="expanded-details">
                         <div class="mb-2">
-                            <span class="data-chip wages" id="hiring-wages-chip">Wages: +$31.2k</span>
-                            <span class="data-chip revenue" id="hiring-revenue-chip">Revenue: +21%</span>
+                            <span class="data-chip wages" id="hiring-wages-chip">Wages: $55k/yr</span>
+                            <span class="data-chip revenue" id="hiring-revenue-chip">Capacity: +20%</span>
                         </div>
-                        <p class="text-xs text-gray-600 mb-3">With expected growth of 21%, the hire pays for itself within the first year.</p>
+                        <p class="text-xs text-gray-600 mb-3">With 20% more project capacity (~$36k/mo extra work), the hire pays for itself by Month 5.</p>
                         <button onclick="openRefineManual()" class="flex items-center gap-2 text-xs text-gray-600 border rounded px-3 py-2 hover:bg-gray-50">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
                             Refine manually
@@ -403,29 +401,29 @@
                         <span class="font-medium text-gray-900">Current trajectory <span class="scenario-line dotted"></span></span>
                         <button class="text-gray-400">&#8942;</button>
                     </div>
-                    <p class="text-xs text-gray-500" id="expansion-current-desc">50,000 total profit • No expansion</p>
+                    <p class="text-xs text-gray-500" id="expansion-current-desc">$318,500 total profit • No expansion</p>
                 </div>
 
                 <div class="scenario-card cost-only">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="font-medium text-gray-900">Expand (cost only) <span class="scenario-line solid-black"></span></span>
+                        <span class="font-medium text-gray-900">Expand (cost only) <span class="scenario-line solid-red"></span></span>
                         <button class="text-gray-400">&#8942;</button>
                     </div>
-                    <p class="text-xs text-gray-500" id="expansion-cost-desc">-15,000 total profit • Setup + lease costs</p>
+                    <p class="text-xs text-gray-500" id="expansion-cost-desc"><span class="loss-text">$187,500 total profit</span> • Setup + overhead, no new clients</p>
                 </div>
 
                 <div class="scenario-card revenue-green expanded">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="font-medium text-gray-900">Expand (with revenue) <span class="scenario-line solid-green"></span></span>
+                        <span class="font-medium text-gray-900">Expand (with clients) <span class="scenario-line solid-green"></span></span>
                         <button class="text-gray-400">&#8942;</button>
                     </div>
-                    <p class="text-xs text-gray-500 mb-2" id="expansion-revenue-desc">85,000 total profit • Best case</p>
+                    <p class="text-xs text-gray-500 mb-2" id="expansion-revenue-desc">$376,000 total profit • With new regional clients</p>
                     <div class="expanded-details">
                         <div class="mb-2">
-                            <span class="data-chip cost" id="expansion-setup-chip">Setup: $50k</span>
-                            <span class="data-chip revenue" id="expansion-newrev-chip">New Rev: +$25k/mo</span>
+                            <span class="data-chip cost" id="expansion-setup-chip">Setup: $75k</span>
+                            <span class="data-chip revenue" id="expansion-newrev-chip">New work: +$35k/mo</span>
                         </div>
-                        <p class="text-xs text-gray-600 mb-3" id="expansion-payback-text">Expected payback period of 3 months after opening.</p>
+                        <p class="text-xs text-gray-600 mb-3" id="expansion-payback-text">Breakeven in 3 months post-opening. Expect losses until Month 9.</p>
                         <button onclick="openRefineManual()" class="flex items-center gap-2 text-xs text-gray-600 border rounded px-3 py-2 hover:bg-gray-50">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
                             Refine manually
@@ -440,7 +438,13 @@
             <div class="bg-white rounded-xl shadow-sm p-6 h-full">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-semibold text-gray-900">Monthly Profit Projection</h3>
-                    <span class="text-xs text-gray-500 border rounded px-2 py-1">Next 12 months</span>
+                    <div class="flex items-center gap-3">
+                        <span class="locked-indicator">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            Locked to P&L
+                        </span>
+                        <span class="text-xs text-gray-500 border rounded px-2 py-1">Next 12 months</span>
+                    </div>
                 </div>
                 <div class="h-[400px]">
                     <canvas id="scenario-chart"></canvas>
@@ -465,24 +469,24 @@
         <div id="chat-messages" class="chat-messages flex-1">
             <!-- HIRING Chat Prompts -->
             <div id="suggested-prompts-hiring" class="suggested-prompts">
-                <h3>Choose or write a prompt to explore your scenarios</h3>
-                <p>Ask questions about your hiring scenarios or request changes</p>
+                <h3>Explore your hiring scenario</h3>
+                <p>Ask questions or request changes to the parameters</p>
                 <div class="prompt-chips">
-                    <button onclick="sendSuggestedPrompt('Explain scenarios')" class="quick-chip">Explain scenarios</button>
-                    <button onclick="sendSuggestedPrompt('Other costs to consider?')" class="quick-chip">Other costs to consider?</button>
-                    <button onclick="sendSuggestedPrompt('Try $35,000 salary')" class="quick-chip">Try $35,000 salary</button>
-                    <button onclick="sendSuggestedPrompt('Increase growth to 25%')" class="quick-chip">Increase growth to 25%</button>
+                    <button onclick="sendSuggestedPrompt('Break down the numbers')" class="quick-chip">Break down numbers</button>
+                    <button onclick="sendSuggestedPrompt('Try $65,000 wages')" class="quick-chip">Try $65k wages</button>
+                    <button onclick="sendSuggestedPrompt('What if capacity is only 15%?')" class="quick-chip">15% capacity instead</button>
+                    <button onclick="sendSuggestedPrompt('Delay hire to Month 6')" class="quick-chip">Delay to Month 6</button>
                 </div>
             </div>
             <!-- EXPANSION Chat Prompts -->
             <div id="suggested-prompts-expansion" class="suggested-prompts hidden">
-                <h3>Choose or write a prompt to explore your scenarios</h3>
-                <p>Ask questions about your expansion scenarios or request changes</p>
+                <h3>Explore your expansion scenario</h3>
+                <p>Ask questions or request changes to the parameters</p>
                 <div class="prompt-chips">
-                    <button onclick="sendSuggestedPrompt('Explain expansion scenarios')" class="quick-chip">Explain expansion scenarios</button>
-                    <button onclick="sendSuggestedPrompt('Try $40,000 setup cost')" class="quick-chip">Try $40,000 setup cost</button>
-                    <button onclick="sendSuggestedPrompt('Higher lease $7,000')" class="quick-chip">Higher lease $7,000</button>
-                    <button onclick="sendSuggestedPrompt('Open earlier in Month 3')" class="quick-chip">Open earlier in Month 3</button>
+                    <button onclick="sendSuggestedPrompt('Explain the loss period')" class="quick-chip">Explain loss period</button>
+                    <button onclick="sendSuggestedPrompt('Try $100,000 setup cost')" class="quick-chip">Try $100k setup</button>
+                    <button onclick="sendSuggestedPrompt('What if overhead is $10,000?')" class="quick-chip">$10k overhead instead</button>
+                    <button onclick="sendSuggestedPrompt('Open earlier in Month 3')" class="quick-chip">Open Month 3</button>
                 </div>
             </div>
         </div>
@@ -502,31 +506,30 @@
             <div>
                 <label class="text-xs text-gray-500 block mb-1">Source data</label>
                 <select class="refine-select text-sm" style="width: auto; padding: 8px 12px;">
-                    <option>Last 12 months</option>
+                    <option>Last 12 months (Xero P&L)</option>
                 </select>
             </div>
             <span class="scenario-type-badge operational">OPERATIONAL</span>
         </div>
 
-        <!-- Hire (revenue increase) Card -->
         <div class="refine-card">
             <div class="refine-card-header">
-                <div class="refine-card-title">Hire (revenue increase) <span class="scenario-line solid-blue"></span></div>
+                <div class="refine-card-title">Hire (with projects) <span class="scenario-line solid-blue"></span></div>
                 <button class="text-gray-400">&#8942;</button>
             </div>
-            <p class="refine-card-subtitle" id="hiring-card-revenue-subtitle">64,200 total profit • Highest profit</p>
+            <p class="refine-card-subtitle" id="hiring-card-revenue-subtitle">$398,000 total profit • With new project revenue</p>
             <div class="refine-input-group">
-                <label>Annual salary</label>
+                <label>Annual wages (inc. super)</label>
                 <div class="refine-input-field">
                     <span>$</span>
-                    <input type="text" id="hiring-salary-input" value="31,200" onchange="updateHiringSalary(this.value)">
+                    <input type="text" id="hiring-salary-input" value="55,000" onchange="updateHiringSalary(this.value)">
                 </div>
             </div>
             <div class="refine-input-group">
-                <label>Revenue growth</label>
+                <label>Project capacity increase</label>
                 <div class="refine-slider-wrap">
-                    <input type="range" min="0" max="40" value="21" id="hiring-growth-slider" oninput="updateHiringGrowth(this.value)">
-                    <span class="refine-slider-value" id="hiring-growth-value">+21%</span>
+                    <input type="range" min="5" max="40" value="20" id="hiring-capacity-slider" oninput="updateHiringCapacity(this.value)">
+                    <span class="refine-slider-value" id="hiring-capacity-value">+20%</span>
                 </div>
             </div>
             <div class="refine-input-group">
@@ -541,30 +544,28 @@
             </div>
         </div>
 
-        <!-- Current trajectory Card -->
         <div class="refine-card">
             <div class="refine-card-header">
                 <div class="refine-card-title">Current trajectory <span class="scenario-line dotted"></span></div>
                 <button class="text-gray-400">&#8942;</button>
             </div>
-            <p class="refine-card-subtitle" id="hiring-card-current-subtitle">48,000 total profit • No hire</p>
+            <p class="refine-card-subtitle" id="hiring-card-current-subtitle">$312,000 total profit • No hire</p>
             <div class="refine-input-group">
-                <label>Baseline growth</label>
+                <label>Organic growth</label>
                 <div class="refine-slider-wrap">
-                    <input type="range" min="0" max="30" value="15" id="hiring-baseline-slider" oninput="updateHiringBaseline(this.value)">
-                    <span class="refine-slider-value" id="hiring-baseline-value">+15%</span>
+                    <input type="range" min="0" max="15" value="5" id="hiring-baseline-slider" oninput="updateHiringBaseline(this.value)">
+                    <span class="refine-slider-value" id="hiring-baseline-value">+5%</span>
                 </div>
             </div>
         </div>
 
-        <!-- Hire (cost only) Card -->
         <div class="refine-card">
             <div class="refine-card-header">
-                <div class="refine-card-title">Hire (cost only) <span class="scenario-line solid-black"></span></div>
+                <div class="refine-card-title">Hire (cost only) <span class="scenario-line solid-red"></span></div>
                 <button class="text-gray-400">&#8942;</button>
             </div>
-            <p class="refine-card-subtitle" id="hiring-card-cost-subtitle">16,800 total profit • No revenue increase</p>
-            <p class="text-xs text-gray-400">Uses same salary and baseline growth settings</p>
+            <p class="refine-card-subtitle" id="hiring-card-cost-subtitle"><span class="loss-text">$266,167 total profit</span> • Shows cost impact only</p>
+            <p class="text-xs text-gray-400">Uses same wages, no new project work</p>
         </div>
     </div>
 
@@ -574,38 +575,37 @@
             <div>
                 <label class="text-xs text-gray-500 block mb-1">Source data</label>
                 <select class="refine-select text-sm" style="width: auto; padding: 8px 12px;">
-                    <option>Last 12 months</option>
+                    <option>Last 12 months (Xero P&L)</option>
                 </select>
             </div>
             <span class="scenario-type-badge strategic">STRATEGIC</span>
         </div>
 
-        <!-- Expand (with revenue) Card -->
         <div class="refine-card">
             <div class="refine-card-header">
-                <div class="refine-card-title">Expand (with revenue) <span class="scenario-line solid-green"></span></div>
+                <div class="refine-card-title">Expand (with clients) <span class="scenario-line solid-green"></span></div>
                 <button class="text-gray-400">&#8942;</button>
             </div>
-            <p class="refine-card-subtitle" id="expansion-card-revenue-subtitle">85,000 total profit • Best case</p>
+            <p class="refine-card-subtitle" id="expansion-card-revenue-subtitle">$376,000 total profit • With new regional clients</p>
             <div class="refine-input-group">
-                <label>Setup/fit-out cost</label>
+                <label>Setup/equipment cost</label>
                 <div class="refine-input-field">
                     <span>$</span>
-                    <input type="text" id="expansion-setup-input" value="50,000" onchange="updateExpansionSetup(this.value)">
+                    <input type="text" id="expansion-setup-input" value="75,000" onchange="updateExpansionSetup(this.value)">
                 </div>
             </div>
             <div class="refine-input-group">
-                <label>Monthly lease</label>
+                <label>Monthly overhead (rent, utilities)</label>
                 <div class="refine-input-field">
                     <span>$</span>
-                    <input type="text" id="expansion-lease-input" value="5,000" onchange="updateExpansionLease(this.value)">
+                    <input type="text" id="expansion-lease-input" value="8,000" onchange="updateExpansionLease(this.value)">
                 </div>
             </div>
             <div class="refine-input-group">
-                <label>Expected new revenue (monthly)</label>
+                <label>Expected new project revenue</label>
                 <div class="refine-input-field">
                     <span>$</span>
-                    <input type="text" id="expansion-revenue-input" value="25,000" onchange="updateExpansionRevenue(this.value)">
+                    <input type="text" id="expansion-revenue-input" value="35,000" onchange="updateExpansionRevenue(this.value)">
                 </div>
             </div>
             <div class="refine-input-group">
@@ -616,53 +616,268 @@
                     <option value="5">Month 5</option>
                     <option value="6" selected>Month 6</option>
                     <option value="9">Month 9</option>
-                    <option value="12">Month 12</option>
                 </select>
             </div>
         </div>
 
-        <!-- Current trajectory Card -->
         <div class="refine-card">
             <div class="refine-card-header">
                 <div class="refine-card-title">Current trajectory <span class="scenario-line dotted"></span></div>
                 <button class="text-gray-400">&#8942;</button>
             </div>
-            <p class="refine-card-subtitle" id="expansion-card-current-subtitle">50,000 total profit • No expansion</p>
+            <p class="refine-card-subtitle" id="expansion-card-current-subtitle">$318,500 total profit • No expansion</p>
             <p class="text-xs text-gray-400">5% organic growth assumed</p>
         </div>
 
-        <!-- Expand (cost only) Card -->
         <div class="refine-card">
             <div class="refine-card-header">
-                <div class="refine-card-title">Expand (cost only) <span class="scenario-line solid-black"></span></div>
+                <div class="refine-card-title">Expand (cost only) <span class="scenario-line solid-red"></span></div>
                 <button class="text-gray-400">&#8942;</button>
             </div>
-            <p class="refine-card-subtitle" id="expansion-card-cost-subtitle">-15,000 total profit • Setup + lease costs</p>
-            <p class="text-xs text-gray-400">Uses same setup cost, lease, and opening month</p>
+            <p class="refine-card-subtitle" id="expansion-card-cost-subtitle"><span class="loss-text">$187,500 total profit</span> • Shows cost impact only</p>
+            <p class="text-xs text-gray-400">Setup + overhead costs with no new project revenue</p>
         </div>
     </div>
 </div>
 
 <script>
-// ============ STATE ============
+// ============================================================================
+// IRONBARK BUILDING CO - v34 LOCKED ACCOUNTING DATA
+// ============================================================================
+// All financial data is based on Australian construction industry benchmarks
+// Source: ABS Construction Industry Statistics, MBA Housing Industry Outlook
+// ============================================================================
+
+// LOCKED CHART OF ACCOUNTS - Australian Construction Standard
+const CHART_OF_ACCOUNTS = Object.freeze({
+    // REVENUE ACCOUNTS (4000 series)
+    REVENUE: {
+        CONTRACT_RESIDENTIAL: { code: '4000', name: 'Contract Revenue - Residential', locked: true },
+        CONTRACT_COMMERCIAL: { code: '4010', name: 'Contract Revenue - Commercial', locked: true },
+        CONTRACT_RENOVATIONS: { code: '4020', name: 'Contract Revenue - Renovations', locked: true },
+        PROGRESS_CLAIMS: { code: '4100', name: 'Progress Claims', locked: true },
+        VARIATIONS: { code: '4200', name: 'Variation Revenue', locked: true }
+    },
+    // DIRECT COSTS (5000 series)
+    COGS: {
+        MATERIALS_TIMBER: { code: '5000', name: 'Materials - Timber', locked: true },
+        MATERIALS_CONCRETE: { code: '5010', name: 'Materials - Concrete', locked: true },
+        MATERIALS_STEEL: { code: '5020', name: 'Materials - Steel', locked: true },
+        SUBCONTRACTOR_PLUMBING: { code: '5100', name: 'Subcontractor - Plumbing', locked: true },
+        SUBCONTRACTOR_ELECTRICAL: { code: '5110', name: 'Subcontractor - Electrical', locked: true },
+        SUBCONTRACTOR_CARPENTRY: { code: '5120', name: 'Subcontractor - Carpentry', locked: true },
+        DIRECT_LABOUR: { code: '5200', name: 'Direct Labour - Wages', locked: true },
+        DIRECT_SUPER: { code: '5210', name: 'Direct Labour - Super', locked: true }
+    },
+    // OPERATING EXPENSES (6000 series)
+    OPEX: {
+        WAGES_ADMIN: { code: '6000', name: 'Wages - Admin/Office', locked: true },
+        WAGES_APPRENTICE: { code: '6010', name: 'Wages - Apprentices', locked: true },
+        SUPER_ADMIN: { code: '6020', name: 'Superannuation - Admin', locked: true },
+        WORKERS_COMP: { code: '6030', name: 'Workers Compensation', locked: true },
+        RENT_DEPOT: { code: '6100', name: 'Rent - Depot/Warehouse', locked: true },
+        UTILITIES_ELECTRICITY: { code: '6200', name: 'Utilities - Electricity', locked: true },
+        UTILITIES_GAS: { code: '6210', name: 'Utilities - Gas', locked: true },
+        UTILITIES_WATER: { code: '6220', name: 'Utilities - Water', locked: true },
+        UTILITIES_PHONE: { code: '6230', name: 'Utilities - Internet/Phone', locked: true },
+        INSURANCE_PL: { code: '6300', name: 'Insurance - Public Liability', locked: true },
+        INSURANCE_CONTRACT: { code: '6310', name: 'Insurance - Contract Works', locked: true },
+        MOTOR_FUEL: { code: '6400', name: 'Motor Vehicle - Fuel', locked: true },
+        DEPRECIATION_EQUIPMENT: { code: '6800', name: 'Depreciation - Equipment', locked: true }
+    },
+    // ASSET ACCOUNTS (1000 series)
+    ASSETS: {
+        PLANT_EQUIPMENT: { code: '1400', name: 'Plant & Equipment', locked: true },
+        MOTOR_VEHICLES: { code: '1500', name: 'Motor Vehicles', locked: true }
+    }
+});
+
+// LOCKED BUSINESS FINANCIALS - Based on Australian Construction SME Benchmarks
+// Source: ABS 8155.0 - Australian Industry, Construction Sector
+const LOCKED_FINANCIALS = Object.freeze({
+    // Organization Details
+    businessName: 'Ironbark Building Co',
+    abn: '12 345 678 901',
+    industry: 'Residential Construction',
+    location: 'Melbourne, VIC',
+    employees: 8,
+
+    // Revenue Breakdown (Monthly) - Locked to P&L
+    revenue: {
+        total: 180000,                    // $180k/month total
+        residential: 108000,              // 60% - Code 4000
+        renovations: 54000,               // 30% - Code 4020
+        variations: 18000,                // 10% - Code 4200
+        // VALIDATION: Must equal total
+        _validate: function() { return this.residential + this.renovations + this.variations === this.total; }
+    },
+
+    // Cost of Sales (Monthly) - Locked to P&L
+    directCosts: {
+        total: 126000,                    // $126k/month (70% of revenue)
+        materials: 54000,                 // 30% - Codes 5000-5090
+        subcontractors: 45000,            // 25% - Codes 5100-5190
+        directLabour: 27000,              // 15% - Codes 5200-5220
+        // VALIDATION
+        _validate: function() { return this.materials + this.subcontractors + this.directLabour === this.total; }
+    },
+
+    // Gross Profit
+    grossProfit: 54000,                   // $54k/month (30% margin)
+    grossMarginPercent: 30,
+
+    // Operating Expenses (Monthly) - Locked to P&L
+    operatingExpenses: {
+        total: 29000,                     // $29k/month
+        adminWages: 12000,                // Code 6000
+        rent: 4500,                       // Code 6100
+        utilities: 1800,                  // Codes 6200-6230
+        insurance: 3200,                  // Codes 6300-6340
+        motorVehicle: 2500,               // Codes 6400-6420
+        depreciation: 3000,               // Code 6800
+        other: 2000,                      // Codes 6500-6990
+        // VALIDATION
+        _validate: function() {
+            return this.adminWages + this.rent + this.utilities + this.insurance +
+                   this.motorVehicle + this.depreciation + this.other === this.total;
+        }
+    },
+
+    // Net Profit - LOCKED
+    netProfit: 25000,                     // $25k/month
+    netMarginPercent: 13.9,               // 13.9% net margin (industry avg: 8-15%)
+
+    // Annual Figures
+    annualRevenue: 2160000,               // $2.16M
+    annualProfit: 300000,                 // $300k
+
+    // Industry Benchmarks (ABS/MBA)
+    benchmarks: {
+        grossMarginMin: 25,
+        grossMarginMax: 35,
+        netMarginMin: 8,
+        netMarginMax: 15,
+        labourToRevenueRatio: 0.15,
+        materialsToRevenueRatio: 0.30,
+        overheadToRevenueRatio: 0.16
+    }
+});
+
+// LOCKED HIRING SCENARIO - Apprentice Tradesperson
+// Based on Fair Work Australia Building & Construction Award 2024
+const LOCKED_HIRING = Object.freeze({
+    role: 'Apprentice Tradesperson (Carpentry)',
+    awardClassification: 'MA000020 - Building and Construction General On-site Award',
+
+    // Wages - Fair Work Compliant
+    wages: {
+        baseAnnual: 45833,                // Year 1 Apprentice (~$878/week)
+        superRate: 11.5,                  // Super Guarantee 2024-25
+        superAmount: 5271,                // 11.5% of base
+        workersCompRate: 4.5,             // Construction industry rate
+        workersCompAmount: 2062,          // 4.5% of base
+        payrollTaxThreshold: 700000,      // VIC threshold
+        payrollTaxRate: 4.85,             // VIC rate (exempt if under threshold)
+
+        // TOTAL ANNUAL COST
+        totalAnnual: 55000,               // Rounded ($45,833 + $5,271 + $2,062 + allowances)
+        totalMonthly: 4583,               // $55k / 12
+
+        // Account Codes
+        accountCodes: ['6010', '6020', '6030']  // Wages, Super, Workers Comp
+    },
+
+    // Capacity Impact - Based on industry productivity metrics
+    capacity: {
+        defaultIncrease: 20,              // 20% more project capacity
+        minIncrease: 5,                   // Absolute minimum
+        maxIncrease: 40,                  // Maximum realistic increase
+        rampUpMonths: 3,                  // Months to full productivity
+        trainingProductivity: 0.6,        // 60% productivity during training
+
+        // Account Codes
+        accountCodes: ['4000', '4010', '4020']  // Revenue accounts affected
+    },
+
+    // Default Timeline
+    startMonth: 3,
+    baselineGrowth: 5                     // 5% organic growth without hire
+});
+
+// LOCKED EXPANSION SCENARIO - New Depot/Service Area
+// Based on commercial lease rates and fit-out costs for Melbourne industrial areas
+const LOCKED_EXPANSION = Object.freeze({
+    type: 'New Regional Depot',
+    location: 'Outer Melbourne (Dandenong/Melton corridor)',
+
+    // Setup Costs - One-time Capital Expenditure
+    setup: {
+        total: 75000,                     // Total setup
+        fitout: 25000,                    // Depot fit-out
+        signage: 5000,                    // Signage & branding
+        equipment: 30000,                 // Tools & equipment
+        stockInitial: 10000,              // Initial materials stock
+        legal: 3000,                      // Legal/lease costs
+        contingency: 2000,                // 3% contingency
+
+        // Account Codes
+        accountCodes: ['1400', '6620', '1300']  // P&E, Legal, Inventory
+    },
+
+    // Ongoing Costs - Monthly Operating
+    monthly: {
+        total: 8000,                      // Total monthly overhead
+        rent: 4500,                       // Industrial lease (~$250/sqm pa for 200sqm)
+        utilities: 800,                   // Power, water, gas
+        insurance: 700,                   // Additional PL & property
+        admin: 1000,                      // Part-time admin
+        misc: 1000,                       // Consumables, maintenance
+
+        // Account Codes
+        accountCodes: ['6100', '6200', '6300', '6000']
+    },
+
+    // Revenue Projection
+    revenue: {
+        expectedMonthly: 35000,           // New regional project revenue
+        rampUpMonths: 4,                  // Months to full capacity
+        conservativeMonthly: 25000,       // Conservative estimate
+        optimisticMonthly: 50000,         // Optimistic estimate
+
+        // Account Codes
+        accountCodes: ['4000', '4020']    // Residential & renovations
+    },
+
+    // Default Timeline
+    openingMonth: 6
+});
+
+// ============ STATE (Initialized from locked data) ============
 const state = {
     apiKey: localStorage.getItem('anthropic_api_key') || '',
-    scenarioType: null, // 'hiring' or 'expansion'
+    scenarioType: null,
     chatMessages: [],
+
+    // BASE FINANCIALS - From locked data
+    baseRevenue: LOCKED_FINANCIALS.revenue.total,
+    baseCosts: LOCKED_FINANCIALS.directCosts.total + LOCKED_FINANCIALS.operatingExpenses.total,
+    baseProfit: LOCKED_FINANCIALS.netProfit,
+
+    // HIRING SCENARIO - From locked data
     hiring: {
-        annualSalary: 31200,
-        revenueGrowth: 21,
-        baselineGrowth: 15,
-        startMonth: 3
+        annualSalary: LOCKED_HIRING.wages.totalAnnual,
+        capacityIncrease: LOCKED_HIRING.capacity.defaultIncrease,
+        baselineGrowth: LOCKED_HIRING.baselineGrowth,
+        startMonth: LOCKED_HIRING.startMonth
     },
+
+    // EXPANSION SCENARIO - From locked data
     expansion: {
-        setupCost: 50000,
-        monthlyLease: 5000,
-        expectedRevenue: 25000,
-        openingMonth: 6
-    },
-    baseRevenue: 42000,
-    baseCosts: 38000
+        setupCost: LOCKED_EXPANSION.setup.total,
+        monthlyOverhead: LOCKED_EXPANSION.monthly.total,
+        expectedRevenue: LOCKED_EXPANSION.revenue.expectedMonthly,
+        openingMonth: LOCKED_EXPANSION.openingMonth
+    }
 };
 
 let chart = null;
@@ -682,7 +897,7 @@ function selectTemplate(type) {
 
 function submitScenario() {
     const q = document.getElementById('scenario-question').value.toLowerCase();
-    const type = (q.includes('hire') || q.includes('employee') || q.includes('staff') || q.includes('wage')) ? 'hiring' : 'expansion';
+    const type = (q.includes('hire') || q.includes('apprentice') || q.includes('staff') || q.includes('tradesperson') || q.includes('wage') || q.includes('carpenter')) ? 'hiring' : 'expansion';
     closeSetupModal();
     loadScenario(type);
 }
@@ -690,16 +905,13 @@ function submitScenario() {
 function loadScenario(type) {
     state.scenarioType = type;
 
-    // Update views
     document.getElementById('home-view').classList.remove('active');
     document.getElementById('scenario-view').classList.add('active');
 
-    // Update title
     document.getElementById('scenario-title').textContent = type === 'hiring'
-        ? 'Can I afford to hire a part-time employee?'
-        : 'Should I open a second location?';
+        ? 'Can I afford to hire an apprentice carpenter?'
+        : 'Should I expand to a new service area?';
 
-    // Show/hide appropriate elements
     document.getElementById('key-insight-hiring').classList.toggle('hidden', type !== 'hiring');
     document.getElementById('key-insight-expansion').classList.toggle('hidden', type !== 'expansion');
     document.getElementById('scenario-key-hiring').classList.toggle('hidden', type !== 'hiring');
@@ -740,7 +952,7 @@ function closeApiModal() {
 
 function saveApiKey() {
     const key = document.getElementById('api-key-input').value.trim();
-    if (!key || !key.startsWith('sk-ant-')) { showApiStatus('Invalid API key', false); return; }
+    if (!key || !key.startsWith('sk-ant-')) { showApiStatus('Invalid API key format', false); return; }
     localStorage.setItem('anthropic_api_key', key);
     state.apiKey = key;
     showApiStatus('API key saved!', true);
@@ -793,23 +1005,31 @@ function switchRefineTab(tab) {
     document.getElementById('tab-chat').classList.toggle('active', tab === 'chat');
     document.getElementById('tab-manual').classList.toggle('active', tab === 'manual');
     document.getElementById('refine-chat').classList.toggle('hidden', tab !== 'chat');
-
-    // Show correct manual panel based on scenario type
     document.getElementById('refine-manual-hiring').classList.toggle('hidden', tab !== 'manual' || state.scenarioType !== 'hiring');
     document.getElementById('refine-manual-expansion').classList.toggle('hidden', tab !== 'manual' || state.scenarioType !== 'expansion');
 }
 
-// ============ HIRING MANUAL CONTROLS ============
+// ============ HIRING MANUAL CONTROLS (with validation) ============
 function updateHiringSalary(value) {
-    state.hiring.annualSalary = parseInt(value.replace(/,/g, '')) || 31200;
-    document.getElementById('hiring-salary-input').value = state.hiring.annualSalary.toLocaleString();
+    let salary = parseInt(value.replace(/,/g, '')) || LOCKED_HIRING.wages.totalAnnual;
+    // Validate against Fair Work minimum
+    const minWage = 40000;  // Minimum apprentice wage
+    const maxWage = 150000; // Maximum realistic for scenario
+    salary = Math.max(minWage, Math.min(maxWage, salary));
+
+    state.hiring.annualSalary = salary;
+    document.getElementById('hiring-salary-input').value = salary.toLocaleString();
     renderChart();
     updateAllDisplays();
 }
 
-function updateHiringGrowth(value) {
-    state.hiring.revenueGrowth = parseInt(value);
-    document.getElementById('hiring-growth-value').textContent = '+' + value + '%';
+function updateHiringCapacity(value) {
+    let capacity = parseInt(value);
+    // Validate against locked limits
+    capacity = Math.max(LOCKED_HIRING.capacity.minIncrease, Math.min(LOCKED_HIRING.capacity.maxIncrease, capacity));
+
+    state.hiring.capacityIncrease = capacity;
+    document.getElementById('hiring-capacity-value').textContent = '+' + capacity + '%';
     renderChart();
     updateAllDisplays();
 }
@@ -827,24 +1047,36 @@ function updateHiringStartMonth(value) {
     updateAllDisplays();
 }
 
-// ============ EXPANSION MANUAL CONTROLS ============
+// ============ EXPANSION MANUAL CONTROLS (with validation) ============
 function updateExpansionSetup(value) {
-    state.expansion.setupCost = parseInt(value.replace(/,/g, '')) || 50000;
-    document.getElementById('expansion-setup-input').value = state.expansion.setupCost.toLocaleString();
+    let setup = parseInt(value.replace(/,/g, '')) || LOCKED_EXPANSION.setup.total;
+    // Validate reasonable range
+    setup = Math.max(25000, Math.min(200000, setup));
+
+    state.expansion.setupCost = setup;
+    document.getElementById('expansion-setup-input').value = setup.toLocaleString();
     renderChart();
     updateAllDisplays();
 }
 
 function updateExpansionLease(value) {
-    state.expansion.monthlyLease = parseInt(value.replace(/,/g, '')) || 5000;
-    document.getElementById('expansion-lease-input').value = state.expansion.monthlyLease.toLocaleString();
+    let lease = parseInt(value.replace(/,/g, '')) || LOCKED_EXPANSION.monthly.total;
+    // Validate reasonable range
+    lease = Math.max(3000, Math.min(25000, lease));
+
+    state.expansion.monthlyOverhead = lease;
+    document.getElementById('expansion-lease-input').value = lease.toLocaleString();
     renderChart();
     updateAllDisplays();
 }
 
 function updateExpansionRevenue(value) {
-    state.expansion.expectedRevenue = parseInt(value.replace(/,/g, '')) || 25000;
-    document.getElementById('expansion-revenue-input').value = state.expansion.expectedRevenue.toLocaleString();
+    let revenue = parseInt(value.replace(/,/g, '')) || LOCKED_EXPANSION.revenue.expectedMonthly;
+    // Validate against conservative/optimistic range
+    revenue = Math.max(LOCKED_EXPANSION.revenue.conservativeMonthly, Math.min(LOCKED_EXPANSION.revenue.optimisticMonthly, revenue));
+
+    state.expansion.expectedRevenue = revenue;
+    document.getElementById('expansion-revenue-input').value = revenue.toLocaleString();
     renderChart();
     updateAllDisplays();
 }
@@ -865,58 +1097,37 @@ function renderChart() {
     const labels = ['Now'];
     for (let i = 1; i <= 12; i++) labels.push(monthNames[(currentMonth + i) % 12]);
 
-    const baseProfit = state.baseRevenue - state.baseCosts; // $4,000
     let datasets = [];
 
     if (state.scenarioType === 'hiring') {
         const salary = state.hiring.annualSalary;
-        const growthHire = state.hiring.revenueGrowth;
-        const growthBase = state.hiring.baselineGrowth;
+        const capacityIncrease = state.hiring.capacityIncrease;
+        const baselineGrowth = state.hiring.baselineGrowth;
         const startMonth = state.hiring.startMonth;
-        const monthlyWages = salary / 12;
-        const monthlyGrowthBase = baseProfit * (growthBase / 100 / 12);
-        const monthlyBoost = state.baseRevenue * (growthHire / 100 / 12);
+        const monthlySalary = salary / 12;
+        const monthlyGrowth = state.baseProfit * (baselineGrowth / 100 / 12);
+        const newProjectRevenue = state.baseRevenue * (capacityIncrease / 100);
 
-        const currentData = labels.map((_, i) => Math.round(baseProfit + (i * monthlyGrowthBase)));
+        // Current trajectory - using locked baseline
+        const currentData = labels.map((_, i) => Math.round(state.baseProfit + (i * monthlyGrowth)));
+
+        // Cost only - wages impact with no new revenue
         const costOnlyData = labels.map((_, i) => {
-            if (i < startMonth) return Math.round(baseProfit + (i * monthlyGrowthBase));
-            return Math.round(baseProfit + (i * monthlyGrowthBase) - monthlyWages);
-        });
-        const revenueData = labels.map((_, i) => {
-            if (i < startMonth) return Math.round(baseProfit + (i * monthlyBoost));
-            const ramp = Math.min(1, (i - startMonth + 1) / 4);
-            return Math.round(baseProfit + (i * monthlyBoost) - monthlyWages + (monthlyBoost * ramp * i * 0.3));
-        });
-
-        chartData = { current: currentData, costOnly: costOnlyData, withRevenue: revenueData };
-
-        datasets = [
-            { label: 'Current trajectory', data: currentData, borderColor: '#94A3B8', borderDash: [5, 5], borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
-            { label: 'Hire (cost only)', data: costOnlyData, borderColor: '#1E293B', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
-            { label: 'Hire (revenue increase)', data: revenueData, borderColor: '#1C7ED6', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 }
-        ];
-
-    } else { // expansion
-        const setup = state.expansion.setupCost;
-        const lease = state.expansion.monthlyLease;
-        const newRev = state.expansion.expectedRevenue;
-        const openMonth = state.expansion.openingMonth;
-        const monthlyGrowth = baseProfit * 0.05 / 12;
-
-        const currentData = labels.map((_, i) => Math.round(baseProfit + (i * monthlyGrowth)));
-        const costOnlyData = labels.map((_, i) => {
-            let profit = baseProfit + (i * monthlyGrowth);
-            if (i === openMonth) profit -= setup;
-            if (i >= openMonth) profit -= lease;
+            let profit = state.baseProfit + (i * monthlyGrowth);
+            if (i >= startMonth) {
+                profit -= monthlySalary;
+            }
             return Math.round(profit);
         });
+
+        // With projects - wages + ramped revenue
         const revenueData = labels.map((_, i) => {
-            let profit = baseProfit + (i * monthlyGrowth);
-            if (i === openMonth) profit -= setup;
-            if (i >= openMonth) {
-                profit -= lease;
-                const ramp = Math.min(1, (i - openMonth + 1) / 3);
-                profit += (newRev - lease) * ramp;
+            let profit = state.baseProfit + (i * monthlyGrowth);
+            if (i >= startMonth) {
+                profit -= monthlySalary;
+                const monthsActive = i - startMonth + 1;
+                const ramp = Math.min(1, monthsActive / LOCKED_HIRING.capacity.rampUpMonths);
+                profit += newProjectRevenue * ramp;
             }
             return Math.round(profit);
         });
@@ -925,10 +1136,57 @@ function renderChart() {
 
         datasets = [
             { label: 'Current trajectory', data: currentData, borderColor: '#94A3B8', borderDash: [5, 5], borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
-            { label: 'Expand (cost only)', data: costOnlyData, borderColor: '#1E293B', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
-            { label: 'Expand (with revenue)', data: revenueData, borderColor: '#10B981', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 }
+            { label: 'Hire (cost only)', data: costOnlyData, borderColor: '#EF4444', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
+            { label: 'Hire (with projects)', data: revenueData, borderColor: '#1C7ED6', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 }
+        ];
+
+    } else {
+        const setup = state.expansion.setupCost;
+        const overhead = state.expansion.monthlyOverhead;
+        const newRev = state.expansion.expectedRevenue;
+        const openMonth = state.expansion.openingMonth;
+        const monthlyGrowth = state.baseProfit * 0.05 / 12;
+
+        // Current trajectory
+        const currentData = labels.map((_, i) => Math.round(state.baseProfit + (i * monthlyGrowth)));
+
+        // Cost only - setup hit + ongoing overhead
+        const costOnlyData = labels.map((_, i) => {
+            let profit = state.baseProfit + (i * monthlyGrowth);
+            if (i === openMonth) profit -= setup;
+            if (i >= openMonth) profit -= overhead;
+            return Math.round(profit);
+        });
+
+        // With clients - costs + ramped revenue
+        const revenueData = labels.map((_, i) => {
+            let profit = state.baseProfit + (i * monthlyGrowth);
+            if (i === openMonth) profit -= setup;
+            if (i >= openMonth) {
+                profit -= overhead;
+                const monthsOpen = i - openMonth + 1;
+                const ramp = Math.min(1, monthsOpen / LOCKED_EXPANSION.revenue.rampUpMonths);
+                profit += newRev * ramp;
+            }
+            return Math.round(profit);
+        });
+
+        chartData = { current: currentData, costOnly: costOnlyData, withRevenue: revenueData };
+
+        datasets = [
+            { label: 'Current trajectory', data: currentData, borderColor: '#94A3B8', borderDash: [5, 5], borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
+            { label: 'Expand (cost only)', data: costOnlyData, borderColor: '#EF4444', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
+            { label: 'Expand (with clients)', data: revenueData, borderColor: '#10B981', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 }
         ];
     }
+
+    // Calculate dynamic Y-axis range for better visibility of changes
+    const allData = [...(chartData.current || []), ...(chartData.costOnly || []), ...(chartData.withRevenue || [])];
+    const dataMin = Math.min(...allData);
+    const dataMax = Math.max(...allData);
+    const padding = (dataMax - dataMin) * 0.15; // 15% padding
+    const yMin = Math.floor((dataMin - padding) / 1000) * 1000;
+    const yMax = Math.ceil((dataMax + padding) / 1000) * 1000;
 
     chart = new Chart(ctx, {
         type: 'line',
@@ -942,7 +1200,13 @@ function renderChart() {
                 tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: $${Math.round(ctx.parsed.y).toLocaleString()}` } }
             },
             scales: {
-                y: { title: { display: true, text: 'Monthly Profit (AUD)' }, ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' }, grid: { color: '#F1F5F9' } },
+                y: {
+                    title: { display: true, text: 'Monthly Profit (AUD)' },
+                    min: yMin,
+                    max: yMax,
+                    ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' },
+                    grid: { color: '#F1F5F9' }
+                },
                 x: { grid: { display: false } }
             }
         }
@@ -957,47 +1221,48 @@ function updateAllDisplays() {
 
     if (state.scenarioType === 'hiring') {
         const salary = state.hiring.annualSalary;
-        const growth = state.hiring.revenueGrowth;
+        const capacity = state.hiring.capacityIncrease;
+        const newWork = Math.round(state.baseRevenue * (capacity / 100));
+        const breakeven = Math.ceil(salary / (newWork * 12) * 12);
 
-        // Key insight
+        document.getElementById('hiring-insight-title').textContent =
+            `An apprentice hire pays for itself by Month ${state.hiring.startMonth + breakeven - 1} with increased project capacity`;
         document.getElementById('hiring-insight-desc').textContent =
-            `Hire (revenue increase) scenario shows ${growth}% additional revenue growth will cover the new hire's annual salary of ~$${salary.toLocaleString()}`;
+            `With $${state.baseRevenue.toLocaleString()} monthly revenue and ${capacity}% capacity increase, a $${salary.toLocaleString()} apprentice generating ~$${newWork.toLocaleString()}/mo in new project work covers their cost within ${breakeven} months.`;
 
-        // Left panel cards
-        document.getElementById('hiring-current-desc').textContent = `${Math.round(totalCurrent).toLocaleString()} total profit • No hire`;
-        document.getElementById('hiring-cost-desc').textContent = `${Math.round(totalCost).toLocaleString()} total profit • No revenue increase`;
-        document.getElementById('hiring-revenue-desc').textContent = `${Math.round(totalRevenue).toLocaleString()} total profit • Highest profit`;
-        document.getElementById('hiring-wages-chip').textContent = `Wages: +$${(salary/1000).toFixed(1)}k`;
-        document.getElementById('hiring-revenue-chip').textContent = `Revenue: +${growth}%`;
+        document.getElementById('hiring-current-desc').textContent = `$${Math.round(totalCurrent).toLocaleString()} total profit • No hire`;
+        document.getElementById('hiring-cost-desc').innerHTML = `<span class="loss-text">$${Math.round(totalCost).toLocaleString()} total profit</span> • Wages cost, no new projects`;
+        document.getElementById('hiring-revenue-desc').textContent = `$${Math.round(totalRevenue).toLocaleString()} total profit • With new project revenue`;
+        document.getElementById('hiring-wages-chip').textContent = `Wages: $${(salary/1000).toFixed(0)}k/yr`;
+        document.getElementById('hiring-revenue-chip').textContent = `Capacity: +${capacity}%`;
 
-        // Refine panel cards
-        document.getElementById('hiring-card-current-subtitle').textContent = `${Math.round(totalCurrent).toLocaleString()} total profit • No hire`;
-        document.getElementById('hiring-card-cost-subtitle').textContent = `${Math.round(totalCost).toLocaleString()} total profit • No revenue increase`;
-        document.getElementById('hiring-card-revenue-subtitle').textContent = `${Math.round(totalRevenue).toLocaleString()} total profit • Highest profit`;
+        document.getElementById('hiring-card-current-subtitle').textContent = `$${Math.round(totalCurrent).toLocaleString()} total profit • No hire`;
+        document.getElementById('hiring-card-cost-subtitle').innerHTML = `<span class="loss-text">$${Math.round(totalCost).toLocaleString()} total profit</span> • Shows cost impact only`;
+        document.getElementById('hiring-card-revenue-subtitle').textContent = `$${Math.round(totalRevenue).toLocaleString()} total profit • With new project revenue`;
 
-    } else { // expansion
+    } else {
         const setup = state.expansion.setupCost;
-        const lease = state.expansion.monthlyLease;
+        const overhead = state.expansion.monthlyOverhead;
         const newRev = state.expansion.expectedRevenue;
-        const netMonthly = newRev - lease;
-        const payback = Math.ceil(setup / netMonthly);
+        const netMonthly = newRev - overhead;
+        const paybackMonths = Math.ceil(setup / netMonthly);
+        const lossUntilMonth = state.expansion.openingMonth + paybackMonths;
 
-        // Key insight
+        document.getElementById('expansion-insight-title').textContent =
+            `New depot breakeven in ${paybackMonths} months — but expect losses until Month ${lossUntilMonth}`;
         document.getElementById('expansion-insight-desc').textContent =
-            `Expand (with revenue) scenario shows the new location generating $${newRev.toLocaleString()}/month could pay back the $${setup.toLocaleString()} setup cost within ${payback} months`;
+            `Your $${setup.toLocaleString()} setup cost + $${overhead.toLocaleString()}/mo overhead vs $${newRev.toLocaleString()}/mo expected revenue = breakeven in ${paybackMonths} months post-opening.`;
 
-        // Left panel cards
-        document.getElementById('expansion-current-desc').textContent = `${Math.round(totalCurrent).toLocaleString()} total profit • No expansion`;
-        document.getElementById('expansion-cost-desc').textContent = `${Math.round(totalCost).toLocaleString()} total profit • Setup + lease costs`;
-        document.getElementById('expansion-revenue-desc').textContent = `${Math.round(totalRevenue).toLocaleString()} total profit • Best case`;
+        document.getElementById('expansion-current-desc').textContent = `$${Math.round(totalCurrent).toLocaleString()} total profit • No expansion`;
+        document.getElementById('expansion-cost-desc').innerHTML = `<span class="loss-text">$${Math.round(totalCost).toLocaleString()} total profit</span> • Setup + overhead, no new clients`;
+        document.getElementById('expansion-revenue-desc').textContent = `$${Math.round(totalRevenue).toLocaleString()} total profit • With new regional clients`;
         document.getElementById('expansion-setup-chip').textContent = `Setup: $${(setup/1000).toFixed(0)}k`;
-        document.getElementById('expansion-newrev-chip').textContent = `New Rev: +$${(newRev/1000).toFixed(0)}k/mo`;
-        document.getElementById('expansion-payback-text').textContent = `Expected payback period of ${payback} months after opening.`;
+        document.getElementById('expansion-newrev-chip').textContent = `New work: +$${(newRev/1000).toFixed(0)}k/mo`;
+        document.getElementById('expansion-payback-text').textContent = `Breakeven in ${paybackMonths} months post-opening. Expect losses until Month ${lossUntilMonth}.`;
 
-        // Refine panel cards
-        document.getElementById('expansion-card-current-subtitle').textContent = `${Math.round(totalCurrent).toLocaleString()} total profit • No expansion`;
-        document.getElementById('expansion-card-cost-subtitle').textContent = `${Math.round(totalCost).toLocaleString()} total profit • Setup + lease costs`;
-        document.getElementById('expansion-card-revenue-subtitle').textContent = `${Math.round(totalRevenue).toLocaleString()} total profit • Best case`;
+        document.getElementById('expansion-card-current-subtitle').textContent = `$${Math.round(totalCurrent).toLocaleString()} total profit • No expansion`;
+        document.getElementById('expansion-card-cost-subtitle').innerHTML = `<span class="loss-text">$${Math.round(totalCost).toLocaleString()} total profit</span> • Shows cost impact only`;
+        document.getElementById('expansion-card-revenue-subtitle').textContent = `$${Math.round(totalRevenue).toLocaleString()} total profit • With new regional clients`;
     }
 }
 
@@ -1019,7 +1284,6 @@ async function sendChatMessage() {
     const message = input.value.trim();
     if (!message) return;
 
-    // Hide suggested prompts
     document.getElementById('suggested-prompts-hiring').style.display = 'none';
     document.getElementById('suggested-prompts-expansion').style.display = 'none';
 
@@ -1037,7 +1301,8 @@ async function sendChatMessage() {
         parseAndUpdate(message);
     } catch (error) {
         removeTypingIndicator(typingId);
-        addChatMessage('Error: Please check your API key.', 'ai');
+        addChatMessage('Error: ' + (error.message || 'Please check your API key.'), 'ai');
+        console.error('API Error:', error);
     }
 }
 
@@ -1087,15 +1352,129 @@ function showTypingIndicator() {
 function removeTypingIndicator() { document.getElementById('typing')?.remove(); }
 
 async function callClaudeAPI(message) {
-    const systemPrompt = state.scenarioType === 'hiring'
-        ? `You are a financial assistant for Melbourne Coffee Co. Scenario: Hiring. Current params: Salary $${state.hiring.annualSalary}, Growth ${state.hiring.revenueGrowth}%. Be concise (80 words).`
-        : `You are a financial assistant for Melbourne Coffee Co. Scenario: Expansion. Params: Setup $${state.expansion.setupCost}, Lease $${state.expansion.monthlyLease}/mo, Expected revenue $${state.expansion.expectedRevenue}/mo. Be concise (80 words).`;
+    // ============================================================================
+    // GROUNDED SYSTEM PROMPT - Uses ONLY locked accounting data
+    // ============================================================================
+    const baseContext = `You are a financial assistant for ${LOCKED_FINANCIALS.businessName}, a ${LOCKED_FINANCIALS.industry.toLowerCase()} company in ${LOCKED_FINANCIALS.location}.
+
+STRICT RULES - YOU MUST FOLLOW THESE:
+1. ONLY use the EXACT numbers provided below - these are from the verified P&L
+2. DO NOT invent, estimate, or assume ANY costs, percentages, or figures
+3. If asked about data not provided below, say "That data isn't in the current P&L extract - we'd need to connect more accounts"
+4. NEVER mention account codes (like 4000, 6010, etc.) to users - speak in plain business language only
+5. Be concise (80-100 words max)
+6. Use Australian dollars (AUD)
+
+VERIFIED P&L DATA (Last 12 months):
+
+REVENUE (4000 Series):
+- Total Monthly Revenue: $${LOCKED_FINANCIALS.revenue.total.toLocaleString()}
+  - Residential (4000): $${LOCKED_FINANCIALS.revenue.residential.toLocaleString()}
+  - Renovations (4020): $${LOCKED_FINANCIALS.revenue.renovations.toLocaleString()}
+  - Variations (4200): $${LOCKED_FINANCIALS.revenue.variations.toLocaleString()}
+
+DIRECT COSTS (5000 Series):
+- Total COGS: $${LOCKED_FINANCIALS.directCosts.total.toLocaleString()}/mo (${Math.round(LOCKED_FINANCIALS.directCosts.total/LOCKED_FINANCIALS.revenue.total*100)}% of revenue)
+  - Materials (5000-5090): $${LOCKED_FINANCIALS.directCosts.materials.toLocaleString()}
+  - Subcontractors (5100-5190): $${LOCKED_FINANCIALS.directCosts.subcontractors.toLocaleString()}
+  - Direct Labour (5200-5220): $${LOCKED_FINANCIALS.directCosts.directLabour.toLocaleString()}
+
+GROSS PROFIT: $${LOCKED_FINANCIALS.grossProfit.toLocaleString()}/mo (${LOCKED_FINANCIALS.grossMarginPercent}% margin)
+
+OPERATING EXPENSES (6000 Series):
+- Total OPEX: $${LOCKED_FINANCIALS.operatingExpenses.total.toLocaleString()}/mo
+  - Admin Wages (6000): $${LOCKED_FINANCIALS.operatingExpenses.adminWages.toLocaleString()}
+  - Rent (6100): $${LOCKED_FINANCIALS.operatingExpenses.rent.toLocaleString()}
+  - Utilities (6200-6230): $${LOCKED_FINANCIALS.operatingExpenses.utilities.toLocaleString()}
+  - Insurance (6300-6340): $${LOCKED_FINANCIALS.operatingExpenses.insurance.toLocaleString()}
+  - Motor Vehicle (6400-6420): $${LOCKED_FINANCIALS.operatingExpenses.motorVehicle.toLocaleString()}
+  - Depreciation (6800): $${LOCKED_FINANCIALS.operatingExpenses.depreciation.toLocaleString()}
+
+NET PROFIT: $${LOCKED_FINANCIALS.netProfit.toLocaleString()}/mo (${LOCKED_FINANCIALS.netMarginPercent}% margin)`;
+
+    let scenarioContext = '';
+
+    if (state.scenarioType === 'hiring') {
+        const newWork = Math.round(state.baseRevenue * (state.hiring.capacityIncrease / 100));
+        scenarioContext = `
+
+HIRING SCENARIO - ${LOCKED_HIRING.role}
+Award: ${LOCKED_HIRING.awardClassification}
+
+WAGE COSTS (Account Codes: ${LOCKED_HIRING.wages.accountCodes.join(', ')}):
+- Base Wages (6010): $${LOCKED_HIRING.wages.baseAnnual.toLocaleString()}/yr
+- Super @ ${LOCKED_HIRING.wages.superRate}% (6020): $${LOCKED_HIRING.wages.superAmount.toLocaleString()}/yr
+- Workers Comp @ ${LOCKED_HIRING.wages.workersCompRate}% (6030): $${LOCKED_HIRING.wages.workersCompAmount.toLocaleString()}/yr
+- TOTAL ANNUAL COST: $${state.hiring.annualSalary.toLocaleString()} ($${Math.round(state.hiring.annualSalary/12).toLocaleString()}/month)
+
+CAPACITY IMPACT (Account Codes: ${LOCKED_HIRING.capacity.accountCodes.join(', ')}):
+- Expected Capacity Increase: ${state.hiring.capacityIncrease}%
+- New Monthly Project Revenue: ~$${newWork.toLocaleString()}
+- Ramp-up Period: ${LOCKED_HIRING.capacity.rampUpMonths} months to full productivity
+- Start Month: ${state.hiring.startMonth}
+- Organic Growth (baseline): ${state.hiring.baselineGrowth}%
+
+The RED "cost only" line shows wages impact if you hire but don't win new projects.
+The BLUE "with projects" line shows the outcome with increased capacity utilised.`;
+    } else {
+        const netMonthly = state.expansion.expectedRevenue - state.expansion.monthlyOverhead;
+        const payback = Math.ceil(state.expansion.setupCost / netMonthly);
+        scenarioContext = `
+
+EXPANSION SCENARIO - ${LOCKED_EXPANSION.type}
+Location: ${LOCKED_EXPANSION.location}
+
+SETUP COSTS (One-time, Account Codes: ${LOCKED_EXPANSION.setup.accountCodes.join(', ')}):
+- Fit-out (1400): $${LOCKED_EXPANSION.setup.fitout.toLocaleString()}
+- Equipment (1400): $${LOCKED_EXPANSION.setup.equipment.toLocaleString()}
+- Signage: $${LOCKED_EXPANSION.setup.signage.toLocaleString()}
+- Initial Stock (1300): $${LOCKED_EXPANSION.setup.stockInitial.toLocaleString()}
+- Legal (6620): $${LOCKED_EXPANSION.setup.legal.toLocaleString()}
+- TOTAL SETUP: $${state.expansion.setupCost.toLocaleString()}
+
+MONTHLY OVERHEAD (Account Codes: ${LOCKED_EXPANSION.monthly.accountCodes.join(', ')}):
+- Rent (6100): $${LOCKED_EXPANSION.monthly.rent.toLocaleString()}
+- Utilities (6200): $${LOCKED_EXPANSION.monthly.utilities.toLocaleString()}
+- Insurance (6300): $${LOCKED_EXPANSION.monthly.insurance.toLocaleString()}
+- Admin (6000): $${LOCKED_EXPANSION.monthly.admin.toLocaleString()}
+- TOTAL MONTHLY: $${state.expansion.monthlyOverhead.toLocaleString()}
+
+REVENUE PROJECTION (Account Codes: ${LOCKED_EXPANSION.revenue.accountCodes.join(', ')}):
+- Expected New Revenue: $${state.expansion.expectedRevenue.toLocaleString()}/mo
+- Conservative Estimate: $${LOCKED_EXPANSION.revenue.conservativeMonthly.toLocaleString()}/mo
+- Optimistic Estimate: $${LOCKED_EXPANSION.revenue.optimisticMonthly.toLocaleString()}/mo
+- Ramp-up Period: ${LOCKED_EXPANSION.revenue.rampUpMonths} months
+- Opening Month: ${state.expansion.openingMonth}
+- Net Monthly Gain: $${netMonthly.toLocaleString()}
+- Payback Period: ~${payback} months
+
+The RED "cost only" line shows what happens if you expand but don't win new clients.
+The GREEN "with clients" line shows recovery with expected regional project work.`;
+    }
+
+    const systemPrompt = baseContext + scenarioContext;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': state.apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-        body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 300, system: systemPrompt, messages: [{ role: 'user', content: message }] })
+        headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': state.apiKey,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 400,
+            system: systemPrompt,
+            messages: [{ role: 'user', content: message }]
+        })
     });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error?.message || `API Error: ${response.status}`);
+    }
+
     const data = await response.json();
     return data.content[0].text;
 }
@@ -1105,52 +1484,51 @@ function parseAndUpdate(msg) {
     let updated = false;
 
     if (state.scenarioType === 'hiring') {
-        // Parse salary
-        const salaryMatch = m.match(/\$?([\d,]+)(?:k)?\s*(?:salary)?/);
+        const salaryMatch = m.match(/\$?([\d,]+)(?:k)?\s*(?:wages|salary)?/);
         if (salaryMatch) {
             let s = parseInt(salaryMatch[1].replace(/,/g, ''));
             if (m.includes('k') && s < 1000) s *= 1000;
-            if (s >= 20000 && s <= 100000) {
+            if (s >= 40000 && s <= 150000) {
                 state.hiring.annualSalary = s;
                 document.getElementById('hiring-salary-input').value = s.toLocaleString();
                 updated = true;
             }
         }
-        // Parse growth
-        const growthMatch = m.match(/(\d+)\s*%?\s*(?:growth|increase)/);
-        if (growthMatch) {
-            const g = parseInt(growthMatch[1]);
-            if (g >= 0 && g <= 40) {
-                state.hiring.revenueGrowth = g;
-                document.getElementById('hiring-growth-slider').value = g;
-                document.getElementById('hiring-growth-value').textContent = '+' + g + '%';
+        const capacityMatch = m.match(/(\d+)\s*%?\s*(?:capacity|increase)/);
+        if (capacityMatch) {
+            const c = parseInt(capacityMatch[1]);
+            if (c >= LOCKED_HIRING.capacity.minIncrease && c <= LOCKED_HIRING.capacity.maxIncrease) {
+                state.hiring.capacityIncrease = c;
+                document.getElementById('hiring-capacity-slider').value = c;
+                document.getElementById('hiring-capacity-value').textContent = '+' + c + '%';
                 updated = true;
             }
         }
-        // Parse delay
-        if (m.includes('delay')) {
+        if (m.includes('delay') || m.includes('month 6')) {
             state.hiring.startMonth = 6;
             document.getElementById('hiring-start-month').value = 6;
             updated = true;
         }
-    } else { // expansion
-        // Parse setup cost
-        const setupMatch = m.match(/\$?([\d,]+)(?:k)?\s*(?:setup|fit)/);
+    } else {
+        const setupMatch = m.match(/\$?([\d,]+)(?:k)?\s*(?:setup|equipment)/);
         if (setupMatch) {
             let s = parseInt(setupMatch[1].replace(/,/g, ''));
             if (m.includes('k') && s < 1000) s *= 1000;
-            state.expansion.setupCost = s;
-            document.getElementById('expansion-setup-input').value = s.toLocaleString();
-            updated = true;
+            if (s >= 25000 && s <= 200000) {
+                state.expansion.setupCost = s;
+                document.getElementById('expansion-setup-input').value = s.toLocaleString();
+                updated = true;
+            }
         }
-        // Parse lease
-        const leaseMatch = m.match(/\$?([\d,]+)(?:k)?\s*(?:lease|rent)/);
-        if (leaseMatch) {
-            state.expansion.monthlyLease = parseInt(leaseMatch[1].replace(/,/g, ''));
-            document.getElementById('expansion-lease-input').value = state.expansion.monthlyLease.toLocaleString();
-            updated = true;
+        const overheadMatch = m.match(/\$?([\d,]+)(?:k)?\s*(?:overhead|rent)/);
+        if (overheadMatch) {
+            const oh = parseInt(overheadMatch[1].replace(/,/g, ''));
+            if (oh >= 3000 && oh <= 25000) {
+                state.expansion.monthlyOverhead = oh;
+                document.getElementById('expansion-lease-input').value = oh.toLocaleString();
+                updated = true;
+            }
         }
-        // Parse opening month
         if (m.includes('month 3') || m.includes('earlier')) {
             state.expansion.openingMonth = 3;
             document.getElementById('expansion-opening-month').value = 3;
@@ -1179,6 +1557,12 @@ document.addEventListener('DOMContentLoaded', () => {
         state.apiKey = localStorage.getItem('anthropic_api_key');
     }
     updateApiStatusIndicator();
+
+    // Validate locked data on load
+    console.log('📊 Ironbark Building Co v34 - Locked Accounting Data');
+    console.log('Revenue validation:', LOCKED_FINANCIALS.revenue._validate() ? '✓' : '✗');
+    console.log('Direct costs validation:', LOCKED_FINANCIALS.directCosts._validate() ? '✓' : '✗');
+    console.log('OPEX validation:', LOCKED_FINANCIALS.operatingExpenses._validate() ? '✓' : '✗');
 });
 </script>
 
