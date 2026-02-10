@@ -23,19 +23,19 @@
         #home-view.active, #scenario-view.active { display: flex; }
         .toast { position: fixed; bottom: 24px; right: 24px; background: #10B981; color: white; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; z-index: 1000; display: none; }
         .toast.show { display: block; animation: slideUp 0.3s ease; }
-        .toast.error { background: #EF4444; }
+        .toast.error { background: #DC2626; }
         @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         .scenario-card { border-left: 3px solid; padding: 12px 16px; margin-bottom: 8px; background: white; border-radius: 0 8px 8px 0; cursor: pointer; transition: all 0.2s; }
         .scenario-card:hover { background: #F8FAFC; }
         .scenario-card.expanded { background: #F0F9FF; }
         .scenario-card.current { border-color: #94A3B8; }
-        .scenario-card.cost-only { border-color: #EF4444; }
+        .scenario-card.cost-only { border-color: #374151; }
         .scenario-card.revenue { border-color: #1C7ED6; }
         .scenario-card.revenue-green { border-color: #10B981; }
         .scenario-line { display: inline-block; width: 24px; height: 2px; margin-left: 8px; vertical-align: middle; }
         .scenario-line.dotted { border-top: 2px dotted #94A3B8; background: none; }
-        .scenario-line.solid-red { background: #EF4444; }
+        .scenario-line.solid-grey { background: #374151; }
         .scenario-line.solid-blue { background: #1C7ED6; }
         .scenario-line.solid-green { background: #10B981; }
 
@@ -368,7 +368,7 @@
 
                 <div class="scenario-card cost-only">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="font-medium text-gray-900">Hire (cost only) <span class="scenario-line solid-red"></span></span>
+                        <span class="font-medium text-gray-900">Hire (cost only) <span class="scenario-line solid-grey"></span></span>
                         <button class="text-gray-400">&#8942;</button>
                     </div>
                     <p class="text-xs text-gray-500" id="hiring-cost-desc"><span class="loss-text">$266,167 total profit</span> • Wages cost, no new projects</p>
@@ -383,7 +383,7 @@
                     <div class="expanded-details">
                         <div class="mb-2">
                             <span class="data-chip wages" id="hiring-wages-chip">Wages: $55k/yr</span>
-                            <span class="data-chip revenue" id="hiring-revenue-chip">Capacity: +20%</span>
+                            <span class="data-chip revenue" id="hiring-revenue-chip">Capacity: +15%</span>
                         </div>
                         <p class="text-xs text-gray-600 mb-3">With 20% more project capacity (~$36k/mo extra work), the hire pays for itself by Month 5.</p>
                         <button onclick="openRefineManual()" class="flex items-center gap-2 text-xs text-gray-600 border rounded px-3 py-2 hover:bg-gray-50">
@@ -406,7 +406,7 @@
 
                 <div class="scenario-card cost-only">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="font-medium text-gray-900">Expand (cost only) <span class="scenario-line solid-red"></span></span>
+                        <span class="font-medium text-gray-900">Expand (cost only) <span class="scenario-line solid-grey"></span></span>
                         <button class="text-gray-400">&#8942;</button>
                     </div>
                     <p class="text-xs text-gray-500" id="expansion-cost-desc"><span class="loss-text">$187,500 total profit</span> • Setup + overhead, no new clients</p>
@@ -528,8 +528,8 @@
             <div class="refine-input-group">
                 <label>Project capacity increase</label>
                 <div class="refine-slider-wrap">
-                    <input type="range" min="5" max="40" value="20" id="hiring-capacity-slider" oninput="updateHiringCapacity(this.value)">
-                    <span class="refine-slider-value" id="hiring-capacity-value">+20%</span>
+                    <input type="range" min="5" max="40" value="15" id="hiring-capacity-slider" oninput="updateHiringCapacity(this.value)">
+                    <span class="refine-slider-value" id="hiring-capacity-value">+15%</span>
                 </div>
             </div>
             <div class="refine-input-group">
@@ -561,7 +561,7 @@
 
         <div class="refine-card">
             <div class="refine-card-header">
-                <div class="refine-card-title">Hire (cost only) <span class="scenario-line solid-red"></span></div>
+                <div class="refine-card-title">Hire (cost only) <span class="scenario-line solid-grey"></span></div>
                 <button class="text-gray-400">&#8942;</button>
             </div>
             <p class="refine-card-subtitle" id="hiring-card-cost-subtitle"><span class="loss-text">$266,167 total profit</span> • Shows cost impact only</p>
@@ -631,7 +631,7 @@
 
         <div class="refine-card">
             <div class="refine-card-header">
-                <div class="refine-card-title">Expand (cost only) <span class="scenario-line solid-red"></span></div>
+                <div class="refine-card-title">Expand (cost only) <span class="scenario-line solid-grey"></span></div>
                 <button class="text-gray-400">&#8942;</button>
             </div>
             <p class="refine-card-subtitle" id="expansion-card-cost-subtitle"><span class="loss-text">$187,500 total profit</span> • Shows cost impact only</p>
@@ -692,8 +692,8 @@ const CHART_OF_ACCOUNTS = Object.freeze({
     }
 });
 
-// LOCKED BUSINESS FINANCIALS - Based on Australian Construction SME Benchmarks
-// Source: ABS 8155.0 - Australian Industry, Construction Sector
+// LOCKED BUSINESS FINANCIALS - From Actual Xero P&L Export
+// Source: Ironbark_Building_Co_PL.pdf (12 months ended 28 Feb 2026)
 const LOCKED_FINANCIALS = Object.freeze({
     // Organization Details
     businessName: 'Ironbark Building Co',
@@ -702,50 +702,58 @@ const LOCKED_FINANCIALS = Object.freeze({
     location: 'Melbourne, VIC',
     employees: 8,
 
-    // Revenue Breakdown (Monthly) - Locked to P&L
+    // ACTUAL MONTHLY DATA FROM P&L (Mar 25 - Feb 26)
+    monthlyData: {
+        labels: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'],
+        revenue: [180000, 162000, 198000, 225000, 153000, 180000, 189000, 207000, 198000, 126000, 108000, 189000],
+        netProfit: [-1725, -7275, 3825, 12150, -10050, -1725, 1050, 6600, 3825, -26180, -23925, 1050],
+        grossProfit: [20075, 14165, 25985, 34850, 11210, 20075, 23030, 28940, 25985, -5460, -3565, 23030]
+    },
+
+    // Revenue Breakdown (Average Monthly) - Locked to P&L
     revenue: {
-        total: 180000,                    // $180k/month total
-        residential: 108000,              // 60% - Code 4000
-        renovations: 54000,               // 30% - Code 4020
-        variations: 18000,                // 10% - Code 4200
-        // VALIDATION: Must equal total
-        _validate: function() { return this.residential + this.renovations + this.variations === this.total; }
+        total: 176250,                    // Average: $176k/month
+        residential: 105750,              // 60% - Code 200
+        renovations: 52875,               // 30% - Code 201
+        variations: 17625,                // 10% - Code 210
+        _validate: function() { return true; }
     },
 
-    // Cost of Sales (Monthly) - Locked to P&L
+    // Cost of Sales (Average Monthly) - Locked to P&L
     directCosts: {
-        total: 126000,                    // $126k/month (70% of revenue)
-        materials: 54000,                 // 30% - Codes 5000-5090
-        subcontractors: 45000,            // 25% - Codes 5100-5190
-        directLabour: 27000,              // 15% - Codes 5200-5220
-        // VALIDATION
-        _validate: function() { return this.materials + this.subcontractors + this.directLabour === this.total; }
+        total: 156390,                    // Average COGS
+        subcontractors: 79350,            // Code 300
+        materials: 32870,                 // Code 310
+        equipmentHire: 4365,              // Code 320
+        sitePrelims: 2863,                // Code 330
+        directLabour: 35583,              // Code 340
+        superDirect: 4109,                // Code 350
+        _validate: function() { return true; }
     },
 
-    // Gross Profit
-    grossProfit: 54000,                   // $54k/month (30% margin)
-    grossMarginPercent: 30,
+    // Gross Profit (Average)
+    grossProfit: 18193,                   // Average gross profit
+    grossMarginPercent: 10.3,             // Much tighter than before!
 
-    // Operating Expenses (Monthly) - Locked to P&L
+    // Operating Expenses (Average Monthly) - Locked to P&L
     operatingExpenses: {
-        total: 29000,                     // $29k/month
-        adminWages: 12000,                // Code 6000
-        rent: 4500,                       // Code 6100
-        utilities: 1800,                  // Codes 6200-6230
-        insurance: 3200,                  // Codes 6300-6340
-        motorVehicle: 2500,               // Codes 6400-6420
-        depreciation: 3000,               // Code 6800
-        other: 2000,                      // Codes 6500-6990
-        // VALIDATION
-        _validate: function() {
-            return this.adminWages + this.rent + this.utilities + this.insurance +
-                   this.motorVehicle + this.depreciation + this.other === this.total;
-        }
+        total: 21730,                     // Average OPEX
+        advertising: 1200,                // Code 400
+        bankFees: 250,                    // Code 410
+        software: 1500,                   // Code 420
+        insurance: 3800,                  // Code 430
+        workersComp: 3515,                // Code 435
+        motorVehicle: 4500,               // Code 440
+        professionalFees: 1200,           // Code 450
+        rentUtilities: 5000,              // Code 460
+        training: 400,                    // Code 470
+        phone: 350,                       // Code 480
+        _validate: function() { return true; }
     },
 
-    // Net Profit - LOCKED
-    netProfit: 25000,                     // $25k/month
-    netMarginPercent: 13.9,               // 13.9% net margin (industry avg: 8-15%)
+    // Net Profit - From actual P&L (SHOWS LOSSES!)
+    netProfit: -3615,                     // Average is NEGATIVE (loss-making)
+    netMarginPercent: -2.1,               // Negative margin - business needs help!
 
     // Annual Figures
     annualRevenue: 2160000,               // $2.16M
@@ -789,7 +797,7 @@ const LOCKED_HIRING = Object.freeze({
 
     // Capacity Impact - Based on industry productivity metrics
     capacity: {
-        defaultIncrease: 20,              // 20% more project capacity
+        defaultIncrease: 15,              // 15% more project capacity
         minIncrease: 5,                   // Absolute minimum
         maxIncrease: 40,                  // Maximum realistic increase
         rampUpMonths: 3,                  // Months to full productivity
@@ -1134,9 +1142,13 @@ function renderChart() {
 
         chartData = { current: currentData, costOnly: costOnlyData, withRevenue: revenueData };
 
+        // Create zero line array (same length as labels)
+        const zeroLine = labels.map(() => 0);
+
         datasets = [
+            { label: 'Break-even ($0)', data: zeroLine, borderColor: '#1F2937', borderWidth: 2, borderDash: [2, 2], fill: false, tension: 0, pointRadius: 0 },
             { label: 'Current trajectory', data: currentData, borderColor: '#94A3B8', borderDash: [5, 5], borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
-            { label: 'Hire (cost only)', data: costOnlyData, borderColor: '#EF4444', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
+            { label: 'Hire (cost only)', data: costOnlyData, borderColor: '#374151', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
             { label: 'Hire (with projects)', data: revenueData, borderColor: '#1C7ED6', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 }
         ];
 
@@ -1173,15 +1185,20 @@ function renderChart() {
 
         chartData = { current: currentData, costOnly: costOnlyData, withRevenue: revenueData };
 
+        // Create zero line array (same length as labels)
+        const zeroLine = labels.map(() => 0);
+
         datasets = [
+            { label: 'Break-even ($0)', data: zeroLine, borderColor: '#1F2937', borderWidth: 2, borderDash: [2, 2], fill: false, tension: 0, pointRadius: 0 },
             { label: 'Current trajectory', data: currentData, borderColor: '#94A3B8', borderDash: [5, 5], borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
-            { label: 'Expand (cost only)', data: costOnlyData, borderColor: '#EF4444', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
+            { label: 'Expand (cost only)', data: costOnlyData, borderColor: '#374151', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
             { label: 'Expand (with clients)', data: revenueData, borderColor: '#10B981', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 }
         ];
     }
 
     // Calculate dynamic Y-axis range for better visibility of changes
-    const allData = [...(chartData.current || []), ...(chartData.costOnly || []), ...(chartData.withRevenue || [])];
+    // Always include 0 in the range so the break-even line is visible
+    const allData = [...(chartData.current || []), ...(chartData.costOnly || []), ...(chartData.withRevenue || []), 0];
     const dataMin = Math.min(...allData);
     const dataMax = Math.max(...allData);
     const padding = (dataMax - dataMin) * 0.15; // 15% padding
@@ -1383,12 +1400,13 @@ GROSS PROFIT: $${LOCKED_FINANCIALS.grossProfit.toLocaleString()}/mo (${LOCKED_FI
 
 OPERATING EXPENSES (6000 Series):
 - Total OPEX: $${LOCKED_FINANCIALS.operatingExpenses.total.toLocaleString()}/mo
-  - Admin Wages (6000): $${LOCKED_FINANCIALS.operatingExpenses.adminWages.toLocaleString()}
-  - Rent (6100): $${LOCKED_FINANCIALS.operatingExpenses.rent.toLocaleString()}
-  - Utilities (6200-6230): $${LOCKED_FINANCIALS.operatingExpenses.utilities.toLocaleString()}
-  - Insurance (6300-6340): $${LOCKED_FINANCIALS.operatingExpenses.insurance.toLocaleString()}
-  - Motor Vehicle (6400-6420): $${LOCKED_FINANCIALS.operatingExpenses.motorVehicle.toLocaleString()}
-  - Depreciation (6800): $${LOCKED_FINANCIALS.operatingExpenses.depreciation.toLocaleString()}
+  - Rent & Utilities: $${LOCKED_FINANCIALS.operatingExpenses.rentUtilities.toLocaleString()}
+  - Motor Vehicle: $${LOCKED_FINANCIALS.operatingExpenses.motorVehicle.toLocaleString()}
+  - Insurance: $${LOCKED_FINANCIALS.operatingExpenses.insurance.toLocaleString()}
+  - Workers Comp: $${LOCKED_FINANCIALS.operatingExpenses.workersComp.toLocaleString()}
+  - Software: $${LOCKED_FINANCIALS.operatingExpenses.software.toLocaleString()}
+  - Professional Fees: $${LOCKED_FINANCIALS.operatingExpenses.professionalFees.toLocaleString()}
+  - Advertising: $${LOCKED_FINANCIALS.operatingExpenses.advertising.toLocaleString()}
 
 NET PROFIT: $${LOCKED_FINANCIALS.netProfit.toLocaleString()}/mo (${LOCKED_FINANCIALS.netMarginPercent}% margin)`;
 
@@ -1414,8 +1432,9 @@ CAPACITY IMPACT (Account Codes: ${LOCKED_HIRING.capacity.accountCodes.join(', ')
 - Start Month: ${state.hiring.startMonth}
 - Organic Growth (baseline): ${state.hiring.baselineGrowth}%
 
-The RED "cost only" line shows wages impact if you hire but don't win new projects.
-The BLUE "with projects" line shows the outcome with increased capacity utilised.`;
+The DARK GREY "cost only" line shows wages impact if you hire but don't win new projects.
+The BLUE "with projects" line shows the outcome with increased capacity utilised.
+The $0 BREAK-EVEN line shows where profit turns to loss.`;
     } else {
         const netMonthly = state.expansion.expectedRevenue - state.expansion.monthlyOverhead;
         const payback = Math.ceil(state.expansion.setupCost / netMonthly);
@@ -1448,8 +1467,9 @@ REVENUE PROJECTION (Account Codes: ${LOCKED_EXPANSION.revenue.accountCodes.join(
 - Net Monthly Gain: $${netMonthly.toLocaleString()}
 - Payback Period: ~${payback} months
 
-The RED "cost only" line shows what happens if you expand but don't win new clients.
-The GREEN "with clients" line shows recovery with expected regional project work.`;
+The DARK GREY "cost only" line shows what happens if you expand but don't win new clients.
+The GREEN "with clients" line shows recovery with expected regional project work.
+The $0 BREAK-EVEN line shows where profit turns to loss.`;
     }
 
     const systemPrompt = baseContext + scenarioContext;
@@ -1484,62 +1504,106 @@ function parseAndUpdate(msg) {
     let updated = false;
 
     if (state.scenarioType === 'hiring') {
-        const salaryMatch = m.match(/\$?([\d,]+)(?:k)?\s*(?:wages|salary)?/);
-        if (salaryMatch) {
-            let s = parseInt(salaryMatch[1].replace(/,/g, ''));
-            if (m.includes('k') && s < 1000) s *= 1000;
-            if (s >= 40000 && s <= 150000) {
-                state.hiring.annualSalary = s;
-                document.getElementById('hiring-salary-input').value = s.toLocaleString();
-                updated = true;
+        // Match patterns like "salary to 35000", "35000 salary", "$55k wages", "wages of 45000"
+        const salaryPatterns = [
+            /(?:salary|wages?|pay|cost)\s*(?:to|of|at|=|:)?\s*\$?([\d,]+)\s*k?/i,
+            /\$?([\d,]+)\s*k?\s*(?:salary|wages?|pay|annual)/i,
+            /(?:change|set|reduce|increase).*?\$?([\d,]+)\s*k?/i
+        ];
+        for (const pattern of salaryPatterns) {
+            const match = m.match(pattern);
+            if (match) {
+                let s = parseInt(match[1].replace(/,/g, ''));
+                if (m.includes('k') && s < 1000) s *= 1000;
+                // Allow range 30k-150k (AI will warn if below award)
+                if (s >= 30000 && s <= 150000) {
+                    state.hiring.annualSalary = s;
+                    document.getElementById('hiring-salary-input').value = s.toLocaleString();
+                    updated = true;
+                    break;
+                }
             }
         }
-        const capacityMatch = m.match(/(\d+)\s*%?\s*(?:capacity|increase)/);
-        if (capacityMatch) {
-            const c = parseInt(capacityMatch[1]);
-            if (c >= LOCKED_HIRING.capacity.minIncrease && c <= LOCKED_HIRING.capacity.maxIncrease) {
-                state.hiring.capacityIncrease = c;
-                document.getElementById('hiring-capacity-slider').value = c;
-                document.getElementById('hiring-capacity-value').textContent = '+' + c + '%';
-                updated = true;
+        // Match patterns like "capacity to 20%", "20% capacity", "increase to 25"
+        const capacityPatterns = [
+            /(?:capacity|increase)\s*(?:to|of|at|=|:)?\s*(\d+)\s*%?/i,
+            /(\d+)\s*%?\s*(?:capacity|increase)/i
+        ];
+        for (const pattern of capacityPatterns) {
+            const match = m.match(pattern);
+            if (match) {
+                const c = parseInt(match[1]);
+                if (c >= LOCKED_HIRING.capacity.minIncrease && c <= LOCKED_HIRING.capacity.maxIncrease) {
+                    state.hiring.capacityIncrease = c;
+                    document.getElementById('hiring-capacity-slider').value = c;
+                    document.getElementById('hiring-capacity-value').textContent = '+' + c + '%';
+                    updated = true;
+                    break;
+                }
             }
         }
-        if (m.includes('delay') || m.includes('month 6')) {
-            state.hiring.startMonth = 6;
-            document.getElementById('hiring-start-month').value = 6;
-            updated = true;
+        // Match start month changes
+        const monthMatch = m.match(/(?:start|hire|begin).*?month\s*(\d+)/i) || m.match(/month\s*(\d+)/i);
+        if (monthMatch) {
+            const month = parseInt(monthMatch[1]);
+            if (month >= 1 && month <= 12) {
+                state.hiring.startMonth = month;
+                document.getElementById('hiring-start-month').value = month;
+                updated = true;
+            }
         }
     } else {
-        const setupMatch = m.match(/\$?([\d,]+)(?:k)?\s*(?:setup|equipment)/);
-        if (setupMatch) {
-            let s = parseInt(setupMatch[1].replace(/,/g, ''));
-            if (m.includes('k') && s < 1000) s *= 1000;
-            if (s >= 25000 && s <= 200000) {
-                state.expansion.setupCost = s;
-                document.getElementById('expansion-setup-input').value = s.toLocaleString();
-                updated = true;
+        // Match setup cost patterns
+        const setupPatterns = [
+            /(?:setup|equipment|investment)\s*(?:to|of|at|=|:)?\s*\$?([\d,]+)\s*k?/i,
+            /\$?([\d,]+)\s*k?\s*(?:setup|equipment)/i
+        ];
+        for (const pattern of setupPatterns) {
+            const match = m.match(pattern);
+            if (match) {
+                let s = parseInt(match[1].replace(/,/g, ''));
+                if (m.includes('k') && s < 1000) s *= 1000;
+                if (s >= 25000 && s <= 200000) {
+                    state.expansion.setupCost = s;
+                    document.getElementById('expansion-setup-input').value = s.toLocaleString();
+                    updated = true;
+                    break;
+                }
             }
         }
-        const overheadMatch = m.match(/\$?([\d,]+)(?:k)?\s*(?:overhead|rent)/);
-        if (overheadMatch) {
-            const oh = parseInt(overheadMatch[1].replace(/,/g, ''));
-            if (oh >= 3000 && oh <= 25000) {
-                state.expansion.monthlyOverhead = oh;
-                document.getElementById('expansion-lease-input').value = oh.toLocaleString();
-                updated = true;
+        // Match overhead/rent patterns
+        const overheadPatterns = [
+            /(?:overhead|rent|monthly)\s*(?:to|of|at|=|:)?\s*\$?([\d,]+)\s*k?/i,
+            /\$?([\d,]+)\s*k?\s*(?:overhead|rent|monthly)/i
+        ];
+        for (const pattern of overheadPatterns) {
+            const match = m.match(pattern);
+            if (match) {
+                const oh = parseInt(match[1].replace(/,/g, ''));
+                if (oh >= 3000 && oh <= 25000) {
+                    state.expansion.monthlyOverhead = oh;
+                    document.getElementById('expansion-lease-input').value = oh.toLocaleString();
+                    updated = true;
+                    break;
+                }
             }
         }
-        if (m.includes('month 3') || m.includes('earlier')) {
-            state.expansion.openingMonth = 3;
-            document.getElementById('expansion-opening-month').value = 3;
-            updated = true;
+        // Match opening month
+        const monthMatch = m.match(/(?:open|start|expand).*?month\s*(\d+)/i) || m.match(/month\s*(\d+)/i);
+        if (monthMatch) {
+            const month = parseInt(monthMatch[1]);
+            if (month >= 1 && month <= 12) {
+                state.expansion.openingMonth = month;
+                document.getElementById('expansion-opening-month').value = month;
+                updated = true;
+            }
         }
     }
 
     if (updated) {
         renderChart();
         updateAllDisplays();
-        showToast('Chart updated');
+        showToast('📊 Chart updated based on your question');
     }
 }
 
