@@ -1100,41 +1100,64 @@ function renderChart() {
     const ctx = document.getElementById('scenario-chart').getContext('2d');
     if (chart) chart.destroy();
 
+    // Use ACTUAL monthly P&L data from Emma's PDF
+    // Data runs Mar-Feb, we map it to chart starting from current month
+    const actualMonthlyProfit = LOCKED_FINANCIALS.monthlyData.netProfit;
+    const actualMonthlyRevenue = LOCKED_FINANCIALS.monthlyData.revenue;
+
     const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const currentMonth = new Date().getMonth();
     const labels = ['Now'];
     for (let i = 1; i <= 12; i++) labels.push(monthNames[(currentMonth + i) % 12]);
+
+    // Map P&L data months (Mar=0, Apr=1, etc.) to calendar months
+    const plMonthMap = { 'Mar': 0, 'Apr': 1, 'May': 2, 'Jun': 3, 'Jul': 4, 'Aug': 5,
+                         'Sep': 6, 'Oct': 7, 'Nov': 8, 'Dec': 9, 'Jan': 10, 'Feb': 11 };
+
+    // Get actual profit for each chart month
+    function getActualProfit(chartIndex) {
+        if (chartIndex === 0) return actualMonthlyProfit[plMonthMap[monthNames[currentMonth]] || 0];
+        const monthName = labels[chartIndex];
+        const plIndex = plMonthMap[monthName];
+        return actualMonthlyProfit[plIndex !== undefined ? plIndex : 0];
+    }
+
+    function getActualRevenue(chartIndex) {
+        if (chartIndex === 0) return actualMonthlyRevenue[plMonthMap[monthNames[currentMonth]] || 0];
+        const monthName = labels[chartIndex];
+        const plIndex = plMonthMap[monthName];
+        return actualMonthlyRevenue[plIndex !== undefined ? plIndex : 0];
+    }
 
     let datasets = [];
 
     if (state.scenarioType === 'hiring') {
         const salary = state.hiring.annualSalary;
         const capacityIncrease = state.hiring.capacityIncrease;
-        const baselineGrowth = state.hiring.baselineGrowth;
         const startMonth = state.hiring.startMonth;
         const monthlySalary = salary / 12;
-        const monthlyGrowth = state.baseProfit * (baselineGrowth / 100 / 12);
-        const newProjectRevenue = state.baseRevenue * (capacityIncrease / 100);
 
-        // Current trajectory - using locked baseline
-        const currentData = labels.map((_, i) => Math.round(state.baseProfit + (i * monthlyGrowth)));
+        // Current trajectory - ACTUAL monthly profit data (shows real variation)
+        const currentData = labels.map((_, i) => Math.round(getActualProfit(i)));
 
-        // Cost only - wages impact with no new revenue
+        // Cost only - actual profit minus wages (no new revenue)
         const costOnlyData = labels.map((_, i) => {
-            let profit = state.baseProfit + (i * monthlyGrowth);
+            let profit = getActualProfit(i);
             if (i >= startMonth) {
                 profit -= monthlySalary;
             }
             return Math.round(profit);
         });
 
-        // With projects - wages + ramped revenue
+        // With projects - actual profit + capacity increase revenue - wages
         const revenueData = labels.map((_, i) => {
-            let profit = state.baseProfit + (i * monthlyGrowth);
+            let profit = getActualProfit(i);
             if (i >= startMonth) {
                 profit -= monthlySalary;
                 const monthsActive = i - startMonth + 1;
                 const ramp = Math.min(1, monthsActive / LOCKED_HIRING.capacity.rampUpMonths);
+                // Capacity increase applies to that month's actual revenue
+                const newProjectRevenue = getActualRevenue(i) * (capacityIncrease / 100);
                 profit += newProjectRevenue * ramp;
             }
             return Math.round(profit);
@@ -1157,22 +1180,21 @@ function renderChart() {
         const overhead = state.expansion.monthlyOverhead;
         const newRev = state.expansion.expectedRevenue;
         const openMonth = state.expansion.openingMonth;
-        const monthlyGrowth = state.baseProfit * 0.05 / 12;
 
-        // Current trajectory
-        const currentData = labels.map((_, i) => Math.round(state.baseProfit + (i * monthlyGrowth)));
+        // Current trajectory - ACTUAL monthly profit data
+        const currentData = labels.map((_, i) => Math.round(getActualProfit(i)));
 
-        // Cost only - setup hit + ongoing overhead
+        // Cost only - actual profit minus setup and overhead
         const costOnlyData = labels.map((_, i) => {
-            let profit = state.baseProfit + (i * monthlyGrowth);
+            let profit = getActualProfit(i);
             if (i === openMonth) profit -= setup;
             if (i >= openMonth) profit -= overhead;
             return Math.round(profit);
         });
 
-        // With clients - costs + ramped revenue
+        // With clients - actual profit + new revenue - costs
         const revenueData = labels.map((_, i) => {
-            let profit = state.baseProfit + (i * monthlyGrowth);
+            let profit = getActualProfit(i);
             if (i === openMonth) profit -= setup;
             if (i >= openMonth) {
                 profit -= overhead;
