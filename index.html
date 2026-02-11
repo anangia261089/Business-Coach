@@ -127,7 +127,7 @@
         .scenario-type-badge.operational { background: #DBEAFE; color: #1E40AF; }
         .scenario-type-badge.strategic { background: #D1FAE5; color: #065F46; }
 
-        .loss-text { color: #DC2626; font-weight: 600; }
+        .loss-text { color: #374151; font-weight: 600; }
 
         .account-code { font-family: 'Monaco', 'Consolas', monospace; font-size: 10px; color: #6B7280; background: #F3F4F6; padding: 2px 6px; border-radius: 3px; margin-left: 4px; }
         .data-source-badge { font-size: 10px; color: #059669; background: #D1FAE5; padding: 2px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px; }
@@ -343,8 +343,8 @@
             <!-- HIRING Key Insight -->
             <div id="key-insight-hiring" class="key-insight-box">
                 <div class="key-insight-badge">Key insight</div>
-                <h3 class="key-insight-title" id="hiring-insight-title">An apprentice hire pays for itself by Month 5 with increased project capacity</h3>
-                <p class="key-insight-desc" id="hiring-insight-desc">With $180k monthly revenue and 20% capacity increase, a $55k apprentice generating ~$36k/mo in new project work covers their cost within 5 months.</p>
+                <h3 class="key-insight-title" id="hiring-insight-title">An apprentice hire pays for itself by Month 4 with increased project capacity</h3>
+                <p class="key-insight-desc" id="hiring-insight-desc">With $190,800 monthly revenue and 15% capacity increase, a $55,000 apprentice generating ~$28,620/mo in new project work covers their cost by Month 4.</p>
                 <div class="flex flex-wrap gap-2">
                     <button onclick="askQuickReply('Break down the numbers')" class="quick-chip">Break down numbers</button>
                     <button onclick="askQuickReply('What about super and training costs?')" class="quick-chip">Super & training costs?</button>
@@ -382,7 +382,7 @@
 
                 <div class="scenario-card revenue expanded">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="font-medium text-gray-900">Hire (with projects) <span class="scenario-line solid-blue"></span></span>
+                        <span class="font-medium text-gray-900">Hire (revenue increase) <span class="scenario-line solid-blue"></span></span>
                         <button class="text-gray-400">&#8942;</button>
                     </div>
                     <p class="text-xs text-gray-500 mb-2" id="hiring-revenue-desc">$398,000 total profit • With new project revenue</p>
@@ -391,7 +391,7 @@
                             <span class="data-chip wages" id="hiring-wages-chip">Wages: $55k/yr</span>
                             <span class="data-chip revenue" id="hiring-revenue-chip">Capacity: +15%</span>
                         </div>
-                        <p class="text-xs text-gray-600 mb-3">With 20% more project capacity (~$36k/mo extra work), the hire pays for itself by Month 5.</p>
+                        <p class="text-xs text-gray-600 mb-3" id="hiring-card-revenue-desc">With 15% more project capacity (~$29k/mo extra work), the hire pays for itself by Month 4.</p>
                         <button onclick="openRefineManual()" class="flex items-center gap-2 text-xs text-gray-600 border rounded px-3 py-2 hover:bg-gray-50">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
                             Refine manually
@@ -520,7 +520,7 @@
 
         <div class="refine-card">
             <div class="refine-card-header">
-                <div class="refine-card-title">Hire (with projects) <span class="scenario-line solid-blue"></span></div>
+                <div class="refine-card-title">Hire (revenue increase) <span class="scenario-line solid-blue"></span></div>
                 <button class="text-gray-400">&#8942;</button>
             </div>
             <p class="refine-card-subtitle" id="hiring-card-revenue-subtitle">$398,000 total profit • With new project revenue</p>
@@ -1178,7 +1178,7 @@ function renderChart() {
             { label: 'Break-even ($0)', data: zeroLine, borderColor: '#1F2937', borderWidth: 2, borderDash: [2, 2], fill: false, tension: 0, pointRadius: 0 },
             { label: 'Current trajectory', data: currentData, borderColor: '#94A3B8', borderDash: [5, 5], borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
             { label: 'Hire (cost only)', data: costOnlyData, borderColor: '#374151', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 },
-            { label: 'Hire (with projects)', data: revenueData, borderColor: '#1C7ED6', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 }
+            { label: 'Hire (revenue increase)', data: revenueData, borderColor: '#1C7ED6', borderWidth: 2, fill: false, tension: 0.3, pointRadius: 0 }
         ];
 
     } else {
@@ -1241,7 +1241,15 @@ function renderChart() {
             maintainAspectRatio: false,
             interaction: { intersect: false, mode: 'index' },
             plugins: {
-                legend: { display: true, position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        filter: (item) => item.text !== 'Break-even ($0)'
+                    }
+                },
                 tooltip: {
                     filter: (item) => item.dataset.label !== 'Break-even ($0)',
                     callbacks: { label: ctx => `${ctx.dataset.label}: $${Math.round(ctx.parsed.y).toLocaleString()}` }
@@ -1276,7 +1284,7 @@ function updateAllDisplays() {
         document.getElementById('hiring-insight-title').textContent =
             `An apprentice hire pays for itself by Month ${state.hiring.startMonth + breakeven - 1} with increased project capacity`;
         document.getElementById('hiring-insight-desc').textContent =
-            `With $${state.baseRevenue.toLocaleString()} monthly revenue and ${capacity}% capacity increase, a $${salary.toLocaleString()} apprentice generating ~$${newWork.toLocaleString()}/mo in new project work covers their cost within ${breakeven} months.`;
+            `With $${state.baseRevenue.toLocaleString()} monthly revenue and ${capacity}% capacity increase, a $${salary.toLocaleString()} apprentice generating ~$${newWork.toLocaleString()}/mo in new project work covers their cost by Month ${state.hiring.startMonth + breakeven - 1}.`;
 
         document.getElementById('hiring-current-desc').textContent = `$${Math.round(totalCurrent).toLocaleString()} total profit • No hire`;
         document.getElementById('hiring-cost-desc').innerHTML = `<span class="loss-text">$${Math.round(totalCost).toLocaleString()} total profit</span> • Wages cost, no new projects`;
@@ -1287,6 +1295,7 @@ function updateAllDisplays() {
         document.getElementById('hiring-card-current-subtitle').textContent = `$${Math.round(totalCurrent).toLocaleString()} total profit • No hire`;
         document.getElementById('hiring-card-cost-subtitle').innerHTML = `<span class="loss-text">$${Math.round(totalCost).toLocaleString()} total profit</span> • Shows cost impact only`;
         document.getElementById('hiring-card-revenue-subtitle').textContent = `$${Math.round(totalRevenue).toLocaleString()} total profit • With new project revenue`;
+        document.getElementById('hiring-card-revenue-desc').textContent = `With ${capacity}% more project capacity (~$${(newWork/1000).toFixed(0)}k/mo extra work), the hire pays for itself by Month ${state.hiring.startMonth + breakeven - 1}.`;
 
     } else {
         const setup = state.expansion.setupCost;
